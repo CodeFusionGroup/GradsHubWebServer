@@ -1,4 +1,5 @@
 <?php
+
 $username = "s1733164";
 $password = "CNSPass3304bm";
 $database = "d1733164";
@@ -44,4 +45,6 @@ if(mysqli_num_rows($response)== 0){
 		mysqli_close($link);
 	    }
 }
+
+
 ?>
