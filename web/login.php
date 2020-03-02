@@ -30,7 +30,7 @@ if(mysqli_num_rows($response)== 0){
 }else if(mysqli_num_rows($response) > 0){
 
 	$row = mysqli_fetch_assoc($response);
-	if($lecturer_password==$row["USER_PASSWORD"]){
+	if($user_password==$row["USER_PASSWORD"]){
 
 		// $index["USER_EMAIL"] = $row["USER_EMAIL"];
 		// array_push($output,$index);
