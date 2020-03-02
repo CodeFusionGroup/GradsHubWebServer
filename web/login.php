@@ -1,9 +1,10 @@
 <?php
 
-$username = "s1733164";
-$password = "CNSPass3304bm";
-$database = "d1733164";
-$link = mysqli_connect("127.0.0.1", $username, $password, $database);
+$username = "b6febc76a325a3";
+$password = "a4831502";
+$database = "heroku_6b7ffb41be0156e";
+$host = "us-cdbr-iron-east-04.cleardb.net";
+$link = mysqli_connect($host, $username, $password, $database);
 $output = array();
 
 $user_email = $_REQUEST["USER_EMAIL"];
@@ -15,7 +16,7 @@ if(!isset($user_email,$user_password)){
 	die();
 }
 
-$response = mysqli_query($link, "SELECT USER_EMAIL,USER_PASSWORD FROM USER WHERE USER_EMAIL='$user_email'");
+$response = mysqli_query($link, "SELECT USER_EMAIL,USER_PASSWORD FROM User WHERE USER_EMAIL='$user_email'");
 $output = array();
 
 if(mysqli_num_rows($response)== 0){
