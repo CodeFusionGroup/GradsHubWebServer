@@ -5,7 +5,7 @@ $password = "a4831502";
 $database = "heroku_6b7ffb41be0156e";
 $host = "us-cdbr-iron-east-04.cleardb.net";
 $link = mysqli_connect($host, $username, $password, $database);
-
+$output=array();
 
 if ($result = mysqli_prepare($link,"SELECT USER_EMAIL FROM USER WHERE USER_EMAIL=?")){
 
