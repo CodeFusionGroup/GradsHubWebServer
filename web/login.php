@@ -7,45 +7,45 @@ $host = "us-cdbr-iron-east-04.cleardb.net";
 $link = mysqli_connect($host, $username, $password, $database);
 $output = array();
 
-$user_email = $_REQUEST["USER_EMAIL"];
-$user_password = $_REQUEST["USER_PASSWORD"];
+if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM USER WHERE USER_EMAIL=?")){
 
-if(!isset($user_email,$user_password)){
-	$output["result"]="You didn't send the required values";
-        echo json_encode($output);
-	die();
-}
+	mysqli_stmt_bind_param($result,"s",$user_email);
+	$user_email = $_REQUEST["USER_EMAIL"];
 
-$response = mysqli_query($link, "SELECT USER_EMAIL,USER_PASSWORD FROM User WHERE USER_EMAIL='$user_email'");
-$output = array();
+	mysqli_stmt_execute($result);
+	mysqli_stmt_store_result($result);
 
-if(mysqli_num_rows($response)== 0){
-
-	$output["success"] = "0";
-        $output["message"] = "incorrect email, try again!";
-        echo json_encode($output);
-         mysqli_close($link);
-
-
-}else if(mysqli_num_rows($response) > 0){
-
-	$row = mysqli_fetch_assoc($response);
-	if($user_password==$row["USER_PASSWORD"]){
-
-		// $index["USER_EMAIL"] = $row["USER_EMAIL"];
-		// array_push($output,$index);
-		$output["success"] = "1";
-		$output["message"] = "successfully logged in!";
-		echo json_encode($output);
-		mysqli_close($link);
-
-	}else{
+	// first check that the user email exists //
+	if(mysqli_stmt_num_rows($result) == 0){
 		$output["success"] = "0";
-		$output["message"] = "incorrect password, try again!";
+		$output["message"] = "Incorrect email, try again!";
 		echo json_encode($output);
 		mysqli_close($link);
-	    }
+
+	} else if(mysqli_stmt_num_rows($result) > 0){ // Email exists proceed to verify password
+		mysqli_stmt_bind_param($result,"s",$user_email);
+		$user_password = $_REQUEST["USER_PASSWORD"];
+
+		mysqli_stmt_execute($result);
+		mysqli_stmt_store_result($result);
+
+		$row = mysqli_fetch_assoc($response);
+		if(password_verify($user_password,$row["USER_PASSWORD"])){
+			$index["USER_EMAIL"] = $row["USER_EMAIL"];
+			array_push($output,$index);
+			$output["success"] = "1";
+			$output["message"] = "Successfully logged in!";
+			echo json_encode($output);
+			mysqli_close($link);
+
+		}else{
+			$output["success"] = "0";
+			$output["message"] = "Incorrect password. Please try again!";
+			echo json_encode($output);
+			mysqli_close($link);
+		}
+
+	}
+
 }
-
-
 ?>
