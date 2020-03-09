@@ -17,7 +17,7 @@ if ($result = mysqli_prepare($link,"SELECT USER_EMAIL FROM USER WHERE USER_EMAIL
 
     // Find out if the user email doesnt already exist in the User table
 	if(mysqli_stmt_num_rows($result) > 0){
-		$output["success"]="0";
+		$output["success"]="-1";
 		$output["message"]="Email already exists!, Please use another email.";
 		echo json_encode($output);
 		mysqli_close($link);
