@@ -26,7 +26,7 @@ $link = mysqli_connect($host, $username, $password, $database);
 	}else{ // Email doesnt already exist in the User table
 */
 		echo "Email doesnt already exist in the User table";
-		$test = mysqli_prepare($link,"INSERT INTO user VALUES(?,?,?,?,?,?)");
+		$test = mysqli_prepare($link,"SELECT USER_EMAIL FROM user WHERE USER_EMAIL=?");
 		echo $test;
 		if($stmt = mysqli_prepare($link,"INSERT INTO user VALUES(?,?,?,?,?,?)")){
             mysqli_stmt_bind_param($stmt,"ssssis",$user_fname, $user_lname, $hashed_password, $user_email,$user_phone_no, $user_acad_status);
