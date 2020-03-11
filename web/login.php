@@ -17,7 +17,7 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM USER WH
 
 	// first check that the user email exists //
 	if(mysqli_stmt_num_rows($result) == 0){
-		$output["success"] = "0";
+		$output["success"] = "-1";
 		$output["message"] = "Incorrect email, try again!";
 		echo json_encode($output);
 		mysqli_close($link);
