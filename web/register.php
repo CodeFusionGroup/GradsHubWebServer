@@ -7,7 +7,7 @@ $host = "us-cdbr-iron-east-04.cleardb.net";
 $link = mysqli_connect($host, $username, $password, $database);
 #$output=array();
 
-echo "Register php";
+
 
 if ($result = mysqli_prepare($link,"SELECT USER_EMAIL FROM user WHERE USER_EMAIL=?")){
 
@@ -39,6 +39,7 @@ if ($result = mysqli_prepare($link,"SELECT USER_EMAIL FROM user WHERE USER_EMAIL
 
             if(!isset($user_fname, $user_lname, $user_password, $user_email, $user_phone_no, $user_acad_status)){
 
+				echo "You didn't send the required values!";
 				$output["success"]="0";
 				$output["message"]="You didn't send the required values!";
 				echo json_encode($output);
