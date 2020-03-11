@@ -9,7 +9,7 @@ $link = mysqli_connect($host, $username, $password, $database);
 
 
 
-if ($result = mysqli_prepare($link,"SELECT USER_EMAIL FROM user WHERE USER_EMAIL=?")){
+/*if ($result = mysqli_prepare($link,"SELECT USER_EMAIL FROM user WHERE USER_EMAIL=?")){
 
 	mysqli_stmt_bind_param($result,"s",$user_email);
 	$user_email = $_REQUEST["USER_EMAIL"];
@@ -24,7 +24,7 @@ if ($result = mysqli_prepare($link,"SELECT USER_EMAIL FROM user WHERE USER_EMAIL
 		echo json_encode($output);
 		mysqli_close($link);
 	}else{ // Email doesnt already exist in the User table
-
+*/
 		echo "Email doesnt already exist in the User table";
 		if($stmt = mysqli_prepare($link,"INSERT INTO user VALUES(?,?,?,?,?,?)")){
             mysqli_stmt_bind_param($stmt,"ssssis",$user_fname, $user_lname, $hashed_password, $user_email,$user_phone_no, $user_acad_status);
@@ -38,7 +38,7 @@ if ($result = mysqli_prepare($link,"SELECT USER_EMAIL FROM user WHERE USER_EMAIL
             //Hash the password
 			$hashed_password = password_hash($user_password,PASSWORD_DEFAULT);
 			
-
+			echo "Insert For loop";
             if(!isset($user_fname, $user_lname, $user_password, $user_email, $user_phone_no, $user_acad_status)){
 
 				echo "You didn't send the required values!";
@@ -57,6 +57,7 @@ if ($result = mysqli_prepare($link,"SELECT USER_EMAIL FROM user WHERE USER_EMAIL
             mysqli_close($link);
 
 		}
-	}
-}
+		
+// 	}
+// }
 ?>
