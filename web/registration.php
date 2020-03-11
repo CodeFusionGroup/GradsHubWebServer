@@ -1,9 +1,20 @@
 <?php
+/*
 $username = "b6febc76a325a3";
 $password = "a4831502";
 $database = "heroku_6b7ffb41be0156e";
 $host = "us-cdbr-iron-east-04.cleardb.net";
 $link = mysqli_connect($host, $username, $password, $database);
+*/
+
+$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+$server = $url["host"];
+$username = $url["user"];
+$password = $url["pass"];
+$db = substr($url["path"], 1);
+$link  = new mysqli($server, $username, $password, $db);
+
+
 
 $user_fname = $_REQUEST["USER_FNAME"];
 $user_lname = $_REQUEST["USER_LNAME"];
