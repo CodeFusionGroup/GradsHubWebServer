@@ -59,6 +59,8 @@ $link = mysqli_connect($host, $username, $password, $database);
             echo json_encode($output);
             mysqli_close($link);
 
+		}else{
+			echo "Not binding Insert Statement";
 		}
 		
 // 	}
