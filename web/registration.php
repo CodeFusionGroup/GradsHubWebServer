@@ -16,6 +16,8 @@ $hashed_password = password_hash($user_password,PASSWORD_DEFAULT);
 
 $query = "INSERT INTO user VALUES($user_fname,$user_lname,$hashed_password,$user_email,$user_phone_no,$user_acad_status)"
 
+echo $hashed_password
+
 if($result = mysqli_query($link,$query)){
     $output["success"]="1";
     $output["message"]="Registration successful!";
