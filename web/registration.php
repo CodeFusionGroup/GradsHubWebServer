@@ -25,9 +25,9 @@ $user_acad_status = $_REQUEST["USER_ACAD_STATUS"];
 //Hash the password
 $hashed_password = password_hash($user_password,PASSWORD_DEFAULT);
 
-$query = "INSERT INTO user VALUES($user_fname,$user_lname,$hashed_password,$user_email,$user_phone_no,$user_acad_status)"
+$query = "INSERT INTO user VALUES($user_fname,$user_lname,$hashed_password,$user_email,$user_phone_no,$user_acad_status)";
 
-echo "Before query"
+echo "Before query";
 
 if($result = mysqli_query($link,$query)){
     $output["success"]="1";
