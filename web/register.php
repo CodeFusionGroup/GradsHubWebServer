@@ -24,7 +24,7 @@ if ($result = mysqli_prepare($link,"SELECT USER_EMAIL FROM user WHERE USER_EMAIL
 	}else{ // Email doesnt already exist in the User table
 
 		if($stmt = mysqli_prepare($link,"INSERT INTO user (USER_FNAME,USER_LNAME,USER_PASSWORD,USER_EMAIL,USER_PHONE_NO,USER_ACAD_STATUS) VALUES(?,?,?,?,?,?)")){
-            mysqli_stmt_bind_param($stmt,"ssssis",$user_fname, $user_lname, $hashed_password, $user_email,$user_phone_no, $user_acad_status);
+            mysqli_stmt_bind_param($stmt,"ssssss",$user_fname, $user_lname, $hashed_password, $user_email,$user_phone_no, $user_acad_status);
 
             $user_fname = $_REQUEST["USER_FNAME"];
             $user_lname = $_REQUEST["USER_LNAME"];
@@ -34,7 +34,6 @@ if ($result = mysqli_prepare($link,"SELECT USER_EMAIL FROM user WHERE USER_EMAIL
             $user_acad_status = $_REQUEST["USER_ACAD_STATUS"];
             //Hash the password
 			$hashed_password = password_hash($user_password,PASSWORD_DEFAULT);
-			
 			
             if(!isset($user_fname, $user_lname, $user_password, $user_email, $user_phone_no, $user_acad_status)){
 
