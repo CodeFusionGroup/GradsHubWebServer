@@ -1,15 +1,13 @@
 <?php
-
-$username = "b6febc76a325a3";
-$password = "a4831502";
-$database = "heroku_6b7ffb41be0156e";
-$host = "us-cdbr-iron-east-04.cleardb.net";
-$link = mysqli_connect($host, $username, $password, $database);
-//$output=array();
-
+$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+$server = $url["host"];
+$username = $url["user"];
+$password = $url["pass"];
+$db = substr($url["path"], 1);
+$link  = new mysqli($server, $username, $password, $db);
 
 
-/*if ($result = mysqli_prepare($link,"SELECT USER_EMAIL FROM user WHERE USER_EMAIL=?")){
+if ($result = mysqli_prepare($link,"SELECT USER_EMAIL FROM user WHERE USER_EMAIL=?")){
 
 	mysqli_stmt_bind_param($result,"s",$user_email);
 	$user_email = $_REQUEST["USER_EMAIL"];
@@ -24,13 +22,9 @@ $link = mysqli_connect($host, $username, $password, $database);
 		echo json_encode($output);
 		mysqli_close($link);
 	}else{ // Email doesnt already exist in the User table
-*/
-		echo "Email doesnt already exist in the User table!!";
-		$test = mysqli_prepare($link,"SELECT USER_EMAIL FROM user WHERE USER_EMAIL=?");
-		echo $test;
+
 		if($stmt = mysqli_prepare($link,"INSERT INTO user VALUES(?,?,?,?,?,?)")){
             mysqli_stmt_bind_param($stmt,"ssssis",$user_fname, $user_lname, $hashed_password, $user_email,$user_phone_no, $user_acad_status);
-			echo "Insert For loop";
 
             $user_fname = $_REQUEST["USER_FNAME"];
             $user_lname = $_REQUEST["USER_LNAME"];
@@ -59,10 +53,7 @@ $link = mysqli_connect($host, $username, $password, $database);
             echo json_encode($output);
             mysqli_close($link);
 
-		}else{
-			echo "Not binding Insert Statement";
 		}
-		
-// 	}
-// }
+ 	}
+ }
 ?>
