@@ -5,7 +5,7 @@ $password = "a4831502";
 $database = "heroku_6b7ffb41be0156e";
 $host = "us-cdbr-iron-east-04.cleardb.net";
 $link = mysqli_connect($host, $username, $password, $database);
-#$output=array();
+//$output=array();
 
 
 
@@ -25,7 +25,7 @@ $link = mysqli_connect($host, $username, $password, $database);
 		mysqli_close($link);
 	}else{ // Email doesnt already exist in the User table
 */
-		echo "Email doesnt already exist in the User table";
+		echo "Email doesnt already exist in the User table!!";
 		$test = mysqli_prepare($link,"SELECT USER_EMAIL FROM user WHERE USER_EMAIL=?");
 		echo $test;
 		if($stmt = mysqli_prepare($link,"INSERT INTO user VALUES(?,?,?,?,?,?)")){
