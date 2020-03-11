@@ -25,7 +25,7 @@ $user_acad_status = $_REQUEST["USER_ACAD_STATUS"];
 //Hash the password
 $hashed_password = password_hash($user_password,PASSWORD_DEFAULT);
 
-$query = "INSERT INTO user VALUES($user_fname,$user_lname,$hashed_password,$user_email,$user_phone_no,$user_acad_status)";
+$query = "INSERT INTO USER (USER_FNAME,USER_LNAME,USER_PASSWORD,USER_EMAIL,USER_PHONE_NO,USER_ACAD_STATUS) VALUES($user_fname,$user_lname,$hashed_password,$user_email,$user_phone_no,$user_acad_status)";
 
 echo "Before query";
 
