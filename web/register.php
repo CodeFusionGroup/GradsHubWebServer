@@ -26,8 +26,11 @@ $link = mysqli_connect($host, $username, $password, $database);
 	}else{ // Email doesnt already exist in the User table
 */
 		echo "Email doesnt already exist in the User table";
+		$test = mysqli_prepare($link,"INSERT INTO user VALUES(?,?,?,?,?,?)");
+		echo $test;
 		if($stmt = mysqli_prepare($link,"INSERT INTO user VALUES(?,?,?,?,?,?)")){
             mysqli_stmt_bind_param($stmt,"ssssis",$user_fname, $user_lname, $hashed_password, $user_email,$user_phone_no, $user_acad_status);
+			echo "Insert For loop";
 
             $user_fname = $_REQUEST["USER_FNAME"];
             $user_lname = $_REQUEST["USER_LNAME"];
@@ -38,7 +41,7 @@ $link = mysqli_connect($host, $username, $password, $database);
             //Hash the password
 			$hashed_password = password_hash($user_password,PASSWORD_DEFAULT);
 			
-			echo "Insert For loop";
+			
             if(!isset($user_fname, $user_lname, $user_password, $user_email, $user_phone_no, $user_acad_status)){
 
 				echo "You didn't send the required values!";
