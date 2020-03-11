@@ -1,4 +1,4 @@
-<?php>
+<?php
 
 $username = "b6febc76a325a3";
 $password = "a4831502";
