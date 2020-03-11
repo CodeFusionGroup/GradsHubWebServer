@@ -35,7 +35,8 @@ if ($result = mysqli_prepare($link,"SELECT USER_EMAIL FROM user WHERE USER_EMAIL
             $user_phone_no = $_REQUEST["USER_PHONE_NO"];
             $user_acad_status = $_REQUEST["USER_ACAD_STATUS"];
             //Hash the password
-            $hashed_password = password_hash($user_password,PASSWORD_DEFAULT);
+			$hashed_password = password_hash($user_password,PASSWORD_DEFAULT);
+			echo "Insert User for loop!";
 
             if(!isset($user_fname, $user_lname, $user_password, $user_email, $user_phone_no, $user_acad_status)){
 
