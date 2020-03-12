@@ -17,10 +17,10 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM user WH
 	mysqli_stmt_store_result($result);
 
 	$stmt = mysqli_stmt_get_result($result);
-	$row = mysqli_fetch_assoc($stmt);
+	$hashed_password = mysqli_fetch_assoc($stmt);
 
-	echo json_encode($row["USER_PASSWORD"]);
-	
+	echo json_encode($hashed_password["USER_EMAIL"]);
+
 	// first check that the user email exists //
 	if(mysqli_stmt_num_rows($result) == 0){
 		$output["success"] = "-1";
@@ -40,12 +40,12 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM user WH
 		//mysqli_stmt_store_result($result);
 		//echo json_encode($result);
 
-		//$row = mysqli_fetch_assoc($result);
+		//$hashed_password = mysqli_fetch_assoc($result);
 		// $stmt = mysqli_stmt_get_result($result);
-		// $row = mysqli_fetch_assoc($stmt);
+		// $hashed_password = mysqli_fetch_assoc($stmt);
 		//echo json_encode($result);
 		// echo json_encode($row["USER_PASSWORD"]);
-		if( password_verify($user_password,$row["USER_PASSWORD"]) ){
+		if( password_verify($user_password,$hashed_password["USER_PASSWORD"]) ){
 
 			$index["USER_EMAIL"] = $row["USER_EMAIL"];
 			array_push($output,$index);
