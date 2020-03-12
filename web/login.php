@@ -16,10 +16,12 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM user WH
 	mysqli_stmt_execute($result);
 	mysqli_stmt_store_result($result);
 
-	//$stmt = mysqli_stmt_get_result($result);
-	$hashed_password = mysqli_stmt_fetch($result);
+	mysqli_stmt_bind_result($result,$res_email,$hashed_password);
+	mysqli_stmt_fetch($result);
 
-	echo json_encode($hashed_password["USER_PASSWORD"]);
+	//$hashed_password = mysqli_stmt_fetch($result);
+
+	echo json_encode($hashed_password);
 
 	// first check that the user email exists //
 	if(mysqli_stmt_num_rows($result) == 0){
