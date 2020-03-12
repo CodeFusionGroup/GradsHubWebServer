@@ -34,7 +34,8 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM user WH
 		//echo json_encode($result);
 
 		$row = mysqli_fetch_assoc($result);
-		echo json_encode($row["USER_PASSWORD"]);
+		echo json_encode($result);
+		// echo json_encode($row["USER_PASSWORD"]);
 		if( password_verify($user_password,$row["USER_PASSWORD"]) ){
 
 			$index["USER_EMAIL"] = $row["USER_EMAIL"];
