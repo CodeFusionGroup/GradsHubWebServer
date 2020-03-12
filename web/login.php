@@ -31,6 +31,7 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM USER WH
 		mysqli_stmt_store_result($result);
 
 		$row = mysqli_fetch_assoc($result);
+		echo $row ;
 		if( password_verify($user_password,$row["USER_PASSWORD"]) ){
 			$index["USER_EMAIL"] = $row["USER_EMAIL"];
 			array_push($output,$index);
