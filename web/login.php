@@ -6,7 +6,7 @@ $password = $url["pass"];
 $db = substr($url["path"], 1);
 $link  = new mysqli($server, $username, $password, $db);
 
-$output = array();
+//$output = array();
 
 if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM user WHERE USER_EMAIL=?")){
 
@@ -27,25 +27,13 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM user WH
 		mysqli_close($link);
 
 	} else if(mysqli_stmt_num_rows($result) > 0){ // Email exists proceed to verify password
-		//mysqli_stmt_bind_param($result,"s",$user_password);
 		$user_password = $_REQUEST["USER_PASSWORD"];
 
-		//echo " Email exists proceed to verify password ";
-
-
-		//mysqli_stmt_execute($result);
-		//mysqli_stmt_store_result($result);
-		//echo json_encode($result);
-
-		//$hashed_password = mysqli_fetch_assoc($result);
-		// $stmt = mysqli_stmt_get_result($result);
-		// $hashed_password = mysqli_fetch_assoc($stmt);
-		//echo json_encode($result);
-		// echo json_encode($row["USER_PASSWORD"]);
+		// Verify hashed password
 		if( password_verify($user_password,$hashed_password) ){
 
-			$index["USER_EMAIL"] = $row["USER_EMAIL"];
-			array_push($output,$index);
+			//$index["USER_EMAIL"] = $row["USER_EMAIL"];
+			//array_push($output,$index);
 			$output["success"] = "1";
 			$output["message"] = "Successfully logged in!";
 			echo json_encode($output);
