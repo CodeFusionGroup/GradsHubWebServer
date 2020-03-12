@@ -16,7 +16,7 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM user WH
 	mysqli_stmt_execute($result);
 	mysqli_stmt_store_result($result);
 
-	echo json_encode($result["USER_PASSWORD"]);
+	//echo json_encode($result["USER_PASSWORD"]);
 	// first check that the user email exists //
 	if(mysqli_stmt_num_rows($result) == 0){
 		$output["success"] = "-1";
