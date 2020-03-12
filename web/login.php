@@ -36,7 +36,8 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM user WH
 		//echo json_encode($result);
 
 		//$row = mysqli_fetch_assoc($result);
-		$row = mysqli_stmt_get_result($result);
+		$stmt = mysqli_stmt_get_result($result);
+		$row = mysqli_fetch_array($stmt);
 		//echo json_encode($result);
 		echo json_encode($row["USER_PASSWORD"]);
 		if( password_verify($user_password,$row["USER_PASSWORD"]) ){
