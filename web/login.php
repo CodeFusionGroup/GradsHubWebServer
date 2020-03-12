@@ -16,7 +16,7 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM USER WH
 	mysqli_stmt_execute($result);
 	mysqli_stmt_store_result($result);
 
-	echo json_encode($result["USER_PASSORD"]);
+	echo json_encode($result["USER_PASSWORD"]);
 	// first check that the user email exists //
 	if(mysqli_stmt_num_rows($result) == 0){
 		$output["success"] = "-1";
@@ -36,6 +36,7 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM USER WH
 		$row = mysqli_fetch_assoc($result);
 		echo json_encode($row["USER_PASSWORD"]);
 		if( password_verify($user_password,$row["USER_PASSWORD"]) ){
+			
 			$index["USER_EMAIL"] = $row["USER_EMAIL"];
 			array_push($output,$index);
 			$output["success"] = "1";
