@@ -17,9 +17,9 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM user WH
 	mysqli_stmt_store_result($result);
 
 	//$stmt = mysqli_stmt_get_result($result);
-	$hashed_password = mysqli_fetch_row($result);
+	$hashed_password = mysqli_stmt_fetch($result);
 
-	echo json_encode(mysqli_stmt_num_rows($result));
+	echo json_encode($hashed_password);
 
 	// first check that the user email exists //
 	if(mysqli_stmt_num_rows($result) == 0){
@@ -32,7 +32,7 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM user WH
 		//mysqli_stmt_bind_param($result,"s",$user_password);
 		$user_password = $_REQUEST["USER_PASSWORD"];
 
-		echo " Email exists proceed to verify password ";
+		//echo " Email exists proceed to verify password ";
 
 
 		//mysqli_stmt_execute($result);
