@@ -8,7 +8,7 @@ $link  = new mysqli($server, $username, $password, $db);
 
 $output = array();
 
-if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM USER WHERE USER_EMAIL=?")){
+if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM user WHERE USER_EMAIL=?")){
 
 	mysqli_stmt_bind_param($result,"s",$user_email);
 	$user_email = $_REQUEST["USER_EMAIL"];
@@ -36,7 +36,7 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM USER WH
 		$row = mysqli_fetch_assoc($result);
 		echo json_encode($row["USER_PASSWORD"]);
 		if( password_verify($user_password,$row["USER_PASSWORD"]) ){
-			
+
 			$index["USER_EMAIL"] = $row["USER_EMAIL"];
 			array_push($output,$index);
 			$output["success"] = "1";
