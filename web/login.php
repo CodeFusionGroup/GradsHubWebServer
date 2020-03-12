@@ -16,17 +16,16 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM USER WH
 	mysqli_stmt_execute($result);
 	mysqli_stmt_store_result($result);
 
+	echo json_encode($result["USER_PASSORD"]);
 	// first check that the user email exists //
 	if(mysqli_stmt_num_rows($result) == 0){
 		$output["success"] = "-1";
-		$output["message"] = "Incorrect email, try again!";
+		$output["message"] = "Email doesn't exist, please try again";
 		echo json_encode($output);
 		mysqli_close($link);
 
 	} else if(mysqli_stmt_num_rows($result) > 0){ // Email exists proceed to verify password
 		//mysqli_stmt_bind_param($result,"s",$user_password);
-		$user_password = $_REQUEST["USER_PASSWORD"];
-		echo json_encode($user_password);
 
 		//mysqli_stmt_execute($result);
 		//mysqli_stmt_store_result($result);
