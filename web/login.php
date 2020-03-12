@@ -28,6 +28,8 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM user WH
 		//mysqli_stmt_bind_param($result,"s",$user_password);
 		$user_password = $_REQUEST["USER_PASSWORD"];
 
+		echo "Email exists proceed to verify password";
+
 
 		//mysqli_stmt_execute($result);
 		//mysqli_stmt_store_result($result);
