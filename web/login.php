@@ -19,7 +19,7 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM user WH
 	//$stmt = mysqli_stmt_get_result($result);
 	$hashed_password = mysqli_stmt_fetch($result);
 
-	echo json_encode($hashed_password);
+	echo json_encode($hashed_password["USER_PASSWORD"]);
 
 	// first check that the user email exists //
 	if(mysqli_stmt_num_rows($result) == 0){
