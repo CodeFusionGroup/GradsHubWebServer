@@ -30,9 +30,10 @@ if($result = mysqli_prepare($link,"SELECT GROUP_NAME FROM research_group WHERE G
             $group_name = $_REQUEST["GROUP_NAME"];
             $group_visibility = $_REQUEST["GROUP_VISIBILITY"];
             $group_code = $_REQUEST["GROUP_CODE"];
+            $user_email = $_REQUEST["USER_EMAIL"];
 
             // Check if all the values where sent
-            if(!isset($group_name ,$group_visibility,$group_code )){
+            if(!isset($group_name ,$group_visibility,$group_code,$user_email )){
                 $output["success"]="0";
 		        $output["message"]="You didn't send the required values!";
 				echo json_encode($output);
@@ -51,15 +52,6 @@ if($result = mysqli_prepare($link,"SELECT GROUP_NAME FROM research_group WHERE G
                 $user_email = $_REQUEST["USER_EMAIL"];
                 $group_name = $_REQUEST["GROUP_NAME"];
 
-                // Check if all the values where sent
-                if(!isset($user_email,$group_name )){
-                    $output["success"]="0";
-                    $output["message"]="You didn't send the required values!";
-                    echo json_encode($output);
-                    mysqli_close($link);
-                    die();
-                }
-
                 // Execute the statement i.e enter record into the table
                 mysqli_stmt_execute($stmt2);
 
@@ -72,15 +64,6 @@ if($result = mysqli_prepare($link,"SELECT GROUP_NAME FROM research_group WHERE G
                 mysqli_stmt_bind_param($stmt3,"ss",$user_email,$group_name);
                 $user_email = $_REQUEST["USER_EMAIL"];
                 $group_name = $_REQUEST["GROUP_NAME"];
-                
-                // Check if all the values where sent
-                if(!isset($user_email,$group_name )){
-                    $output["success"]="0";
-                    $output["message"]="You didn't send the required values!";
-                    echo json_encode($output);
-                    mysqli_close($link);
-                    die();
-                }
 
                 // Execute the statement i.e enter record into the table
                 mysqli_stmt_execute($stmt3);
