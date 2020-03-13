@@ -46,30 +46,32 @@ if($result = mysqli_prepare($link,"SELECT GROUP_NAME FROM research_group WHERE G
             // Execute the statement i.e enter record into the table
             mysqli_stmt_execute($stmt);
 
-            // Insert User as admin of the new group
-            if($stmt2 = mysqli_prepare($link,"INSERT INTO group_admin (USER_ID,RESEARCH_GROUP_ID) VALUES ((SELECT USER_ID FROM user WHERE USER_EMAIL = ?),
-            (SELECT RESEARCH_GROUP_ID FROM research_group WHERE GROUP_NAME = ?))")){
+            // // Insert User as admin of the new group
+            // if($stmt2 = mysqli_prepare($link,"INSERT INTO group_admin (USER_ID,RESEARCH_GROUP_ID) VALUES ((SELECT USER_ID FROM user WHERE USER_EMAIL = ?),
+            // (SELECT RESEARCH_GROUP_ID FROM research_group WHERE GROUP_NAME = ?))")){
 
-                mysqli_stmt_bind_param($stmt2,"ss",$user_email,$group_name);
-                $user_email = $_REQUEST["USER_EMAIL"];
-                $group_name = $_REQUEST["GROUP_NAME"];
+            //     echo "Insert User as admin of the new group ";
+            //     mysqli_stmt_bind_param($stmt2,"ss",$user_email,$group_name);
+            //     $user_email = $_REQUEST["USER_EMAIL"];
+            //     $group_name = $_REQUEST["GROUP_NAME"];
 
-                // Execute the statement i.e enter record into the table
-                mysqli_stmt_execute($stmt2);
+            //     // Execute the statement i.e enter record into the table
+            //     mysqli_stmt_execute($stmt2);
 
-            }
+            // }
 
-            // Insert User as a member of the new group
-            if($stmt3 = mysqli_prepare($link,"INSERT INTO group_user (USER_ID,RESEARCH_GROUP_ID) VALUES ((SELECT USER_ID FROM user WHERE USER_EMAIL = ?),
-            (SELECT RESEARCH_GROUP_ID FROM research_group WHERE GROUP_NAME = ?))")){
+            // // Insert User as a member of the new group
+            // if($stmt3 = mysqli_prepare($link,"INSERT INTO group_user (USER_ID,RESEARCH_GROUP_ID) VALUES ((SELECT USER_ID FROM user WHERE USER_EMAIL = ?),
+            // (SELECT RESEARCH_GROUP_ID FROM research_group WHERE GROUP_NAME = ?))")){
 
-                mysqli_stmt_bind_param($stmt3,"ss",$user_email,$group_name);
-                $user_email = $_REQUEST["USER_EMAIL"];
-                $group_name = $_REQUEST["GROUP_NAME"];
+            //     echo "Insert User as a member of the new group ";
+            //     mysqli_stmt_bind_param($stmt3,"ss",$user_email,$group_name);
+            //     $user_email = $_REQUEST["USER_EMAIL"];
+            //     $group_name = $_REQUEST["GROUP_NAME"];
 
-                // Execute the statement i.e enter record into the table
-                mysqli_stmt_execute($stmt3);
-            }
+            //     // Execute the statement i.e enter record into the table
+            //     mysqli_stmt_execute($stmt3);
+            // }
 
             $output["success"]="1";
             $output["message"]="New group created";
