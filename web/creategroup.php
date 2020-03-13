@@ -24,6 +24,7 @@ if($result = mysqli_prepare($link,"SELECT GROUP_NAME FROM research_group WHERE G
     }else{// Group name doesnt exist in the db
 
         echo "Group name doesnt exist in the db";
+        echo json_encode(mysqli_prepare($link,"INSERT INTO research_group (GROUP_NAME,GROUP_VISIBILTY, GROUP_CODE) VALUES (?,?,?)"));
         // Insert new group into database
         if($stmt = mysqli_prepare($link,"INSERT INTO research_group (GROUP_NAME,GROUP_VISIBILTY, GROUP_CODE) VALUES (?,?,?)")){
 
