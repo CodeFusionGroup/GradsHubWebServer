@@ -23,17 +23,17 @@ if($result = mysqli_prepare($link,"SELECT GROUP_NAME FROM research_group WHERE G
 		mysqli_close($link);
     }else{// Group name doesnt exist in the db
 
-        echo "Group name doesnt exist in the db";
-        echo json_encode(mysqli_prepare($link,"INSERT INTO research_group (GROUP_NAME,GROUP_VISIBILITY, GROUP_CODE) VALUES(?,?,?)"));
+        echo "Group name doesnt exist in the db ";
+        
         // Insert new group into database
         if($stmt = mysqli_prepare($link,"INSERT INTO research_group (GROUP_NAME,GROUP_VISIBILITY, GROUP_CODE) VALUES(?,?,?)")){
 
             mysqli_stmt_bind_param($stmt,"sss",$group_name,$group_visibility,$group_code);
             $group_name = $_REQUEST["GROUP_NAME"];
-            $group_visibility = $_REQUEST["GROUP_VISIBILTY"];
+            $group_visibility = $_REQUEST["GROUP_VISIBILITY"];
             $group_code = $_REQUEST["GROUP_CODE"];
 
-            echo "Insert new group into database";
+            echo "Insert new group into database ";
             // Check if all the values where sent
             if(!isset($group_name ,$group_visibility,$group_code )){
                 $output["success"]="0";
