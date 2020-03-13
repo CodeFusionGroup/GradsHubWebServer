@@ -23,8 +23,6 @@ if($result = mysqli_prepare($link,"SELECT GROUP_NAME FROM research_group WHERE G
 		mysqli_close($link);
     }else{// Group name doesnt exist in the db
 
-        echo "Group name doesnt exist in the db ";
-        
         // Insert new group into database
         if($stmt = mysqli_prepare($link,"INSERT INTO research_group (GROUP_NAME,GROUP_VISIBILITY, GROUP_CODE) VALUES(?,?,?)")){
 
@@ -33,7 +31,6 @@ if($result = mysqli_prepare($link,"SELECT GROUP_NAME FROM research_group WHERE G
             $group_visibility = $_REQUEST["GROUP_VISIBILITY"];
             $group_code = $_REQUEST["GROUP_CODE"];
 
-            echo "Insert new group into database ";
             // Check if all the values where sent
             if(!isset($group_name ,$group_visibility,$group_code )){
                 $output["success"]="0";
@@ -50,10 +47,18 @@ if($result = mysqli_prepare($link,"SELECT GROUP_NAME FROM research_group WHERE G
             if($stmt2 = mysqli_prepare($link,"INSERT INTO group_admin (USER_ID,RESEARCH_GROUP_ID) VALUES ((SELECT USER_ID FROM user WHERE USER_EMAIL = ?),
             (SELECT RESEARCH_GROUP_ID FROM research_group WHERE GROUP_NAME = ?))")){
 
-                echo "Insert User as admin of the new group ";
                 mysqli_stmt_bind_param($stmt2,"ss",$user_email,$group_name);
                 $user_email = $_REQUEST["USER_EMAIL"];
                 $group_name = $_REQUEST["GROUP_NAME"];
+
+                // Check if all the values where sent
+                if(!isset($user_email,$group_name )){
+                    $output["success"]="0";
+                    $output["message"]="You didn't send the required values!";
+                    echo json_encode($output);
+                    mysqli_close($link);
+                    die();
+                }
 
                 // Execute the statement i.e enter record into the table
                 mysqli_stmt_execute($stmt2);
@@ -64,10 +69,18 @@ if($result = mysqli_prepare($link,"SELECT GROUP_NAME FROM research_group WHERE G
             if($stmt3 = mysqli_prepare($link,"INSERT INTO group_user (USER_ID,RESEARCH_GROUP_ID) VALUES ((SELECT USER_ID FROM user WHERE USER_EMAIL = ?),
             (SELECT RESEARCH_GROUP_ID FROM research_group WHERE GROUP_NAME = ?))")){
 
-                echo "Insert User as a member of the new group ";
                 mysqli_stmt_bind_param($stmt3,"ss",$user_email,$group_name);
                 $user_email = $_REQUEST["USER_EMAIL"];
                 $group_name = $_REQUEST["GROUP_NAME"];
+                
+                // Check if all the values where sent
+                if(!isset($user_email,$group_name )){
+                    $output["success"]="0";
+                    $output["message"]="You didn't send the required values!";
+                    echo json_encode($output);
+                    mysqli_close($link);
+                    die();
+                }
 
                 // Execute the statement i.e enter record into the table
                 mysqli_stmt_execute($stmt3);
@@ -78,14 +91,7 @@ if($result = mysqli_prepare($link,"SELECT GROUP_NAME FROM research_group WHERE G
             echo json_encode($output);
             mysqli_close($link);
         }
-
-        
-
-        
-
-
     }
-
 }
 
 
