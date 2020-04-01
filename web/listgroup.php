@@ -11,7 +11,7 @@ $output=array();
 $display=array();
 
 // Find the user_id
-if($query = mysqli_prepare($link,"SELECT USER_ID FROM USER WHERE USER_EMAIL = '?' ")){
+if($query = mysqli_prepare($link,"SELECT USER_ID FROM USER WHERE USER_EMAIL = ? ")){
 
     mysqli_stmt_bind_param($query,"s",$user_email);
     $user_email = $_REQUEST["USER_EMAIL"];
