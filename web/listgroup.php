@@ -37,8 +37,7 @@ if($query = mysqli_prepare($link,"SELECT USER_ID FROM USER WHERE USER_EMAIL = ? 
             
             // User belongs to one group or more
             if(mysqli_num_rows($result) > 0){
-                $temp["success"]="0";
-                array_push($output,$temp);
+
                 while ($row=$result->fetch_assoc()){
                     $output[]=$row;
                 }
