@@ -40,9 +40,10 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD,USER_FNAME,U
 			$index["USER_PHONE_NO"] = $res_phoneno;
 			$index["USER_ACAD_STATUS"] = $res_acadstat;
 			array_push($success,$index);
-			//$output["success"] = "1";
+			$output["success"] = "1";
+			$output["message"] = $success;
 			//$output["message"] = "Successfully logged in!";
-			echo json_encode($success);
+			echo json_encode($output);
 			mysqli_close($link);
 
 		}else{
