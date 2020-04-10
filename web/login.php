@@ -35,13 +35,9 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD,USER_FNAME,U
 		if( password_verify($user_password,$hashed_password) ){
 
 			$index["USER_EMAIL"] = $res_email;
-			array_push($success,$index);
 			$index["USER_FNAME"] = $res_fname;
-			array_push($success,$index);
 			$index["USER_LNAME"] = $res_lname;
-			array_push($success,$index);
 			$index["USER_PHONE_NO"] = $res_phoneno;
-			array_push($success,$index);
 			$index["USER_ACAD_STATUS"] = $res_acadstat;
 			array_push($success,$index);
 			//$output["success"] = "1";
