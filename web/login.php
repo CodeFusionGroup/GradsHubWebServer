@@ -36,14 +36,14 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD,USER_FNAME,U
 
 			$index["USER_EMAIL"] = $res_email;
 			array_push($success,$index);
-			// $index["USER_FNAME"] = $row["USER_FNAME"];
-			// array_push($success,$index);
-			// $index["USER_LNAME"] = $row["USER_LNAME"];
-			// array_push($success,$index);
-			// $index["USER_PHONE_NO"] = $row["USER_PHONE_NO"];
-			// array_push($success,$index);
-			// $index["USER_ACAD_STATUS"] = $row["USER_ACAD_STATUS"];
-			// array_push($success,$index);
+			$index["USER_FNAME"] = $res_fname;
+			array_push($success,$index);
+			$index["USER_LNAME"] = $res_lname;
+			array_push($success,$index);
+			$index["USER_PHONE_NO"] = $res_phoneno;
+			array_push($success,$index);
+			$index["USER_ACAD_STATUS"] = $res_acadstat;
+			array_push($success,$index);
 			//$output["success"] = "1";
 			//$output["message"] = "Successfully logged in!";
 			echo json_encode($success);
