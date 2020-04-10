@@ -7,8 +7,10 @@ $db = substr($url["path"], 1);
 $link  = new mysqli($server, $username, $password, $db);
 
 //$output = array();
+$success =  array();
 
-if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM user WHERE USER_EMAIL=?")){
+if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD,USER_FNAME,USER_LNAME,USER_PHONE_NO,USER_ACAD_STATUS 
+	FROM user WHERE USER_EMAIL=?")){
 
 	mysqli_stmt_bind_param($result,"s",$user_email);
 	$user_email = $_REQUEST["USER_EMAIL"];
@@ -32,11 +34,19 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD FROM user WH
 		// Verify hashed password
 		if( password_verify($user_password,$hashed_password) ){
 
-			//$index["USER_EMAIL"] = $row["USER_EMAIL"];
-			//array_push($output,$index);
-			$output["success"] = "1";
-			$output["message"] = "Successfully logged in!";
-			echo json_encode($output);
+			$index["USER_EMAIL"] = $row["USER_EMAIL"];
+			array_push($success,$index);
+			$index["USER_FNAME"] = $row["USER_FNAME"];
+			array_push($success,$index);
+			$index["USER_LNAME"] = $row["USER_LNAME"];
+			array_push($success,$index);
+			$index["USER_PHONE_NO"] = $row["USER_PHONE_NO"];
+			array_push($success,$index);
+			$index["USER_ACAD_STATUS"] = $row["USER_ACAD_STATUS"];
+			array_push($success,$index);
+			//$output["success"] = "1";
+			//$output["message"] = "Successfully logged in!";
+			echo json_encode($success);
 			mysqli_close($link);
 
 		}else{
