@@ -9,7 +9,7 @@ $link  = new mysqli($server, $username, $password, $db);
 //$output = array();
 $success =  array();
 
-if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD,USER_FNAME,USER_LNAME,USER_PHONE_NO,USER_ACAD_STATUS 
+if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD,USER_ID,USER_FNAME,USER_LNAME,USER_PHONE_NO,USER_ACAD_STATUS 
 	FROM user WHERE USER_EMAIL=?")){
 
 	mysqli_stmt_bind_param($result,"s",$user_email);
@@ -18,7 +18,7 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD,USER_FNAME,U
 	mysqli_stmt_execute($result);
 	mysqli_stmt_store_result($result);
 
-	mysqli_stmt_bind_result($result,$res_email,$hashed_password,$res_fname,$res_lname,$res_phoneno,$res_acadstat);
+	mysqli_stmt_bind_result($result,$res_email,$hashed_password,$res_userid,$res_fname,$res_lname,$res_phoneno,$res_acadstat);
 	mysqli_stmt_fetch($result);
 
 	// first check that the user email exists //
@@ -35,6 +35,7 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD,USER_FNAME,U
 		if( password_verify($user_password,$hashed_password) ){
 
 			$index["USER_EMAIL"] = $res_email;
+			$index["USER_ID"] = $res_userid;
 			$index["USER_FNAME"] = $res_fname;
 			$index["USER_LNAME"] = $res_lname;
 			$index["USER_PHONE_NO"] = $res_phoneno;
