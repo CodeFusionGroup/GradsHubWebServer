@@ -34,16 +34,14 @@ if($result = mysqli_prepare($link, "SELECT USER_EMAIL,USER_PASSWORD,USER_ID,USER
 		// Verify hashed password
 		if( password_verify($user_password,$hashed_password) ){
 
-			$index["USER_EMAIL"] = $res_email;
-			$index["USER_ID"] = $res_userid;
-			$index["USER_FNAME"] = $res_fname;
-			$index["USER_LNAME"] = $res_lname;
-			$index["USER_PHONE_NO"] = $res_phoneno;
-			$index["USER_ACAD_STATUS"] = $res_acadstat;
-			array_push($success,$index);
+			$message["USER_EMAIL"] = $res_email;
+			$message["USER_ID"] = $res_userid;
+			$message["USER_FNAME"] = $res_fname;
+			$message["USER_LNAME"] = $res_lname;
+			$message["USER_PHONE_NO"] = $res_phoneno;
+			$message["USER_ACAD_STATUS"] = $res_acadstat;
 			$output["success"] = "1";
-			$output["message"] = $success;
-			//$output["message"] = "Successfully logged in!";
+			$output["message"] = $message;
 			echo json_encode($output);
 			mysqli_close($link);
 
