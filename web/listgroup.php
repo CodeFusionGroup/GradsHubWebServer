@@ -30,7 +30,7 @@ if($query = mysqli_prepare($link,"SELECT USER_ID FROM USER WHERE USER_EMAIL = ? 
 		mysqli_close($link);
 
     } else if(mysqli_stmt_num_rows($query) > 0){ // Email is correct proceed to find group names
-        $stmnt = "SELECT research_group.GROUP_NAME, research_group.GROUP_VISIBILITY FROM research_group INNER JOIN group_user 
+        $stmnt = "SELECT research_group.RESEARCH_GROUP_ID, research_group.GROUP_NAME, research_group.GROUP_VISIBILITY, research_group.GROUP_CODE FROM research_group INNER JOIN group_user 
         ON research_group.RESEARCH_GROUP_ID = group_user.RESEARCH_GROUP_ID WHERE USER_ID = $query_user_id";
 
         if($result = mysqli_query($link,$stmnt)){
