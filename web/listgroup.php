@@ -29,9 +29,21 @@ if($query = mysqli_prepare($link,"SELECT USER_ID FROM USER WHERE USER_EMAIL = ? 
 		echo json_encode($output);
 		mysqli_close($link);
 
-    } else if(mysqli_stmt_num_rows($query) > 0){ // Email is correct proceed to find group names
-        $stmnt = "SELECT research_group.RESEARCH_GROUP_ID, research_group.GROUP_NAME, research_group.GROUP_VISIBILITY, research_group.GROUP_CODE FROM research_group INNER JOIN group_user 
-        ON research_group.RESEARCH_GROUP_ID = group_user.RESEARCH_GROUP_ID WHERE USER_ID = $query_user_id";
+    } else if(mysqli_stmt_num_rows($query) > 0){ // Email is correct proceed to find the groups
+        // $stmnt = "SELECT rg.RESEARCH_GROUP_ID, rg.GROUP_NAME,rg.GROUP_VISIBILITY, rg.GROUP_CODE FROM research_group rg
+        // INNER JOIN group_user gu ON rg.RESEARCH_GROUP_ID = gu.RESEARCH_GROUP_ID
+        // WHERE gu.USER_ID = $query_user_id";
+
+        // $stmnt_2 = "SELECT u.USER_EMAIL FROM research_group rg
+        // INNER JOIN group_admin ga ON rg.RESEARCH_GROUP_ID = ga.RESEARCH_GROUP_ID
+        // INNER JOIN user u ON ga.USER_ID = u.USER_ID
+        // WHERE u.USER_ID = $query_user_id";
+
+        $stmnt = "SELECT rg.RESEARCH_GROUP_ID, rg.GROUP_NAME,rg.GROUP_VISIBILITY, rg.GROUP_CODE, u.USER_EMAIL FROM group_user gu
+        INNER JOIN research_group rg ON gu.RESEARCH_GROUP_ID = rg.RESEARCH_GROUP_ID
+        INNER JOIN group_admin ga ON rg.RESEARCH_GROUP_ID = ga.RESEARCH_GROUP_ID
+        INNER JOIN user u ON ga.USER_ID = u.USER_ID
+        WHERE gu.USER_ID = $query_user_id";
 
         if($result = mysqli_query($link,$stmnt)){
             
