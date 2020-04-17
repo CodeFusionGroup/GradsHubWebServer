@@ -39,7 +39,7 @@ if($query = mysqli_prepare($link,"SELECT USER_ID FROM USER WHERE USER_EMAIL = ? 
         // INNER JOIN user u ON ga.USER_ID = u.USER_ID
         // WHERE u.USER_ID = $query_user_id";
 
-        $stmnt = "SELECT rg.RESEARCH_GROUP_ID, rg.GROUP_NAME,rg.GROUP_VISIBILITY, rg.GROUP_CODE, u.USER_EMAIL FROM group_user gu
+        $stmnt = "SELECT rg.RESEARCH_GROUP_ID, rg.GROUP_NAME,rg.GROUP_VISIBILITY, rg.GROUP_CODE, u.USER_EMAIL AS GROUP_ADMIN FROM group_user gu
         INNER JOIN research_group rg ON gu.RESEARCH_GROUP_ID = rg.RESEARCH_GROUP_ID
         INNER JOIN group_admin ga ON rg.RESEARCH_GROUP_ID = ga.RESEARCH_GROUP_ID
         INNER JOIN user u ON ga.USER_ID = u.USER_ID
