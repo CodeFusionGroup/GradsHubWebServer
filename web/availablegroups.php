@@ -19,7 +19,7 @@ WHERE gu.USER_ID != ? ")){
     mysqli_stmt_store_result($result);
 
     // Checks if there are any available groups
-    if(mysqli_num_rows($result) > 0){
+    if(mysqli_stmt_num_rows($result) > 0){
 
         while ($row=$result->fetch_assoc()){
             $output[]=$row;
