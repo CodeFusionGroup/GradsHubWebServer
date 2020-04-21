@@ -13,13 +13,13 @@ INNER JOIN group_user gu ON rg.RESEARCH_GROUP_ID = gu.RESEARCH_GROUP_ID
 WHERE gu.USER_ID != ? ")){
 
     mysqli_stmt_bind_param($result,"s",$user_id);
-    $user_id = $_REQUEST("USER_ID");
+    $user_id = $_REQUEST["USER_ID"];
 
     mysqli_stmt_execute($result);
     mysqli_stmt_store_result($result);
 
     // Checks if there are any available groups
-    if(mysqli_num_rows($result)>0){
+    if(mysqli_num_rows($result) > 0){
 
         while ($row=$result->fetch_assoc()){
             $output[]=$row;
