@@ -21,10 +21,10 @@ WHERE gu.USER_ID != ? ")){
     // Checks if there are any available groups
     if(mysqli_stmt_num_rows($result) > 0){
         echo "Groups are available";
-        echo json_encode($result);
+        $row_data = mysqli_stmt_fetch($result);
 
         // $row=$result->fetch_assoc()
-        while ($row = mysqli_stmt_fetch($result)){
+        while ($row=$row_data->fetch_assoc()){
             $output[]=$row["GROUP_NAME"];
         }
         // $display["success"] = "1";
