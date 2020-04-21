@@ -28,9 +28,9 @@ WHERE gu.USER_ID != ? ")){
         while ($result->fetch()){
             $output[]=$res_groupName;
         }
-        // $display["success"] = "1";
-        // $display["message"] = $output;
-        // echo json_encode($display);
+        $display["success"] = "1";
+        $display["message"] = $output;
+        echo json_encode($display);
         echo json_encode($output);
         mysqli_close($link);
 
