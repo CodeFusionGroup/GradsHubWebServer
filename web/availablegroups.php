@@ -28,7 +28,7 @@ WHERE gu.USER_ID != ? ")){
         echo json_encode($result);
 
         // $row=$result->fetch_assoc()
-        while ($row=$res_groupName->fetch_assoc()){
+        while ($row=$result->fetch_assoc()){
             $output[]=$row;
         }
         // $display["success"] = "1";
