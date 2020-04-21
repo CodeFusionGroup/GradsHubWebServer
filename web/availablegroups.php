@@ -24,9 +24,10 @@ WHERE gu.USER_ID != ? ")){
         while ($row=$result->fetch_assoc()){
             $output[]=$row;
         }
-        $display["success"] = "1";
-        $display["message"] = $output;
-        echo json_encode($display);
+        // $display["success"] = "1";
+        // $display["message"] = $output;
+        // echo json_encode($display);
+        echo json_encode($output);
         mysqli_close($link);
 
     }else{
