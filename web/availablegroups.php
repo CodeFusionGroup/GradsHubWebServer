@@ -22,6 +22,7 @@ WHERE gu.USER_ID != ? ")){
     if(mysqli_stmt_num_rows($result) > 0){
         echo "Groups are available";
         $row_data = mysqli_stmt_fetch($result);
+        echo json_encode($row_data);
 
         // $row=$result->fetch_assoc()
         while ($row=$row_data->fetch_assoc()){
