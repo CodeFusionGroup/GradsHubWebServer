@@ -24,7 +24,7 @@ WHERE gu.USER_ID != ? ")){
 
         // $row=$result->fetch_assoc()
         while ($row = mysqli_stmt_fetch($result)){
-            $output[]=$row;
+            $output[]=$row["GROUP_NAME"];
         }
         // $display["success"] = "1";
         // $display["message"] = $output;
