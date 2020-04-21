@@ -8,7 +8,8 @@ $link  = new mysqli($server, $username, $password, $db);
 
 $output = array();
 
-if($result = mysqli_prepare($link,"SELECT rg.GROUP_NAME FROM research_group rg
+if($result = mysqli_prepare($link,"SELECT rg.RESEARCH_GROUP_ID,rg.GROUP_NAME, rg.GROUP_VISIBILITY, rg.GROUP_CODE 
+FROM research_group rg
 INNER JOIN group_user gu ON rg.RESEARCH_GROUP_ID = gu.RESEARCH_GROUP_ID
 WHERE gu.USER_ID != ? ")){
 
