@@ -31,7 +31,7 @@ WHERE gu.USER_ID != ? ")){
         $display["success"] = "1";
         $display["message"] = $output;
         echo json_encode($display);
-        echo json_encode($output);
+        // echo json_encode($output);
         mysqli_close($link);
 
     }else{
