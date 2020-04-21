@@ -12,7 +12,7 @@ if($result = mysqli_prepare($link,"SELECT rg.GROUP_NAME FROM research_group rg
 INNER JOIN group_user gu ON rg.RESEARCH_GROUP_ID = gu.RESEARCH_GROUP_ID
 WHERE gu.USER_ID != ? ")){
 
-    mysqli_stmt_bind_param($result,"s",$user_id);
+    mysqli_stmt_bind_param($result,"i",$user_id);
     $user_id = $_REQUEST["USER_ID"];
 
     mysqli_stmt_execute($result);
