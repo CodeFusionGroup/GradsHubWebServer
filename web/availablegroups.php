@@ -25,6 +25,7 @@ WHERE gu.USER_ID != ? ")){
     if(mysqli_stmt_num_rows($result) > 0){
 
         // $row=$result->fetch_assoc()
+        $output[]=$res_groupName;
         while ($result->fetch()){
             $output[]=$res_groupName;
         }
