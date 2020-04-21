@@ -19,16 +19,22 @@ WHERE gu.USER_ID != ? ")){
     mysqli_stmt_execute($result);
     mysqli_stmt_store_result($result);
 
-    mysqli_stmt_bind_result($result,$res_groupName);
+    mysqli_stmt_bind_result($result,$res_groupID,$res_groupName,$res_groupVis);
     mysqli_stmt_fetch($result);
 
     // Checks if there are any available groups
     if(mysqli_stmt_num_rows($result) > 0){
 
         // $row=$result->fetch_assoc()
-        $output[]=$res_groupName;
+        $group["GROUP_ID"] = $res_groupID;
+        $group["GROUP_NAME"] = $res_groupName;
+        $group["GROUP_VISIBILTY"] = $res_groupVis;
+        $output[]=$group;
         while ($result->fetch()){
-            $output[]=$res_groupName;
+            $group["GROUP_ID"] = $res_groupID;
+            $group["GROUP_NAME"] = $res_groupName;
+            $group["GROUP_VISIBILTY"] = $res_groupVis;
+            $output[]=$group;
         }
         $display["success"] = "1";
         $display["message"] = $output;
