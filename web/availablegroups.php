@@ -28,7 +28,7 @@ WHERE gu.USER_ID != ? ")){
         // $row=$result->fetch_assoc()
         $group["GROUP_ID"] = $res_groupID;
         $group["GROUP_NAME"] = $res_groupName;
-        $group["GROUP_VISIBILTY"] = $res_groupVis;
+        $group["GROUP_VISIBILITY"] = $res_groupVis;
         $output[]=$group;
         while ($result->fetch()){
             $group["GROUP_ID"] = $res_groupID;
