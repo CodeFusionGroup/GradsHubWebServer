@@ -26,7 +26,7 @@ WHERE gu.USER_ID != ? ")){
         echo "Groups are available";
 
         // $row=$result->fetch_assoc()
-        while ($row=$result->fetch_assoc()){
+        while ($row=$res_groupName->fetch_assoc()){
             $output[]=$row;
         }
         // $display["success"] = "1";
