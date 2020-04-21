@@ -1,0 +1,41 @@
+<?php
+$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+$server = $url["host"];
+$username = $url["user"];
+$password = $url["pass"];
+$db = substr($url["path"], 1);
+$link  = new mysqli($server, $username, $password, $db);
+
+$output = array();
+
+if($result = mysqli_prepare($link,"SELECT rg.GROUP_NAME FROM research_group rg
+INNER JOIN group_user gu ON rg.RESEARCH_GROUP_ID = gu.RESEARCH_GROUP_ID
+WHERE gu.USER_ID != ? ")){
+
+    mysqli_stmt_bind_param($result,"s",$user_id);
+    $user_id = $_REQUEST("USER_ID");
+
+    mysqli_stmt_execute($result);
+    mysqli_stmt_store_result($result);
+
+    // Checks if there are any available groups
+    if(mysqli_num_rows($result)>0){
+
+        while ($row=$result->fetch_assoc()){
+            $output[]=$row;
+        }
+        $display["success"] = "1";
+        $display["message"] = $output;
+        echo json_encode($display);
+        mysqli_close($link);
+
+    }else{
+
+        $display["success"] = "0";
+        $display["message"] = "No available groups.";
+        echo json_encode($display);
+        mysqli_close($link);
+
+    }
+}
+?>
