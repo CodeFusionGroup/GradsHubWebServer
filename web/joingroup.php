@@ -31,7 +31,7 @@ if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AN
         $stmnt = "INSERT INTO group_user(USER_ID,RESEARCH_GROUP_ID) VALUES (?,?)";
         if($query = mysqli_prepare($link,$stmnt)){
 
-            mysqli_stmt_bind_param($result,"ii",$user_id,$group_id);
+            mysqli_stmt_bind_param($query,"ii",$user_id,$group_id);
             $user_id = $_REQUEST["USER_ID"];
             $group_id = $_REQUEST["RESEARCH_GROUP_ID"];
 
