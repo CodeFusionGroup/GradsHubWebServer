@@ -33,7 +33,7 @@ if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AN
         if($query = mysqli_query($link,$stmnt)){
 
             // Execute the statement i.e enter record into the table
-            mysqli_stmt_execute($stmnt);
+            // mysqli_stmt_execute($stmnt);
             // Successful
             $output["success"]="1";
             $output["message"]="Successfully joined group";
