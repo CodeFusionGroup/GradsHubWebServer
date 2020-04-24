@@ -6,7 +6,6 @@ $password = $url["pass"];
 $db = substr($url["path"], 1);
 $link  = new mysqli($server, $username, $password, $db);
 
-
 // First check if user is already a member of the group
 if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AND RESEARCH_GROUP_ID = ?")){
     
@@ -27,7 +26,6 @@ if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AN
         
     }else{// User is not a member of the group i.e record doesnt exist in group_user table
 
-        
         $stmnt = "INSERT INTO group_user(USER_ID,RESEARCH_GROUP_ID) VALUES (?,?)";
         if($query = mysqli_prepare($link,$stmnt)){
 
@@ -45,5 +43,4 @@ if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AN
         }
     }
 }
-
 ?>

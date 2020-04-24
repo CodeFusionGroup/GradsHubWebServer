@@ -6,12 +6,14 @@ $password = $url["pass"];
 $db = substr($url["path"], 1);
 $link  = new mysqli($server, $username, $password, $db);
 
+// init some vars
 $output = array();
 
-if($result = mysqli_prepare($link,"SELECT rg.RESEARCH_GROUP_ID,rg.GROUP_NAME, rg.GROUP_VISIBILITY
-FROM research_group rg
+// Find groups that user doesnt belong to
+$stmnt = "SELECT rg.RESEARCH_GROUP_ID,rg.GROUP_NAME, rg.GROUP_VISIBILITY FROM research_group rg
 INNER JOIN group_user gu ON rg.RESEARCH_GROUP_ID = gu.RESEARCH_GROUP_ID
-WHERE gu.USER_ID != ? ")){
+WHERE gu.USER_ID != ? ";
+if($result = mysqli_prepare($link,$stmnt)){
 
     mysqli_stmt_bind_param($result,"i",$user_id);
     $user_id = $_REQUEST["USER_ID"];
@@ -22,28 +24,32 @@ WHERE gu.USER_ID != ? ")){
     mysqli_stmt_bind_result($result,$res_groupID,$res_groupName,$res_groupVis);
     mysqli_stmt_fetch($result);
 
-    // Checks if there are any available groups
+    // If there are any available groups
     if(mysqli_stmt_num_rows($result) > 0){
 
-        // $row=$result->fetch_assoc()
+        // Display first row item(record)
         $group["GROUP_ID"] = $res_groupID;
         $group["GROUP_NAME"] = $res_groupName;
         $group["GROUP_VISIBILITY"] = $res_groupVis;
         $output[]=$group;
+
+        // Fetch the rest of the row items(records)
         while ($result->fetch()){
             $group["GROUP_ID"] = $res_groupID;
             $group["GROUP_NAME"] = $res_groupName;
             $group["GROUP_VISIBILITY"] = $res_groupVis;
             $output[]=$group;
         }
+        
+        // Successful
         $display["success"] = "1";
         $display["message"] = $output;
         echo json_encode($display);
-        // echo json_encode($output);
         mysqli_close($link);
 
     }else{
 
+        // Unsuccessful
         $display["success"] = "0";
         $display["message"] = "No available groups.";
         echo json_encode($display);
