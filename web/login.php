@@ -17,7 +17,7 @@ if($result = mysqli_prepare($link,$stmnt)){
 	mysqli_stmt_execute($result);
 	mysqli_stmt_store_result($result);
 
-	mysqli_stmt_bind_result($result,$res_email,$hashed_password,$res_userID,$res_fame,$res_lname,$res_phoneno,$res_acadstat);
+	mysqli_stmt_bind_result($result,$res_email,$hashed_password,$res_userID,$res_fname,$res_lname,$res_phoneno,$res_acadstat);
 	mysqli_stmt_fetch($result);
 
 	// first check that the user email exists i.e user exists in the database//
