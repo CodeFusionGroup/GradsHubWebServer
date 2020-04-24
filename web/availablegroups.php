@@ -10,7 +10,7 @@ $link  = new mysqli($server, $username, $password, $db);
 $output = array();
 
 // Find groups that user doesnt belong to
-$stmnt = "SELECT rg.RESEARCH_GROUP_ID,rg.GROUP_NAME, rg.GROUP_VISIBILITY, rg.GROUP_CODE FROM research_group rg
+$stmnt = "SELECT rg.RESEARCH_GROUP_ID,rg.GROUP_NAME, rg.GROUP_VISIBILITY FROM research_group rg
 WHERE rg.RESEARCH_GROUP_ID NOT IN(
 SELECT gu.RESEARCH_GROUP_ID FROM group_user gu 
 INNER JOIN user u ON gu.USER_ID = u.USER_ID
@@ -28,8 +28,6 @@ if($result = mysqli_prepare($link,$stmnt)){
 
     // If there are any available groups
     if(mysqli_stmt_num_rows($result) > 0){
-
-        echo json_encode($res_groupName);
 
         // Display first row item(record)
         $group["GROUP_ID"] = $res_groupID;
