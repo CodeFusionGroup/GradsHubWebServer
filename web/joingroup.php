@@ -25,14 +25,15 @@ if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AN
         $output["success"] = "0";
 		$output["message"] = "You have already joined this group";
 		echo json_encode($output);
-		mysqli_close($link);
+        mysqli_close($link);
+        
     }else{
 
         $stmnt = "INSERT INTO group_user(USER_ID,RESEARCH_GROUP_ID) VALUES ($res_userID,$res_groupID)";
         if($query = mysqli_query($link,$stmnt)){
 
             // Execute the statement i.e enter record into the table
-            mysqli_stmt_execute($stmt);
+            mysqli_stmt_execute($stmnt);
             // Successful
             $output["success"]="1";
             $output["message"]="Successfully joined group";
