@@ -10,9 +10,11 @@ $link  = new mysqli($server, $username, $password, $db);
 $output = array();
 
 // Find groups that user doesnt belong to
-$stmnt = "SELECT rg.RESEARCH_GROUP_ID,rg.GROUP_NAME, rg.GROUP_VISIBILITY FROM research_group rg
-INNER JOIN group_user gu ON rg.RESEARCH_GROUP_ID = gu.RESEARCH_GROUP_ID
-WHERE gu.USER_ID != ? ";
+$stmnt = "SELECT rg.RESEARCH_GROUP_ID,rg.GROUP_NAME, rg.GROUP_VISIBILITY, rg.GROUP_CODE FROM research_group rg
+WHERE rg.RESEARCH_GROUP_ID NOT IN(
+SELECT gu.RESEARCH_GROUP_ID FROM group_user gu 
+INNER JOIN user u ON gu.USER_ID = u.USER_ID
+WHERE gu.USER_ID = ? )";
 if($result = mysqli_prepare($link,$stmnt)){
 
     mysqli_stmt_bind_param($result,"i",$user_id);
