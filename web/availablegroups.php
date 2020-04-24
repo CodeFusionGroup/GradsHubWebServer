@@ -29,6 +29,8 @@ if($result = mysqli_prepare($link,$stmnt)){
     // If there are any available groups
     if(mysqli_stmt_num_rows($result) > 0){
 
+        echo json_encode($res_groupName);
+
         // Display first row item(record)
         $group["GROUP_ID"] = $res_groupID;
         $group["GROUP_NAME"] = $res_groupName;
