@@ -31,9 +31,9 @@ if($query = mysqli_prepare($link,"SELECT USER_ID FROM USER WHERE USER_EMAIL = ? 
 
     } else if(mysqli_stmt_num_rows($query) > 0){ // Email is correct proceed to find the groups
 
-        $stmnt = "SELECT rg.RESEARCH_GROUP_ID, rg.GROUP_NAME,rg.GROUP_VISIBILITY, rg.GROUP_CODE, u.USER_EMAIL AS GROUP_ADMIN FROM group_user gu
-        INNER JOIN research_group rg ON gu.RESEARCH_GROUP_ID = rg.RESEARCH_GROUP_ID
-        INNER JOIN group_admin ga ON rg.RESEARCH_GROUP_ID = ga.RESEARCH_GROUP_ID
+        $stmnt = "SELECT rg.GROUP_ID, rg.GROUP_NAME,rg.GROUP_VISIBILITY, rg.GROUP_CODE, u.USER_EMAIL AS GROUP_ADMIN FROM group_user gu
+        INNER JOIN research_group rg ON gu.GROUP_ID = rg.GROUP_ID
+        INNER JOIN group_admin ga ON rg.GROUP_ID = ga.GROUP_ID
         INNER JOIN user u ON ga.USER_ID = u.USER_ID
         WHERE gu.USER_ID = $query_userID";
 

@@ -7,11 +7,11 @@ $db = substr($url["path"], 1);
 $link  = new mysqli($server, $username, $password, $db);
 
 // First check if user is already a member of the group
-if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AND RESEARCH_GROUP_ID = ?")){
+if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AND GROUP_ID = ?")){
     
     mysqli_stmt_bind_param($result,"ii",$user_id,$group_id);
     $user_id = $_REQUEST["USER_ID"];
-    $group_id = $_REQUEST["RESEARCH_GROUP_ID"];
+    $group_id = $_REQUEST["GROUP_ID"];
 
     mysqli_stmt_execute($result);
     mysqli_stmt_store_result($result);
@@ -26,12 +26,12 @@ if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AN
         
     }else{// User is not a member of the group i.e record doesnt exist in group_user table
 
-        $stmnt = "INSERT INTO group_user(USER_ID,RESEARCH_GROUP_ID) VALUES (?,?)";
+        $stmnt = "INSERT INTO group_user(USER_ID,GROUP_ID) VALUES (?,?)";
         if($query = mysqli_prepare($link,$stmnt)){
 
             mysqli_stmt_bind_param($query,"ii",$user_id,$group_id);
             $user_id = $_REQUEST["USER_ID"];
-            $group_id = $_REQUEST["RESEARCH_GROUP_ID"];
+            $group_id = $_REQUEST["GROUP_ID"];
 
             mysqli_stmt_execute($query);
             

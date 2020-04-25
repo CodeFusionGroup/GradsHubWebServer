@@ -46,9 +46,9 @@ if($result = mysqli_prepare($link,"SELECT GROUP_NAME FROM research_group WHERE G
             mysqli_stmt_execute($query);
 
             // Insert User as admin of the new group
-            $stmnt2 = "INSERT INTO group_admin (USER_ID,RESEARCH_GROUP_ID) 
+            $stmnt2 = "INSERT INTO group_admin (USER_ID,GROUP_ID) 
             VALUES ((SELECT USER_ID FROM user WHERE USER_EMAIL = ?),
-            (SELECT RESEARCH_GROUP_ID FROM research_group WHERE GROUP_NAME = ?))";
+            (SELECT GROUP_ID FROM research_group WHERE GROUP_NAME = ?))";
             if($query2 = mysqli_prepare($link,$stmnt2)){
 
                 mysqli_stmt_bind_param($query2,"ss",$user_email,$group_name);
@@ -61,9 +61,9 @@ if($result = mysqli_prepare($link,"SELECT GROUP_NAME FROM research_group WHERE G
             }
 
             // Insert User as a member of the new group
-            $stmnt3 = "INSERT INTO group_user (USER_ID,RESEARCH_GROUP_ID) 
+            $stmnt3 = "INSERT INTO group_user (USER_ID,GROUP_ID) 
             VALUES ((SELECT USER_ID FROM user WHERE USER_EMAIL = ?),
-            (SELECT RESEARCH_GROUP_ID FROM research_group WHERE GROUP_NAME = ?))";
+            (SELECT GROUP_ID FROM research_group WHERE GROUP_NAME = ?))";
             if($query3 = mysqli_prepare($link,$stmnt3)){
 
                 mysqli_stmt_bind_param($query3,"ss",$user_email,$group_name);
