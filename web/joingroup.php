@@ -51,7 +51,7 @@ if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AN
         }else if($group_visib == "private"){  
 
             // init group invite code
-            $group_code = $_REQUEST["GROUP_ID"];  
+            $group_code = $_REQUEST["GROUP_CODE"];  
 
             // Check if group code entered is correct
             $stmnt1 = "SELECT GROUP_CODE FROM research_group WHERE GROUP_ID = ?";
@@ -84,7 +84,7 @@ if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AN
                         echo json_encode($output);
                         mysqli_close($link);
                     }
-                    
+
                 }else{
                     // Unsuccessful
                     $output["success"]="0";
