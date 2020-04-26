@@ -27,7 +27,7 @@ if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AN
     }else{// User is not a member of the group i.e record doesnt exist in group_user table
 
         // init group visibility
-        $group_visib = $_REQUEST["USER_ID"];
+        $group_visib = $_REQUEST["GROUP_VISIBILITY"];
 
         // Check if the group the user wants to join is private or public
         if($group_visib == "public"){
