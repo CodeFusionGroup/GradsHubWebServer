@@ -69,6 +69,12 @@ if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AN
                 mysqli_stmt_bind_result($request,$req_groupCode);
                 mysqli_stmt_fetch($request);
 
+                if(mysqli_stmt_num_rows($request) > 0){
+                    echo "group code found";
+                }else{
+                    echo " no group code";
+                }
+
                 echo json_encode($req_groupCode); 
 
                 // Verify group code
