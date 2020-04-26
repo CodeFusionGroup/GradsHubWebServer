@@ -55,7 +55,7 @@ if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AN
             echo json_encode($group_code); 
 
             // Check if group code entered is correct
-            $stmnt1 = "SELECT GROUP_CODE FROM research_group WHERE GROUP_ID = ?";
+            $stmnt1 = "SELECT GROUP_ID,GROUP_CODE FROM research_group WHERE GROUP_ID = ?";
             if($request = mysqli_prepare($link,$stmnt1)){
 
                 mysqli_stmt_bind_param($request,"i",$group_id);
@@ -64,10 +64,10 @@ if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AN
                 mysqli_stmt_execute($request);
                 mysqli_stmt_store_result($request);
 
-                mysqli_stmt_bind_result($request,$req_groupCode);
+                mysqli_stmt_bind_result($request,$req_groupID,$req_groupCode);
                 mysqli_stmt_fetch($request);
 
-                echo json_encode($request);
+                echo json_encode($req_groupID);
                 echo json_encode($req_groupCode); 
 
                 // Verify group code
