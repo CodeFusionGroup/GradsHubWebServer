@@ -61,8 +61,6 @@ if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AN
                 mysqli_stmt_bind_param($request,"i",$group_id);
                 $group_id = $_REQUEST["GROUP_ID"];
 
-                echo json_encode($group_id);
-
                 mysqli_stmt_execute($request);
                 mysqli_stmt_store_result($request);
 
