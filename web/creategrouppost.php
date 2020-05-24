@@ -41,13 +41,15 @@ if( $result = mysqli_prepare($link,$stmnt) ){
     try{
         // Execute the statement i.e enter record into the table
         mysqli_stmt_execute($query);
-        $output["success"]="1";
-        $output["message"]="New post created";
-        echo json_encode($output);
-        mysqli_close($link);
+        
     }catch(Exception $e){
         echo 'Caught exception: ',  $e->getMessage(), "\n";
     }
+
+    $output["success"]="1";
+    $output["message"]="New post created";
+    echo json_encode($output);
+    mysqli_close($link);
     
 }
 ?>
