@@ -12,7 +12,7 @@ VALUES(?,?,?,?,?)";
 // $stmnt_url = "INSERT INTO group_post (GROUP_USER_ID,GROUP_ID, POST_TITLE,POST_DATE,POST_ATTACHMENT_URL) 
 // VALUES(?,?,?,?,?)";
 
-
+echo "create group post";
 
 if( $query = mysqli_prepape($link,$stmnt) ){
 
