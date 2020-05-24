@@ -12,7 +12,6 @@ VALUES(?,?,?,?,?,?)";
 // $stmnt_url = "INSERT INTO group_post (GROUP_USER_ID,GROUP_ID, POST_TITLE,POST_DATE,POST_ATTACHMENT_URL) 
 // VALUES(?,?,?,?,?)";
 
-echo "create group post";
 
 if( $result = mysqli_prepare($link,$stmnt) ){
 
@@ -27,10 +26,7 @@ if( $result = mysqli_prepare($link,$stmnt) ){
     $post_date = date("Y-m-d",$temp_date);
     $post_file = $_REQUEST["POST_FILE"];
     $post_url = $_REQUEST["POST_URL"];
-
-    echo "Prepared staments";
     
-
     // Check if all the values where sent
     if(!isset($group_userID ,$groupID,$post_title,$post_date)){
         $output["success"]="0";
@@ -48,6 +44,8 @@ if( $result = mysqli_prepare($link,$stmnt) ){
         // Encode url
         $post_url = urlencode($post_url);
         $post_url = mysql_real_escape_string($post_url);
+
+        echo json_encode($post_url);
 
         // Execute the statement i.e enter record into the table
         mysqli_stmt_execute($query);
