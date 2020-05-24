@@ -16,7 +16,7 @@ echo "create group post";
 
 if( $result = mysqli_prepare($link,$stmnt) ){
 
-    echo "Before Prepared staments";
+    
 
     mysqli_stmt_bind_param($result,"iissss",$group_userID,$groupID,$post_title,$post_date,$post_file,$post_url);
     $group_userID = $_REQUEST["GROUP_USER_ID"];
@@ -32,7 +32,7 @@ if( $result = mysqli_prepare($link,$stmnt) ){
     
 
     // Check if all the values where sent
-    if(!isset($group_userID ,$groupID,$post_title,$post_date,$post_url ,$post_file )){
+    if(!isset($group_userID ,$groupID,$post_title,$post_date)){
         $output["success"]="0";
         $output["message"]="You didn't send the required values!";
         echo json_encode($output);
