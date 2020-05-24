@@ -7,16 +7,18 @@ $db = substr($url["path"], 1);
 $link  = new mysqli($server, $username, $password, $db);
 
 $stmnt = "INSERT INTO group_post (GROUP_USER_ID, GROUP_ID, POST_TITLE, POST_DATE, POST_ATTACHMENT_FILE,POST_ATTACHMENT_URL) 
-VALUES(?,?,?,?,?)";
+VALUES(?,?,?,?,?,?)";
 
 // $stmnt_url = "INSERT INTO group_post (GROUP_USER_ID,GROUP_ID, POST_TITLE,POST_DATE,POST_ATTACHMENT_URL) 
 // VALUES(?,?,?,?,?)";
 
 echo "create group post";
 
-if( $query = mysqli_prepare($link,$stmnt) ){
+if( $result = mysqli_prepare($link,$stmnt) ){
 
-    mysqli_stmt_bind_param($query,"iissss",$group_userID,$groupID,$post_title,$post_date,$post_file,$post_url);
+    echo "Before Prepared staments";
+
+    mysqli_stmt_bind_param($result,"iissss",$group_userID,$groupID,$post_title,$post_date,$post_file,$post_url);
     $group_userID = $_REQUEST["GROUP_USER_ID"];
     $groupID = $_REQUEST["GROUP_ID"];
     $post_title = $_REQUEST["POST_TITLE"];
