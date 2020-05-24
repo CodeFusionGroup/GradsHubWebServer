@@ -52,6 +52,7 @@ if( $result = mysqli_prepare($link,$stmnt) ){
 
     }else if( $post_url == ""){ // Attachment == file
         // Implement file code
+        echo "file";
     }
 
     $output["success"]="1";
