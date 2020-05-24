@@ -14,7 +14,7 @@ VALUES(?,?,?,?,?)";
 
 echo "create group post";
 
-if( $query = mysqli_prepape($link,$stmnt) ){
+if( $query = mysqli_prepare($link,$stmnt) ){
 
     mysqli_stmt_bind_param($query,"iissss",$group_userID,$groupID,$post_title,$post_date,$post_file,$post_url);
     $group_userID = $_REQUEST["GROUP_USER_ID"];
