@@ -22,21 +22,19 @@ if( $result = mysqli_prepare($link,$stmnt) ){
     $groupID = $_REQUEST["GROUP_ID"];
     $post_title = $_REQUEST["POST_TITLE"];
     // MYSQL DATE
-    $temp_date = $_REQUEST["POST_DATE"];
-    $post_date = date("Y-m-d",$temp_date);
-    echo json_encode($temp_date);
-    echo "\n";
-    echo json_encode($post_date);
-    echo "\n";
+    $post_date = $_REQUEST["POST_DATE"];
+    // $post_date = date("Y-m-d",$temp_date);
     $post_file = $_REQUEST["POST_FILE"];
     // Encode URL
-    $temp_url = $_REQUEST["POST_URL"];
-    $post_url = urlencode($temp_url );
-    $post_url = mysqli_real_escape_string($post_url);
-    echo json_encode($temp_url);
-    echo "\n";
-    echo json_encode($post_url);
-    echo "\n";
+    $post_url = $_REQUEST["POST_URL"];
+    // $temp_url = $_REQUEST["POST_URL"];
+    // $post_url = urlencode($temp_url );
+    // $post_url = mysqli_real_escape_string($post_url);
+
+    mysqli_stmt_store_result($result);
+
+    mysqli_stmt_bind_result($result,$post_file,$post_url);
+    mysqli_stmt_fetch($result);
     
     // Check if all the values where sent
     if(!isset($group_userID ,$groupID,$post_title,$post_date)){
@@ -51,8 +49,6 @@ if( $result = mysqli_prepare($link,$stmnt) ){
     if($post_file == ""){ // Attachment == URL
 
         echo "URL";
-
-        echo json_encode($post_url);
 
         // Execute the statement i.e enter record into the table
         mysqli_stmt_execute($query);
