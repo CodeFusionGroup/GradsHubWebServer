@@ -20,7 +20,9 @@ if( $query = mysqli_prepape($link,$stmnt) ){
     $group_userID = $_REQUEST["GROUP_USER_ID"];
     $groupID = $_REQUEST["GROUP_ID"];
     $post_title = $_REQUEST["POST_TITLE"];
-    $post_date = "current_date()";
+    // MYSQL DATE
+    $temp_date = $_REQUEST["POST_DATE"];
+    $post_date = date("Y-m-d",$temp_date);
     $post_file = $_REQUEST["POST_FILE"];
     $post_url = $_REQUEST["POST_URL"];
     
