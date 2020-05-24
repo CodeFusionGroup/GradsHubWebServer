@@ -13,7 +13,7 @@ VALUES(?,?,?,?,?)";
 // VALUES(?,?,?,?,?)";
 
 
-// If choice was a url
+
 if( $query = mysqli_prepape($link,$stmnt) ){
 
     mysqli_stmt_bind_param($query,"iissss",$group_userID,$groupID,$post_title,$post_date,$post_file,$post_url);
@@ -25,10 +25,12 @@ if( $query = mysqli_prepape($link,$stmnt) ){
     $post_date = date("Y-m-d",$temp_date);
     $post_file = $_REQUEST["POST_FILE"];
     $post_url = $_REQUEST["POST_URL"];
+
+    echo "Prepared staments";
     
 
     // Check if all the values where sent
-    if(!isset($group_userID ,$groupID,$post_title,$post_date,$post_url )){
+    if(!isset($group_userID ,$groupID,$post_title,$post_date,$post_url ,$post_file )){
         $output["success"]="0";
         $output["message"]="You didn't send the required values!";
         echo json_encode($output);
@@ -38,6 +40,8 @@ if( $query = mysqli_prepape($link,$stmnt) ){
 
     // Check if attachment is url or pdf
     if($post_file == ""){ // Attachment == URL
+
+        echo "URL";
 
         // Encode url
         $post_url = urlencode($post_url);
