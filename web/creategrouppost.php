@@ -43,7 +43,7 @@ if( $result = mysqli_prepare($link,$stmnt) ){
 
         // Encode url
         $post_url = urlencode($post_url);
-        $post_url = mysql_real_escape_string($post_url);
+        $post_url = mysqli_real_escape_string($post_url);
 
         echo json_encode($post_url);
 
