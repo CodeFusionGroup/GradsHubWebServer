@@ -31,10 +31,10 @@ if( $result = mysqli_prepare($link,$stmnt) ){
     // $post_url = urlencode($temp_url );
     // $post_url = mysqli_real_escape_string($post_url);
 
-    mysqli_stmt_store_result($result);
+    // mysqli_stmt_store_result($result);
 
-    mysqli_stmt_bind_result($result,$post_file,$post_url);
-    mysqli_stmt_fetch($result);
+    // mysqli_stmt_bind_result($result,$post_file,$post_url);
+    // mysqli_stmt_fetch($result);
     
     // Check if all the values where sent
     if(!isset($group_userID ,$groupID,$post_title,$post_date)){
