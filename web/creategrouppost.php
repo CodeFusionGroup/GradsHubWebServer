@@ -30,7 +30,7 @@ if( $result = mysqli_prepare($link,$stmnt) ){
     // $post_url = mysqli_real_escape_string($post_url);
     
     // Check if all the values where sent
-    if(!isset($group_userID ,$groupID,$post_title,$post_date)){
+    if(!isset($group_userID ,$groupID,$post_title,$post_date,$post_url)){
         $output["success"]="0";
         $output["message"]="You didn't send the required values!";
         echo json_encode($output);
@@ -40,7 +40,7 @@ if( $result = mysqli_prepare($link,$stmnt) ){
 
     
         // Execute the statement i.e enter record into the table
-    if(mysqli_stmt_execute($query)){
+    if(mysqli_stmt_execute($result)){
         $output["success"]="1";
         $output["message"]="New post created";
         echo json_encode($output);
