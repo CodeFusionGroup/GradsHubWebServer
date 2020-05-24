@@ -24,15 +24,15 @@ if( $result = mysqli_prepare($link,$stmnt) ){
     // MYSQL DATE
     $temp_date = $_REQUEST["POST_DATE"];
     $post_date = date("Y-m-d",$temp_date);
-    echo json_encode($temp_date)
-    echo json_encode($post_date)
+    echo json_encode($temp_date);
+    echo json_encode($post_date);
     $post_file = $_REQUEST["POST_FILE"];
     // Encode URL
     $temp_url = $_REQUEST["POST_URL"];
     $post_url = urlencode($temp_url );
     $post_url = mysqli_real_escape_string($post_url);
-    echo json_encode($temp_url)
-    echo json_encode($post_url)
+    echo json_encode($temp_url);
+    echo json_encode($post_url);
     
     // Check if all the values where sent
     if(!isset($group_userID ,$groupID,$post_title,$post_date)){
