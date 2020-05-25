@@ -51,9 +51,11 @@ if( $result = mysqli_prepare($link,$stmnt) ){
         mysqli_close($link);
 
     } else{
-        echo "Error Inserting";
+        echo "Error executing insert";
     }
         
     
+}else{
+    echo "Error insert statement";
 }
 ?>
