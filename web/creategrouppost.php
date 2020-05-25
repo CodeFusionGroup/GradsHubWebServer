@@ -6,8 +6,12 @@ $password = $url["pass"];
 $db = substr($url["path"], 1);
 $link  = new mysqli($server, $username, $password, $db);
 
-$stmnt = "INSERT INTO group_post (GROUP_USER_ID, GROUP_ID, POST_TITLE, POST_DATE,POST_ATTACHMENT_URL) 
-VALUES(?,?,?,?,?)";
+// $stmnt = "INSERT INTO group_post (GROUP_USER_ID, GROUP_ID, POST_TITLE, POST_DATE,POST_ATTACHMENT_URL) 
+// VALUES(?,?,?,?,?)";
+
+$stmnt = " INSERT INTO group_post (GROUP_USER_ID,GROUP_ID,POST_TITLE,POST_DATE,POST_ATTACHMENT_URL)
+VALUES ( (SELECT GROUP_USER_ID from group_user WHERE USER_ID = ? AND GROUP_ID = ?) ,?,?,?) ";
+
 
 // $stmnt_url = "INSERT INTO group_post (GROUP_USER_ID,GROUP_ID, POST_TITLE,POST_DATE,POST_ATTACHMENT_URL) 
 // VALUES(?,?,?,?,?)";
@@ -16,9 +20,9 @@ VALUES(?,?,?,?,?)";
 if( $result = mysqli_prepare($link,$stmnt) ){
 
     
-    mysqli_stmt_bind_param($result,"iisss",$group_userID,$groupID,$post_title,$post_date,$post_url);
-    $group_userID = $_REQUEST["GROUP_USER_ID"];
-    $groupID = $_REQUEST["GROUP_ID"];
+    mysqli_stmt_bind_param($result,"iisss",$user_id,$group_id,$post_title,$post_date,$post_url);
+    $user_id = $_REQUEST["USER_ID"];
+    $group_id = $_REQUEST["GROUP_ID"];
     $post_title = $_REQUEST["POST_TITLE"];
     // MYSQL DATE
     $post_date = $_REQUEST["POST_DATE"];
@@ -30,7 +34,7 @@ if( $result = mysqli_prepare($link,$stmnt) ){
     // $post_url = mysqli_real_escape_string($post_url);
     
     // Check if all the values where sent
-    if(!isset($group_userID ,$groupID,$post_title,$post_date,$post_url)){
+    if(!isset($user_id ,$group_id,$post_title,$post_date,$post_url)){
         $output["success"]="0";
         $output["message"]="You didn't send the required values!";
         echo json_encode($output);
