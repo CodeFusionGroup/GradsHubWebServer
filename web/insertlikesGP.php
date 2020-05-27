@@ -30,7 +30,7 @@ if( $result  = mysqli_prepare($link,$stmnt)){
     }
 
     // Execute the query
-    if( mysqli_stmt_execute($query) ){
+    if( mysqli_stmt_execute($result) ){
         // Successful
         $output["success"]="1";
         $output["message"]="Registration successful!";
