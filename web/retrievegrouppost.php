@@ -46,18 +46,11 @@ if ( $result = mysqli_prepare($link,$stmnt)){
         WHERE GROUP_POST_ID = $res_groupPostID
         GROUP BY gpc.POST_COMMENT_ID";
 
-        if( ($result_2 = mysqli_query($link,$stmnt_2)) && ($result_3 = mysqli_query($link,$stmnt_2)) ){
+        // LIKES
+        $no_likes = 0;
+        if( $result_2 = mysqli_query($link,$stmnt_2) ){
             
             echo "In the for loop \n";
-
-            if( (mysqli_num_rows($result_2) > 0) && (mysqli_num_rows($result_2) > 0) ){
-                // Fetch values
-                $no_likes = $result_2->fetch_assoc();
-                $no_comments = $result_3->fetch_assoc();
-            }else if ( (mysqli_num_rows($result_2) < 0) && (mysqli_num_rows($result_2) < 0) ) {
-                // 
-
-            }
 
             // LIKES
             if( mysqli_num_rows($result_2) > 0 ){
@@ -66,8 +59,12 @@ if ( $result = mysqli_prepare($link,$stmnt)){
             }else{
                 $no_likes = 0;
             }
+        }
 
-            // COMMENTS
+        // COMMENTS
+        $no_comments = 0;
+        if(($result_3 = mysqli_query($link,$stmnt_2))){
+
             if( mysqli_num_rows($result_2) > 0 ){
                 $no_comments = $result_3->fetch_assoc();
                 echo json_encode($no_comments);
@@ -75,7 +72,6 @@ if ( $result = mysqli_prepare($link,$stmnt)){
                 $no_comments = 0;
                 
             }
-
         }
 
         // Display first row item(record)
