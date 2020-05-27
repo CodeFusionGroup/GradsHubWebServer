@@ -47,6 +47,8 @@ if ( $result = mysqli_prepare($link,$stmnt)){
         GROUP BY gpc.POST_COMMENT_ID";
 
         if( ($result_2 = mysqli_query($link,$stmnt_2)) && ($result_3 = mysqli_query($link,$stmnt_2)) ){
+            
+            echo "In the for loop \n";
 
             if( (mysqli_num_rows($result_2) > 0) && (mysqli_num_rows($result_2) > 0) ){
                 // Fetch values
@@ -60,6 +62,7 @@ if ( $result = mysqli_prepare($link,$stmnt)){
             // LIKES
             if( mysqli_num_rows($result_2) > 0 ){
                 $no_likes = $result_2->fetch_assoc();
+                echo json_encode($no_likes);
             }else{
                 $no_likes = 0;
             }
@@ -67,8 +70,10 @@ if ( $result = mysqli_prepare($link,$stmnt)){
             // COMMENTS
             if( mysqli_num_rows($result_2) > 0 ){
                 $no_comments = $result_3->fetch_assoc();
+                echo json_encode($no_comments);
             }else{
                 $no_comments = 0;
+                
             }
 
         }
