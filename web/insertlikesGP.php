@@ -8,6 +8,8 @@ $link  = new mysqli($server, $username, $password, $db);
 
 
 $post_id_string = $_REQUEST["POST_ID"];
+echo "POST_ID string: ";
+echo json_encode($post_id_string);
 // post_id array
 $post_id_arr = array();
 // Store string post_ids in an array
@@ -23,8 +25,9 @@ for ($i = 0 ; $i < count($post_id_arr); $i++){
     WHERE USER_ID = ? AND GROUP_ID = ?) , true)";
 
     if( $result  = mysqli_prepare($link,$stmnt) ){
-
-        echo "POST_ID: "+json_encode($post_id_arr[$i]);
+        
+        echo "POST_ID: ";
+        echo json_encode($post_id_arr[$i]);
 
         mysqli_stmt_bind_param($result,"iii",$post_id,$user_id,$group_id);
         $post_id = $post_id_arr[$i];
