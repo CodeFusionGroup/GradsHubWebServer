@@ -35,6 +35,11 @@ for ( ;$i < count($post_id_arr); $i++ ){
 
 }
 
+echo "i: ";
+echo json_encode($i);
+echo "\n"+"Post array len: ";
+echo json_encode(count($post_id_arr));
+
 if($i == count($post_id_arr)-1){
     $output["success"]="1";
     $output["message"]="Successfully added your selected courses.";
