@@ -35,15 +35,15 @@ for ( ;$i < count($post_id_arr); $i++ ){
 
 }
 
-echo "i: ";
-echo json_encode($i);
-echo "Post array len: ";
-$len = count($post_id_arr);
-echo json_encode($len);
+// echo "i: ";
+// echo json_encode($i);
+// echo "Post array len: ";
+// $len = count($post_id_arr);
+// echo json_encode($len);
 
-if($i == count($post_id_arr)-1){
-    $output["success"]="1";
-    $output["message"]="Successfully added your selected courses.";
+if($i == count($post_id_arr)){
+    $output["success"] = "1";
+    $output["message"] = "Successfully liked posts.";
     echo json_encode($output);
     mysqli_close($link);
 }else{
