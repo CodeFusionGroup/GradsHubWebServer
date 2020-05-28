@@ -24,6 +24,8 @@ for ($i = 0 ; $i < count($post_id_arr); $i++){
 
     if( $result  = mysqli_prepare($link,$stmnt) ){
 
+        echo "POST_ID: "+json_encode($post_id_arr[$i]);
+
         mysqli_stmt_bind_param($result,"iii",$post_id,$user_id,$group_id);
         $post_id = $post_id_arr[$i];
         $user_id = $_REQUEST["USER_ID"];
