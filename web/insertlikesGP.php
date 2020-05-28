@@ -23,8 +23,8 @@ $post_id_arr = explode(',',$post_id_string);
 for ( ;$i < count($post_id_arr); $i++ ){
 
     $stmnt = "INSERT INTO group_post_like (GROUP_POST_ID,GROUP_USER_ID,POST_LIKE)
-    VALUES ( ?,(SELECT GROUP_USER_ID AS MemberNumber FROM GROUP_USER 
-    WHERE USER_ID = ? AND GROUP_ID = ?) , true)";
+    VALUES ( $post_id_arr[$i],(SELECT GROUP_USER_ID AS MemberNumber FROM GROUP_USER 
+    WHERE USER_ID = $user_id  AND GROUP_ID = $group_id) , true)";
 
     // Insert like into database
     if( $result = mysqli_query($link,$stmnt) ){
