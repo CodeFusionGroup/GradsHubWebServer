@@ -37,8 +37,9 @@ for ( ;$i < count($post_id_arr); $i++ ){
 
 echo "i: ";
 echo json_encode($i);
-echo "\n"+"Post array len: ";
-echo json_encode(count($post_id_arr));
+echo "Post array len: ";
+$len = count($post_id_arr);
+echo json_encode($len);
 
 if($i == count($post_id_arr)-1){
     $output["success"]="1";
