@@ -48,8 +48,8 @@ for ( $i = 0;$i < count($post_id_arr); $i++ ){
             // Increments everytime a post is inserted successfully
             // $valid_count++;
 
-            $display["success"] = "0";
-            $display["message"] = "You have already like this post";
+            $display["success"] = "1";
+            $display["message"] = "Successfully like the post";
             array_push($output,$display);
 
 
