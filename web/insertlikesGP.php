@@ -59,13 +59,10 @@ for ( $i = 0;$i < count($post_id_arr); $i++ ){
 
     }
 
-
-
-   
-    
-
 }
 
+// Output the result and close the link
+echo json_encode($output);
 mysqli_close($link);
 
 
