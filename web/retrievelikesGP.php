@@ -24,7 +24,7 @@ if( $result = mysqli_query($link,$stmnt) ){
 
         // Fetch the post_ids
         while ($row=$result->fetch_assoc()){
-            $post_id[]=$row;
+            $post_id=$row;
             // push each individual id into the array
             array_push($post_id_arr,$post_id);
         }
