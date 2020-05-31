@@ -40,7 +40,7 @@ for ( $i = 0;$i < count($post_id_arr); $i++ ){
 
          // Statement to insert like into the database
         $stmnt = "INSERT INTO group_post_like (GROUP_POST_ID,GROUP_USER_ID,POST_LIKE)
-        VALUES ( $post_id_arr[$i],(SELECT GROUP_USER_ID AS MemberNumber FROM GROUP_USER 
+        VALUES ( $post_id_arr[$i],(SELECT GROUP_USER_ID FROM GROUP_USER 
         WHERE USER_ID = $user_id  AND GROUP_ID = $group_id) , true)";
 
         // Insert like into database
