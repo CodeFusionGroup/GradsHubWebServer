@@ -21,7 +21,7 @@ if($query = mysqli_prepare($link,$stmnt)){
 
     mysqli_stmt_bind_param($query,"ss",$post_comment,$post_date);
     $post_comment = $_REQUEST["POST_COMMENT"];
-    $post_date = $_REQUEST["POST_DATE"];
+    $post_date = $_REQUEST["POST_COMMENT_DATE"];
 
     // Check if all the values where sent
     if(!isset($post_id ,$user_id ,$group_id )){
