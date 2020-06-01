@@ -79,7 +79,7 @@ if($query_post && $query_count){
         }
 
         // Combine everything into one array
-        for($i = 0 ;$i < count($post_info_arr); $i++ ){
+        for($i = 0 ;$i < count($full_post_arr); $i++ ){
 
             echo json_encode($post_counts_arr[$i]["NO_OF_COMMENTS"]);
             $full_post_arr[$i]["NO_OF_COMMENTS"] = $post_counts_arr[$i]["NO_OF_COMMENTS"];
