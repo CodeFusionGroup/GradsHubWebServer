@@ -45,7 +45,7 @@ if( $result = mysqli_query($link,$stmnt) ){
 
         // Unsuccessful
         $output["success"] = "0";
-        $output["message"] = "You have not commented on any posts.";
+        $output["message"] = "This post has no comments";
         echo json_encode($output);
 		mysqli_close($link);
 
