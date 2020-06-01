@@ -18,7 +18,7 @@ $link  = new mysqli($server, $username, $password, $db);
 // GROUP BY gp.GROUP_POST_ID ";
 
 // Variable
-$post_info_arr = array();
+// $post_info_arr = array();
 $post_counts_arr = array();
 $full_post_arr = array();
 
@@ -52,9 +52,6 @@ ORDER BY gp.GROUP_POST_ID ";
 $query_post = mysqli_query($link,$stmnt_post );
 $query_count = mysqli_query($link,$stmnt_count );
 
-echo json_encode($query_post);
-echo json_encode($query_count);
-
 if($query_post && $query_count){
 
     // No posts in this group
@@ -71,7 +68,7 @@ if($query_post && $query_count){
         while ($row=$query_post->fetch_assoc()){
             $post_info = $row;
             // Push info into an array
-            array_push($post_info_arr,$post_info);
+            array_push($full_post_arr,$post_info);
         }
 
         // Fetch the no of likes and comments
@@ -84,11 +81,16 @@ if($query_post && $query_count){
         // Combine everything into one array
         for($i = 0 ;$i < count($post_info_arr); $i++ ){
 
-            // push info into full array
-            array_push($full_post_arr,$post_info_arr[$i]);
+            $full_post_arr[$i]["NO_OF_COMMENTS"] = $post_counts_arr[$i]["NO_OF_COMMENTS"];
+            $full_post_arr[$i]["NO_OF_LIKES"] = $post_counts_arr[$i]["NO_OF_LIKES"];
 
-            // push conts into full array
-            array_push($full_post_arr,$post_counts_arr[$i]);
+            // push info into full array
+            // array_push($full_post_arr,$post_info_arr[$i]);
+
+            // // push counts into full array
+            // array_push($full_post_arr,$post_counts_arr[$i]);
+
+
 
         }
 
