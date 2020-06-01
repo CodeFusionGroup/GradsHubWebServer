@@ -52,6 +52,9 @@ ORDER BY gp.GROUP_POST_ID ";
 $query_post = mysqli_query($link,$stmnt_post );
 $query_count = mysqli_query($link,$stmnt_count );
 
+echo json_encode($query_post);
+echo json_encode($query_count);
+
 if($query_post && $query_count){
 
     // No posts in this group
