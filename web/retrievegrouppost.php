@@ -6,32 +6,22 @@ $password = $url["pass"];
 $db = substr($url["path"], 1);
 $link  = new mysqli($server, $username, $password, $db);
 
-// $stmnt = " SELECT u.USER_FNAME, u.USER_LNAME, gp.GROUP_POST_ID,gp.POST_TITLE, gp.POST_DATE,gp.POST_ATTACHMENT_URL,
-// COUNT(gpc.POST_COMMENT_ID) as NO_OF_COMMENTS,COUNT(gpl.POST_LIKE_ID) as NO_OF_LIKES 
-// FROM group_post as gp 
-// INNER JOIN group_user as gu ON gp.GROUP_USER_ID = gu.GROUP_USER_ID
-// INNER JOIN user as u ON gu.USER_ID = u.USER_ID
-// LEFT JOIN group_post_comment as gpc ON gp.GROUP_POST_ID = gpc.GROUP_POST_ID
-// LEFT OUTER JOIN group_post_like as gpl ON gp.GROUP_POST_ID = gpl.GROUP_POST_ID
-// where gp.GROUP_ID = ?
-// GROUP BY gp.GROUP_POST_ID ";
-
-// Variable
-// $post_info_arr = array();
+// Variable(s)
 $post_counts_arr = array();
 $full_post_arr = array();
 
-// Get the group id
+// Reuest the group id
 $group_id = $_REQUEST["GROUP_ID"];
 
-// SQL STATEMENTS
+// Select all posts in a group
 $stmnt_post = " SELECT u.USER_FNAME, u.USER_LNAME, gp.GROUP_POST_ID,gp.POST_TITLE, gp.POST_DATE,gp.POST_ATTACHMENT_URL
 FROM group_post as gp 
 INNER JOIN group_user as gu ON gp.GROUP_USER_ID = gu.GROUP_USER_ID
 INNER JOIN user as u ON gu.USER_ID = u.USER_ID
 where gp.GROUP_ID = $group_id
-ORDER BY gp.GROUP_POST_ID ";
+ORDER BY gp.POST_DATE DESC ";
 
+// Find no. comments and likes in a group post
 $stmnt_count = " SELECT COALESCE( NO_OF_COMMENTS,0) AS NO_OF_COMMENTS,COALESCE( NO_OF_LIKES,0) AS NO_OF_LIKES
 FROM group_post AS gp
 LEFT JOIN (
@@ -45,7 +35,7 @@ FROM group_post_like
 GROUP BY GROUP_POST_ID 
 ) NO_OF_LIKES ON NO_OF_LIKES.GROUP_POST_ID = gp.GROUP_POST_ID
 WHERE gp.GROUP_ID = $group_id
-ORDER BY gp.GROUP_POST_ID ";
+ORDER BY gp.POST_DATE DESC ";
 
 // Make the queries
 $query_post = mysqli_query($link,$stmnt_post );

@@ -6,19 +6,13 @@ $password = $url["pass"];
 $db = substr($url["path"], 1);
 $link  = new mysqli($server, $username, $password, $db);
 
-// Retrieve values
-// $user_id = $_REQUEST["USER_ID"];
-// $group_id = $_REQUEST["GROUP_ID"];
+// Retrieve the value
 $post_id = $_REQUEST["POST_ID"];
 
 // Variable
 $post_comments = array();
 
 // Statement to retrieve comments
-// $stmnt = "SELECT gpc.GROUP_POST_ID FROM group_post_comment AS gpc
-// INNER JOIN group_user AS gu ON gpc.GROUP_USER_ID = gu.GROUP_USER_ID
-// WHERE gu.USER_ID = $user_id  AND gu.GROUP_ID = $group_id";
-
 $stmnt = "SELECT u.USER_FNAME,u.USER_LNAME,gpc.POST_COMMENT,gpc.POST_COMMENT_DATE FROM group_post_comment AS gpc
 INNER JOIN group_user AS gu ON gpc.GROUP_USER_ID = gu.GROUP_USER_ID
 INNER JOIN user AS u ON gu.USER_ID = u.USER_ID
