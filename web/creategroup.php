@@ -27,13 +27,13 @@ if($result = mysqli_prepare($link,"SELECT GROUP_NAME FROM research_group WHERE G
         $stmnt = "INSERT INTO research_group (GROUP_NAME,GROUP_VISIBILITY, GROUP_CODE) VALUES(?,?,?)";
         if($query = mysqli_prepare($link,$stmnt)){
 
-            mysqli_stmt_bind_param($query,"sss",$group_name,$group_visibility,$hashed_group_code);
+            mysqli_stmt_bind_param($query,"sss",$group_name,$group_visibility,$group_code);
             $group_name = $_REQUEST["GROUP_NAME"];
             $group_visibility = $_REQUEST["GROUP_VISIBILITY"];
 	    $group_code=$_REQUEST["GROUP_CODE"];
             $user_email = $_REQUEST["USER_EMAIL"];
             //hashed code
-	    $hashed_group_code =password_hash($group_code,PASSWORD_DEFAULT);
+	    //$hashed_group_code =password_hash($group_code,PASSWORD_DEFAULT);
 
             // Check if all the values where sent
             if(!isset($group_name ,$group_visibility,$group_code,$user_email )){
