@@ -92,36 +92,7 @@ if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AN
                     echo json_encode($output);
                     mysqli_close($link);
                 }
-	/*   for hashed codes
-if( password_verify($groupcode,$req_groupCode){
-
-
-    $stmnt = "INSERT INTO group_user(USER_ID,GROUP_ID) VALUES (?,?)";
-    if($query = mysqli_prepare($link,$stmnt)){
-
-        mysqli_stmt_bind_param($query,"ii",$user_id,$group_id);
-        $user_id = $_REQUEST["USER_ID"];
-        $group_id = $_REQUEST["GROUP_ID"];
-
-        mysqli_stmt_execute($query);
-        
-        // Successful
-        $output["success"]="1";
-        $output["message"]="Successfully joined group";
-        echo json_encode($output);
-        mysqli_close($link);
-    }
-
-}else{
-    // Unsuccessful
-    $output["success"]="0";
-    $output["message"]="Incorrect invite code";
-    echo json_encode($output);
-    mysqli_close($link);
-}
 	
-	
-	*/
 
             }
             
