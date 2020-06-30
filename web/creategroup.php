@@ -30,8 +30,10 @@ if($result = mysqli_prepare($link,"SELECT GROUP_NAME FROM research_group WHERE G
             mysqli_stmt_bind_param($query,"sss",$group_name,$group_visibility,$group_code);
             $group_name = $_REQUEST["GROUP_NAME"];
             $group_visibility = $_REQUEST["GROUP_VISIBILITY"];
-            $group_code = $_REQUEST["GROUP_CODE"];
+	    $group_code=$_REQUEST["GROUP_CODE"];
             $user_email = $_REQUEST["USER_EMAIL"];
+            //hashed code
+	    //$hashed_group_code =password_hash($group_code,PASSWORD_DEFAULT);
 
             // Check if all the values where sent
             if(!isset($group_name ,$group_visibility,$group_code,$user_email )){

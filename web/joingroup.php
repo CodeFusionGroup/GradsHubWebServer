@@ -92,6 +92,7 @@ if($result = mysqli_prepare($link,"SELECT * FROM group_user WHERE USER_ID = ? AN
                     echo json_encode($output);
                     mysqli_close($link);
                 }
+	
 
             }
             
