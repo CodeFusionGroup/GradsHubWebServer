@@ -19,7 +19,7 @@ FROM group_post as gp
 INNER JOIN group_user as gu ON gp.GROUP_USER_ID = gu.GROUP_USER_ID
 INNER JOIN user as u ON gu.USER_ID = u.USER_ID
 where gp.GROUP_ID = $group_id
-ORDER BY gp.POST_DATE DESC ";
+ORDER BY gp.POST_DATE DESC, gp.GROUP_POST_ID";
 
 // Find no. comments and likes in a group post
 $stmnt_count = " SELECT COALESCE( NO_OF_COMMENTS,0) AS NO_OF_COMMENTS,COALESCE( NO_OF_LIKES,0) AS NO_OF_LIKES
@@ -35,7 +35,7 @@ FROM group_post_like
 GROUP BY GROUP_POST_ID 
 ) NO_OF_LIKES ON NO_OF_LIKES.GROUP_POST_ID = gp.GROUP_POST_ID
 WHERE gp.GROUP_ID = $group_id
-ORDER BY gp.POST_DATE DESC ";
+ORDER BY gp.POST_DATE DESC, gp.GROUP_POST_ID";
 
 // Make the queries
 $query_post = mysqli_query($link,$stmnt_post );
