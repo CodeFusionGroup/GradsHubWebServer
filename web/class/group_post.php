@@ -54,7 +54,7 @@
             return false;
         }
 
-        // #################### CREATE ####################
+        // #################### READ ####################
 
         // Find no. comments and likes in a group post
         public function readCommentsAndLikes(){
