@@ -94,9 +94,11 @@
 
         // Function retrieves the events a user has voted on
         public function getUserEventVotes($query_user_id){
-            $sqlQuery = "SELECT EVENT_ID,USER_EVENT_LIKE
+            $sqlQuery = "SELECT e.EVENT_ID,ue.USER_EVENT_LIKE
                       FROM
-                      USER_EVENT
+                      user_event as ue
+                    INNER JOIN ". $this->db_table ." as e
+                    ON ue.EVENT_ID = e.ID
                     WHERE 
                        USER_ID = ?";
             $stmt = $this->conn->prepare($sqlQuery);
