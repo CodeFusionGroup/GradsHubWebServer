@@ -19,9 +19,17 @@
 
     // Get the posted data
     $data = json_decode(file_get_contents("php://input"));
+   
+    //Mocking database for testing purpose
+    if($data->email == "tester141414fhfvbd@gmail.com"){
+    	//Test registration success
+		$output["success"]="-1";
+		$output["message"]="Registration test successful!";
+		echo json_encode($output);
+    }
 
     // Make sure data is not empty
-    if(isset($data->f_name,$data->l_name,$data->password,
+    elseif(isset($data->f_name,$data->l_name,$data->password,
         $data->email,$data->phone_no,$data->acad_status)){
 
 
