@@ -32,7 +32,7 @@
         // retrieve group member
         $group_member = $group_obj->getGroupMember($data->user_id,$data->group_id);
 
-        // 
+        // Output array
         $output = array();
 
         foreach($post_id_arr as $post_id){
@@ -60,7 +60,13 @@
                 }
             }
         }
+
+        // Output the result 
+        echo json_encode($output);
+
+    }else{
+        // Debugging purposes
+        echo 'Data is missing';
     }
-    // Output the result 
-    echo json_encode($output);
+    
 ?>

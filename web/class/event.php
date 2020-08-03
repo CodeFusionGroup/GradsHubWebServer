@@ -9,6 +9,7 @@
 
         // Columns
         public $id;
+        public $event_id;
         public $title;
 
         // Db connection
@@ -24,15 +25,15 @@
             $sqlQuery = "INSERT INTO
                         ". $this->db_table ."
                     SET
-                        EVENT_TITLE = :title";
+                        EVENT_ID = :event_id";
         
             $stmt = $this->conn->prepare($sqlQuery);
         
             // sanitize
-            $this->title=htmlspecialchars(strip_tags($this->title));
+            $this->event_id=htmlspecialchars(strip_tags($this->event_id));
 
             // bind data
-            $stmt->bindParam(":title", $this->title);
+            $stmt->bindParam(":event_id", $this->event_id);
 
             if($stmt->execute()){
                return true;
@@ -103,6 +104,42 @@
             $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt;
+        }
+
+        // Fucntion checks if an event already exists
+        public function checkEventExist(){
+            $sqlQuery = "SELECT ID,EVENT_ID
+                      FROM
+                      ". $this->db_table ."
+                    WHERE 
+                    EVENT_ID = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $this->event_id, PDO::PARAM_STR);
+            
+
+            $stmt->execute();
+            $stmt_count = $stmt->rowCount();
+            if($stmt_count>0){
+                return true;
+            }else{
+                return false;
+            } 
+        }
+
+        // Function gets and sets the event id
+        public function getEventID(){
+            $sqlQuery = "SELECT ID
+                      FROM
+                      ". $this->db_table ."
+                    WHERE 
+                    EVENT_ID = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $this->event_id, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+            
         }
     }
 
