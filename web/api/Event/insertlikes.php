@@ -69,7 +69,7 @@
                 }
                 
 
-            // ########### EVENT DOESNT EXIST FIRST CREATE EVENT ###########
+            // ########### EVENT DOESNT EXIST, CREATE EVENT ###########
             }else{
 
                 // Create the event
@@ -106,7 +106,10 @@
         }
 
         // Output the result 
-        echo json_encode($output);
+        // echo json_encode($output);
+        $message["success"] = "1";
+        $message["message"] = "Votes have been inserted.";
+        echo json_encode($message);
 
     }else{
         // Debugging purposes
