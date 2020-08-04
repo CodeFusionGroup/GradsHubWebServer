@@ -143,6 +143,23 @@
             return $stmt;
             
         }
+
+        // Function gets and sets the event id
+        public function fetchAll(){
+            $sqlQuery = "SELECT e.EVENT_ID,
+                COUNT(IF(ue.USER_EVENT_LIKE = 'true',ue.USER_EVENT_ID,NULL)) AS VOTES_TRUE,
+                COUNT(IF(ue.USER_EVENT_LIKE = 'false',ue.USER_EVENT_ID,NULL)) AS VOTES_FALSE
+                FROM user_event ue
+                INNER JOIN ". $this->db_table ." e
+                ON ue.EVENT_ID = e.ID
+                GROUP BY e.EVENT_ID;";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            // $stmt->bindParam(1, $this->event_id, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt;
+            
+        }
     }
 
 
