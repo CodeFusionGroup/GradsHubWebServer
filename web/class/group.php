@@ -97,6 +97,10 @@
 
         }
 
+        public function uploadPDF(){
+            
+        }
+
         // #################### READ ####################
 
         // Get a group using the group name
