@@ -18,7 +18,15 @@
 
   	  	
     $file= $_FILES['file']['name'];
+    echo json_encode($file);
     $temp_name= $_FILES['file']['tmp_name'];
+    echo json_encode($temp_name);
+    $error= $_FILES['file']['error'];
+    echo json_encode($error);
+    $type= $_FILES['file']['type'];
+    echo json_encode($type);
+    $size= $_FILES['file']['size'];
+    echo json_encode($size);
     $path = SITE_ROOT."/uploadedFiles/".$file;
 
     $res_upload = move_uploaded_file($temp_name,$path);
