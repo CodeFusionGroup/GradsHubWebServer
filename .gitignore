@@ -1,3 +1,2 @@
 # Ignore vendor file (Composer will handle installation of dependencies on deploy)
 /vendor/
-/web/uploadedFiles/
