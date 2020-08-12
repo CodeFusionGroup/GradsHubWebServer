@@ -23,6 +23,14 @@
     $type= $_FILES['file']['type'];
     $size= $_FILES['file']['size'];
     $path = SITE_ROOT."/uploadedFiles/".$file;
+    $directoryName = SITE_ROOT."/uploadedFiles/";
+
+
+    //Check if the directory already exists.
+    if(!is_dir($directoryName)){
+        //Directory does not exist, so lets create it.
+        mkdir($directoryName, 0755);
+    }
 
     // Check errors : https://www.php.net/manual/en/features.file-upload.errors.php
     if( $error == '1'){
