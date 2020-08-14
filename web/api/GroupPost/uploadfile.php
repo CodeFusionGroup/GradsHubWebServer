@@ -25,13 +25,17 @@
 
     // Upload files directory
     $curr_server = $_SERVER["DOCUMENT_ROOT"];
-    echo json_encode($curr_server);
-    $heroku_path = "https://gradshub.herokuapp.com";
-    $local_path = "";
-    $path = SITE_ROOT."/uploadedFiles/".$file;
-    $directoryName = SITE_ROOT."/uploadedFiles/";
-
-
+    $path = "";
+    $directoryName = "";
+    if($curr_server == "\/app\/web"){
+        $path = "https://gradshub.herokuapp.com/uploadedFiles/".$file;
+        $directoryName = "https://gradshub.herokuapp.com/uploadedFiles/";
+    }else{
+        $path = SITE_ROOT."/uploadedFiles/".$file;
+        $directoryName = SITE_ROOT."/uploadedFiles/";
+    }
+    
+    
     //Check if the directory already exists.
     if(!is_dir($directoryName)){
         //Directory does not exist, so lets create it.
