@@ -29,6 +29,7 @@
     $directoryName = "";
     if($curr_server == "/app/web"){
         // $path = "https://gradshub.herokuapp.com/uploadedFiles/".$file;
+        echo "Heroku";
         $path = "https://gradshub.herokuapp.com/uploadedFiles/";
         $directoryName = "https://gradshub.herokuapp.com/uploadedFiles/";
     }else{
