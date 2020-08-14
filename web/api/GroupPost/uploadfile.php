@@ -27,7 +27,7 @@
     $curr_server = $_SERVER["DOCUMENT_ROOT"];
     $path = "";
     $directoryName = "";
-    if($curr_server == "\/app\/web"){
+    if($curr_server == "/app/web"){
         // $path = "https://gradshub.herokuapp.com/uploadedFiles/".$file;
         $path = "https://gradshub.herokuapp.com/uploadedFiles/";
         $directoryName = "https://gradshub.herokuapp.com/uploadedFiles/";
