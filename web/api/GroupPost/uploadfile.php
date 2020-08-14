@@ -16,12 +16,18 @@
     // Create group object
     $group_obj = new Group($db);
 
-  	  	
+    // Uploaded file data
     $file= $_FILES['file']['name'];
     $temp_name= $_FILES['file']['tmp_name'];
     $error= $_FILES['file']['error'];
     $type= $_FILES['file']['type'];
     $size= $_FILES['file']['size'];
+
+    // Upload files directory
+    $curr_server = $_SERVER["DOCUMENT_ROOT"];
+    echo json_encode($curr_server);
+    $heroku_path = "https://gradshub.herokuapp.com";
+    $local_path = "";
     $path = SITE_ROOT."/uploadedFiles/".$file;
     $directoryName = SITE_ROOT."/uploadedFiles/";
 

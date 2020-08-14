@@ -88,10 +88,6 @@
         }
         
         /*public function downloadFile($query_user_id,$query_group_id){
-
-
-
-
          //selects all from group post table for closer comparison
             $sqlQuery = "SELECT gp.GROUP_POST_ID FROM
                         ". $this->db_table ." AS gp
