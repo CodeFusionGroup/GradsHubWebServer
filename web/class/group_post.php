@@ -86,26 +86,6 @@
             return false;
             
         }
-        
-        /*public function downloadFile($query_user_id,$query_group_id){
-         //selects all from group post table for closer comparison
-            $sqlQuery = "SELECT gp.GROUP_POST_ID FROM
-                        ". $this->db_table ." AS gp
-                        INNER JOIN group_user AS gu ON gp.GROUP_USER_ID = gu.GROUP_USER_ID
-
-                        WHERE 
-
-                        gu.USER_ID = ? AND gu.GROUP_ID = ?";
-                          
-            $stmt = $this->conn->prepare($sqlQuery);
-
-            $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
-            $stmt->bindParam(1, $query_group_id, PDO::PARAM_INT);
-
-            $stmt->execute();
-            return $stmt;
-
-} */
 
         // #################### READ ####################
 
@@ -148,6 +128,29 @@
             $stmt->execute();
             return $stmt;
         }
+
+        // retrieves url for downloading a pdf file
+        public function downloadFile($query_post_id){
+            // $sqlQuery = "SELECT gp.GROUP_POST_ID FROM
+            //             ". $this->db_table ." AS gp
+            //             INNER JOIN group_user AS gu ON gp.GROUP_USER_ID = gu.GROUP_USER_ID
+
+            //             WHERE 
+
+            //             gu.USER_ID = ? AND gu.GROUP_ID = ?";
+            $sqlQuery = "SELECT POST_ATTACHMENT_FILE FROM
+                        ". $this->db_table ."
+                        WHERE 
+                        GROUP_POST_ID = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $query_post_id, PDO::PARAM_INT);
+
+            $stmt->execute();
+            return $stmt;
+        }
+
+
 
     }
 
