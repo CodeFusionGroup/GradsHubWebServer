@@ -81,7 +81,7 @@
                     $group_post_obj->group_id = $group_id;
                     $group_post_obj->title = $post_title;
                     $group_post_obj->date = $post_date;
-                    $group_post_obj->attachment_file = $path;
+                    $group_post_obj->attachment_file = $hashed_path;
             
                     // Put path to file in database
                     if($group_post_obj->uploadPDF()){
