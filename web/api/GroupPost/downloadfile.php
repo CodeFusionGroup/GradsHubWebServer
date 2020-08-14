@@ -6,6 +6,17 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
+ // $query= "SELECT * FROM upload_image_video WHERE pathToFile='$url'";
+                    // $result= mysqli_query($con, $query);
+                    // $emparray = array();
+                    //     if(mysqli_num_rows($result) > 0){  
+                    //         while ($row = mysqli_fetch_assoc($result)) {
+                    //             $emparray[] = $row;
+                    //         }
+                    //     echo json_encode(array( "status" => "true","message" => "Successfully file added!" , "data" => $emparray) );
+                    //     }else{
+                    //         echo json_encode(array( "status" => "false","message" => "Failed!") );
+                    //     }
       
 	//including the database connection file
     require_once __DIR__."/../../config.php";
