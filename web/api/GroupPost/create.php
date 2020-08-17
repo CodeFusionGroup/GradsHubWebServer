@@ -24,7 +24,7 @@
     $data = json_decode(file_get_contents("php://input"));
 
     // Make sure data is not empty
-    if(isset($data->group_id,$data->user_id,$data->post_title,$data->post_date,$data->post_url)){
+    if(isset($data->group_id,$data->user_id,$data->post_title,$data->post_date)){
 
         // retrieve group member
         $group_member = $group_obj->getGroupMember($data->user_id,$data->group_id);
@@ -34,17 +34,31 @@
         $group_post_obj->group_id = $data->group_id;
         $group_post_obj->title = $data->post_title;
         $group_post_obj->date = $data->post_date;
-        $group_post_obj->attachment_url = $data->post_url;
 
-        // Create the post
-        if($group_post_obj->createPost()){
-            $output["success"]="1";
-            $output["message"]="New post created";
-            echo json_encode($output);
-        }else{
-            echo 'Post could not be created.';
+        // Check if its a file or url
+        if(isset($data->post_url)){
+            $group_post_obj->attachment_url = $data->post_url;
+            // Create the post
+            if($group_post_obj->createPostUrl()){
+                $output["success"]="1";
+                $output["message"]="New post created";
+                echo json_encode($output);
+            }else{
+                echo 'Post could not be created.';
+            }
         }
-
+        else if(isset($data->post_file)){
+            $group_post_obj->attachment_file = $data->post_file;
+            // Create the post
+            if($group_post_obj->createPostFile()){
+                $output["success"]="1";
+                $output["message"]="New post created";
+                echo json_encode($output);
+            }else{
+                echo 'Post could not be created.';
+            }
+        }
+        
     }else{
         $output["success"]="0";
         $output["message"]="You didn't send the required values!";

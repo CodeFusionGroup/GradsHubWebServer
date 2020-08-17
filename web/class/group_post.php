@@ -23,8 +23,8 @@
 
         // #################### CREATE ####################
 
-        // Create a new group post
-        public function createPost(){
+        // Create a new group post(URL)
+        public function createPostUrl(){
             $sqlQuery = "INSERT INTO
                         ". $this->db_table ."
                     SET
@@ -33,6 +33,37 @@
                         POST_TITLE = :title, 
                         POST_DATE = :date, 
                         POST_ATTACHMENT_URL = :attachment_url";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            // sanitize
+            $this->group_user_id=htmlspecialchars(strip_tags($this->group_user_id));
+            $this->group_id=htmlspecialchars(strip_tags($this->group_id));
+            $this->title=htmlspecialchars(strip_tags($this->title));
+            $this->date=htmlspecialchars(strip_tags($this->date));
+            $this->attachment_file=htmlspecialchars(strip_tags($this->attachment_file));
+
+            // bind data
+            $stmt->bindParam(":group_user_id", $this->group_user_id);
+            $stmt->bindParam(":group_id", $this->group_id);
+            $stmt->bindParam(":title", $this->title);
+            $stmt->bindParam(":date", $this->date);
+            $stmt->bindParam(":attachment_file", $this->attachment_file);
+
+            if($stmt->execute()){
+                return true;
+            }
+            return false;
+        }
+        // Create a new group post(FILE)
+        public function createPostFile(){
+            $sqlQuery = "INSERT INTO
+                        ". $this->db_table ."
+                    SET
+                        GROUP_USER_ID = :group_user_id,
+                        GROUP_ID = :group_id,
+                        POST_TITLE = :title, 
+                        POST_DATE = :date, 
+                        POST_ATTACHMENT_FILE = :attachment_file";
             $stmt = $this->conn->prepare($sqlQuery);
 
             // sanitize
@@ -115,7 +146,8 @@
 
         // Select all posts in a group
         public function read(){
-            $sqlQuery = " SELECT u.USER_FNAME, u.USER_LNAME, gp.GROUP_POST_ID,gp.POST_TITLE, gp.POST_DATE,gp.POST_ATTACHMENT_URL
+            $sqlQuery = " SELECT u.USER_FNAME, u.USER_LNAME, gp.GROUP_POST_ID,gp.POST_TITLE
+                    , gp.POST_DATE,gp.POST_ATTACHMENT_URL,gp.POST_ATTACHMENT_FILE
                     FROM ". $this->db_table ." as gp 
                     INNER JOIN group_user as gu ON gp.GROUP_USER_ID = gu.GROUP_USER_ID
                     INNER JOIN user as u ON gu.USER_ID = u.USER_ID
