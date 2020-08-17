@@ -40,14 +40,14 @@
             $this->group_id=htmlspecialchars(strip_tags($this->group_id));
             $this->title=htmlspecialchars(strip_tags($this->title));
             $this->date=htmlspecialchars(strip_tags($this->date));
-            $this->attachment_file=htmlspecialchars(strip_tags($this->attachment_file));
+            $this->attachment_url=htmlspecialchars(strip_tags($this->attachment_url));
 
             // bind data
             $stmt->bindParam(":group_user_id", $this->group_user_id);
             $stmt->bindParam(":group_id", $this->group_id);
             $stmt->bindParam(":title", $this->title);
             $stmt->bindParam(":date", $this->date);
-            $stmt->bindParam(":attachment_file", $this->attachment_file);
+            $stmt->bindParam(":attachment_url", $this->attachment_url);
 
             if($stmt->execute()){
                 return true;
@@ -71,14 +71,14 @@
             $this->group_id=htmlspecialchars(strip_tags($this->group_id));
             $this->title=htmlspecialchars(strip_tags($this->title));
             $this->date=htmlspecialchars(strip_tags($this->date));
-            $this->attachment_url=htmlspecialchars(strip_tags($this->attachment_url));
+            $this->attachment_file=htmlspecialchars(strip_tags($this->attachment_file));
 
             // bind data
             $stmt->bindParam(":group_user_id", $this->group_user_id);
             $stmt->bindParam(":group_id", $this->group_id);
             $stmt->bindParam(":title", $this->title);
             $stmt->bindParam(":date", $this->date);
-            $stmt->bindParam(":attachment_url", $this->attachment_url);
+            $stmt->bindParam(":attachment_file", $this->attachment_file);
 
             if($stmt->execute()){
                 return true;
