@@ -146,7 +146,8 @@
 
         // Select all posts in a group
         public function read(){
-            $sqlQuery = " SELECT u.USER_FNAME, u.USER_LNAME, gp.GROUP_POST_ID,gp.POST_TITLE, gp.POST_DATE,gp.POST_ATTACHMENT_URL
+            $sqlQuery = " SELECT u.USER_FNAME, u.USER_LNAME, gp.GROUP_POST_ID,gp.POST_TITLE
+                    , gp.POST_DATE,gp.POST_ATTACHMENT_URL,gp.POST_ATTACHMENT_FILE
                     FROM ". $this->db_table ." as gp 
                     INNER JOIN group_user as gu ON gp.GROUP_USER_ID = gu.GROUP_USER_ID
                     INNER JOIN user as u ON gu.USER_ID = u.USER_ID

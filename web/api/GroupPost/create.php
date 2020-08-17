@@ -59,9 +59,6 @@
             }
         }
         
-
-        
-
     }else{
         $output["success"]="0";
         $output["message"]="You didn't send the required values!";
