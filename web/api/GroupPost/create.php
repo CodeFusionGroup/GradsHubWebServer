@@ -47,8 +47,9 @@
                 echo 'Post could not be created.';
             }
         }
-        else if(isset($data->post_file)){
+        else if(isset($data->post_file,$data->post_file_name)){
             $group_post_obj->file = $data->post_file;
+            $group_post_obj->file_name = $data->post_file_name;
             // Create the post
             if($group_post_obj->createPostFile()){
                 $output["success"]="1";
@@ -57,6 +58,10 @@
             }else{
                 echo 'Post could not be created.';
             }
+        }else{
+            $output["success"]="0";
+            $output["message"]="You didn't send the required values!";
+            echo json_encode($output);
         }
         
     }else{

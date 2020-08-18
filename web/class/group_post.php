@@ -15,6 +15,7 @@
         public $date;
         public $url;
         public $file;
+        public $file_name;
 
         // Db connection
         public function __construct($db){
@@ -63,7 +64,8 @@
                         GROUP_ID = :group_id,
                         POST_TITLE = :title, 
                         POST_DATE = :date, 
-                        POST_FILE = :file";
+                        POST_FILE = :file,
+                        POST_FILE_NAME = :file_name";
             $stmt = $this->conn->prepare($sqlQuery);
 
             // sanitize
@@ -72,6 +74,7 @@
             $this->title=htmlspecialchars(strip_tags($this->title));
             $this->date=htmlspecialchars(strip_tags($this->date));
             $this->file=htmlspecialchars(strip_tags($this->file));
+            $this->file_name=htmlspecialchars(strip_tags($this->file_name));
 
             // bind data
             $stmt->bindParam(":group_user_id", $this->group_user_id);
@@ -79,6 +82,7 @@
             $stmt->bindParam(":title", $this->title);
             $stmt->bindParam(":date", $this->date);
             $stmt->bindParam(":file", $this->file);
+            $stmt->bindParam(":file_name", $this->file_name);
 
             if($stmt->execute()){
                 return true;
