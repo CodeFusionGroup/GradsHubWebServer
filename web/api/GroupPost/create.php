@@ -37,7 +37,7 @@
 
         // Check if its a file or url
         if(isset($data->post_url)){
-            $group_post_obj->attachment_url = $data->post_url;
+            $group_post_obj->url = $data->post_url;
             // Create the post
             if($group_post_obj->createPostUrl()){
                 $output["success"]="1";
@@ -48,7 +48,7 @@
             }
         }
         else if(isset($data->post_file)){
-            $group_post_obj->attachment_file = $data->post_file;
+            $group_post_obj->file = $data->post_file;
             // Create the post
             if($group_post_obj->createPostFile()){
                 $output["success"]="1";
