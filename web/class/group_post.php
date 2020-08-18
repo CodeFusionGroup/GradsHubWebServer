@@ -13,8 +13,8 @@
         public $group_id;
         public $title;
         public $date;
-        public $attachment_url;
-        public $attachment_file;
+        public $url;
+        public $file;
 
         // Db connection
         public function __construct($db){
@@ -32,7 +32,7 @@
                         GROUP_ID = :group_id,
                         POST_TITLE = :title, 
                         POST_DATE = :date, 
-                        POST_ATTACHMENT_URL = :attachment_url";
+                        POST_URL = :url";
             $stmt = $this->conn->prepare($sqlQuery);
 
             // sanitize
@@ -40,14 +40,14 @@
             $this->group_id=htmlspecialchars(strip_tags($this->group_id));
             $this->title=htmlspecialchars(strip_tags($this->title));
             $this->date=htmlspecialchars(strip_tags($this->date));
-            $this->attachment_url=htmlspecialchars(strip_tags($this->attachment_url));
+            $this->url=htmlspecialchars(strip_tags($this->url));
 
             // bind data
             $stmt->bindParam(":group_user_id", $this->group_user_id);
             $stmt->bindParam(":group_id", $this->group_id);
             $stmt->bindParam(":title", $this->title);
             $stmt->bindParam(":date", $this->date);
-            $stmt->bindParam(":attachment_url", $this->attachment_url);
+            $stmt->bindParam(":url", $this->url);
 
             if($stmt->execute()){
                 return true;
@@ -63,7 +63,7 @@
                         GROUP_ID = :group_id,
                         POST_TITLE = :title, 
                         POST_DATE = :date, 
-                        POST_ATTACHMENT_FILE = :attachment_file";
+                        POST_FILE = :file";
             $stmt = $this->conn->prepare($sqlQuery);
 
             // sanitize
@@ -71,14 +71,14 @@
             $this->group_id=htmlspecialchars(strip_tags($this->group_id));
             $this->title=htmlspecialchars(strip_tags($this->title));
             $this->date=htmlspecialchars(strip_tags($this->date));
-            $this->attachment_file=htmlspecialchars(strip_tags($this->attachment_file));
+            $this->file=htmlspecialchars(strip_tags($this->file));
 
             // bind data
             $stmt->bindParam(":group_user_id", $this->group_user_id);
             $stmt->bindParam(":group_id", $this->group_id);
             $stmt->bindParam(":title", $this->title);
             $stmt->bindParam(":date", $this->date);
-            $stmt->bindParam(":attachment_file", $this->attachment_file);
+            $stmt->bindParam(":file", $this->file);
 
             if($stmt->execute()){
                 return true;
@@ -86,6 +86,7 @@
             return false;
         }
 
+        // TODO: Function is not used anymore (possibly delete)
         public function uploadPDF(){
             $sqlQuery = "INSERT INTO
                         ". $this->db_table ."
@@ -94,7 +95,7 @@
                         GROUP_ID = :group_id,
                         POST_TITLE = :title, 
                         POST_DATE = :date, 
-                        POST_ATTACHMENT_FILE = :attachment_file";
+                        POST_FILE = :file";
             $stmt = $this->conn->prepare($sqlQuery);
 
             // sanitize
@@ -102,14 +103,14 @@
             $this->group_id=htmlspecialchars(strip_tags($this->group_id));
             $this->title=htmlspecialchars(strip_tags($this->title));
             $this->date=htmlspecialchars(strip_tags($this->date));
-            $this->attachment_file=htmlspecialchars(strip_tags($this->attachment_file));
+            $this->file=htmlspecialchars(strip_tags($this->file));
 
             // bind data
             $stmt->bindParam(":group_user_id", $this->group_user_id);
             $stmt->bindParam(":group_id", $this->group_id);
             $stmt->bindParam(":title", $this->title);
             $stmt->bindParam(":date", $this->date);
-            $stmt->bindParam(":attachment_file", $this->attachment_file);
+            $stmt->bindParam(":attachment_file", $this->file);
 
             if($stmt->execute()){
                 return true;
@@ -147,7 +148,7 @@
         // Select all posts in a group
         public function read(){
             $sqlQuery = " SELECT u.USER_FNAME, u.USER_LNAME, gp.GROUP_POST_ID,gp.POST_TITLE
-                    , gp.POST_DATE,gp.POST_ATTACHMENT_URL,gp.POST_ATTACHMENT_FILE
+                    , gp.POST_DATE,gp.POST_URL,gp.POST_FILE
                     FROM ". $this->db_table ." as gp 
                     INNER JOIN group_user as gu ON gp.GROUP_USER_ID = gu.GROUP_USER_ID
                     INNER JOIN user as u ON gu.USER_ID = u.USER_ID
@@ -161,6 +162,7 @@
             return $stmt;
         }
 
+        // TODO: Function is not used (possibly delete)
         // retrieves url for downloading a pdf file
         public function downloadFile($query_post_id){
             // $sqlQuery = "SELECT gp.GROUP_POST_ID FROM
@@ -170,7 +172,7 @@
             //             WHERE 
 
             //             gu.USER_ID = ? AND gu.GROUP_ID = ?";
-            $sqlQuery = "SELECT POST_ATTACHMENT_FILE FROM
+            $sqlQuery = "SELECT POST_FILE FROM
                         ". $this->db_table ."
                         WHERE 
                         GROUP_POST_ID = ?";
