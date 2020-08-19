@@ -35,6 +35,9 @@
         // Output array
         $output = array();
 
+        //Used for error checking
+        $already_liked = false;
+
         foreach($post_id_arr as $post_id){
 
             // Find out if user has already liked post
@@ -42,6 +45,7 @@
                 $display["success"] = "0";
                 $display["message"] = "You have already liked this post.";
                 array_push($output,$display);
+                $already_liked = true;
             }else{
 
                 // Set group post like property values
@@ -62,7 +66,17 @@
         }
 
         // Output the result 
-        echo json_encode($output);
+        // echo json_encode($output);
+        if(!$already_liked){
+            $message["success"] = "1";
+            $message["message"] = "Successfully liked the post.";
+            echo json_encode($message);
+        }else{
+            $message["success"] = "0";
+            $message["message"] = "One or more posts where already liked.";
+            echo json_encode($message);
+        }
+        
 
     }else{
         // Debugging purposes
