@@ -60,7 +60,7 @@
             }
         }else{
             $output["success"]="0";
-            $output["message"]="You didn't send the required values!";
+            $output["message"]="Values needed to upload file are missing!";
             echo json_encode($output);
         }
         

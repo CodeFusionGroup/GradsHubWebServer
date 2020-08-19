@@ -38,6 +38,10 @@
             $output["message"]="Event already exists";
             echo json_encode($output);
         }
+    }else{
+        $output["success"]="-1";
+        $output["message"]="You didn't send the required values!";
+        echo json_encode($output);
     }
 
 
