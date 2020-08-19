@@ -14,62 +14,57 @@
     $database = new Database();
     $db = $database->getConnection();
 
-    // Create event object
+    // Create group object
     $event_obj = new Event($db);
 
     // Get the posted data
     $data = json_decode(file_get_contents("php://input"));
 
-    // Make sure data is not empty
-    if(isset($data->user_id,$data->event_ids,$data->event_votes)){
+    if(isset($data->user_id, $data->event_ids)){
 
-        // Store string event_ids and event_votes in adjacent arrays
+        // Store string event_ids in an array
         $event_id_arr = explode(',',$data->event_ids);
-        $event_votes_arr = explode(',',$data->event_votes);
 
         // Output array
         $output = array();
 
-        // TODO: Update for-loop to for-each
-        for($i=0;$i<sizeof($event_id_arr);$i++){
+        // Used for error checking
+        $already_favourited = false;
+
+        foreach($event_id_arr as $event_id){
 
             // Set event property values
-            $event_obj->event_id = $event_id_arr[$i];
-            $vote = $event_votes_arr[$i];
-
-            // TODO: Check if the user has liked/disliked and if one is true allow updating to the other one
-            // e.g. if i have liked event A but now want to dislike allow to dislike
+            $event_obj->event_id = $event_id;
 
             // ########### Check if the event already exists in the db ###########
             if($event_obj->checkEventExist()){
-                // Debugging purposes
-                // echo 'Event exists';
 
                 // Get and set the auto generated event id
                 $stmnt_event_ID = $event_obj->getEventID();
                 $data_row = $stmnt_event_ID->fetch(PDO::FETCH_ASSOC); 
-                $event_obj->id = $data_row['ID'];  
-                
-                // Find out if user has already liked/disliked event
-                if($event_obj->checkEventLiked($data->user_id)){
+                $event_obj->id = $data_row['ID']; 
+
+                // Find out if user has already favourited event
+                if($event_obj->checkEventFavourite($data->user_id)){
                     $display["success"] = "0";
-                    $display["message"] = "You have already liked this event.";
+                    $display["message"] = "You have already favourited this event.";
                     array_push($output,$display);
+                    $already_favourited = true;
                 }else{
-                    // Insert the like
-                    if($event_obj->createUserEvent($data->user_id,$vote)){
+                    // Insert the favourite
+                    if($event_obj->insertFavouriteEvent($data->user_id)){
                         $display["success"] = "1";
-                        $display["message"] = "Event vote created";
+                        $display["message"] = "Event favourite created";
                         array_push($output,$display);
                     }else{
                         // Debugging purposes
-                        echo 'Like could not be created.';
+                        echo 'Event could not be updated.';
                     }
                 }
-                
 
+            }
             // ########### EVENT DOESNT EXIST, CREATE EVENT ###########
-            }else{
+            else{
 
                 // Create the event
                 if($event_obj->createEvent()){
@@ -77,23 +72,23 @@
                     // Get and set the auto generated event id
                     $stmnt_event_ID = $event_obj->getEventID();
                     $data_row = $stmnt_event_ID->fetch(PDO::FETCH_ASSOC); 
-                    $event_obj->id = $data_row['ID'];                    
+                    $event_obj->id = $data_row['ID']; 
 
-                    // Find out if user has already liked/disliked event
-                    if($event_obj->checkEventLiked($data->user_id)){
+                    // Find out if user has already favourited event
+                    if($event_obj->checkEventFavourite($data->user_id)){
                         $display["success"] = "0";
-                        $display["message"] = "You have already liked this event.";
+                        $display["message"] = "You have already favourited this event.";
                         array_push($output,$display);
+                        $already_favourited = true;
                     }else{
-
-                        // Insert the like
-                        if($event_obj->createUserEvent($data->user_id,$vote)){
+                        // Insert the favourite
+                        if($event_obj->insertFavouriteEvent($data->user_id)){
                             $display["success"] = "1";
-                            $display["message"] = "Event vote created";
+                            $display["message"] = "Event favourite created";
                             array_push($output,$display);
                         }else{
                             // Debugging purposes
-                            echo 'Like could not be created.';
+                            echo 'Event could not be updated.';
                         }
                     }
 
@@ -101,18 +96,26 @@
                     // Debugging purposes
                     echo 'Event could not be created.';
                 }
+
             }
         }
-
         // Output the result 
         // echo json_encode($output);
-        $message["success"] = "1";
-        $message["message"] = "Votes have been inserted.";
-        echo json_encode($message);
+        if(!$already_favourited){
+            $message["success"] = "1";
+            $message["message"] = "Events have been favourited.";
+            echo json_encode($message);
+        }else{
+            $message["success"] = "0";
+            $message["message"] = "One or more of your events have been favourited.";
+            echo json_encode($message);
+        }
+        
 
     }else{
-        // Debugging purposes
-        echo 'Data is missing';
+        $output["success"]="-1";
+        $output["message"]="You didn't send the required values!";
+        echo json_encode($output);
     }
 
 ?>
