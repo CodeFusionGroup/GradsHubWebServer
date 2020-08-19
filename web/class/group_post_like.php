@@ -64,14 +64,15 @@
 
         public function readUserLikes($query_user_id,$query_group_id){
             $sqlQuery = "SELECT gpl.GROUP_POST_ID
-                        FROM ". $this->db_table ." AS gpl
+                    FROM 
+                        ". $this->db_table ." AS gpl
                         INNER JOIN group_user AS gu ON gpl.GROUP_USER_ID = gu.GROUP_USER_ID
                     WHERE 
                     gu.USER_ID = ? AND gu.GROUP_ID = ?";
             $stmt = $this->conn->prepare($sqlQuery);
 
             $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
-            $stmt->bindParam(1, $query_group_id, PDO::PARAM_INT);
+            $stmt->bindParam(2, $query_group_id, PDO::PARAM_INT);
 
             $stmt->execute();
             return $stmt;
