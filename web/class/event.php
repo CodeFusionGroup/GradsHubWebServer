@@ -189,6 +189,21 @@
             return $stmt;
             
         }
+        
+        
+        //fetchs all events a user favourited
+         public function getUserEventFavourite($query_user_id){
+         $sqlQuery = "SELECT *
+                      FROM
+                       user_favourite
+                    WHERE 
+                       USER_ID = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt;
+        }
 
         // Function fetches all the events with its votes
         public function fetchAll(){
