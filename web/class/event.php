@@ -193,9 +193,11 @@
         
         //fetchs all events a user favourited
          public function getUserEventFavourite($query_user_id){
-         $sqlQuery = "SELECT EVENT_ID
+         $sqlQuery = "SELECT e.EVENT_ID
                       FROM
-                       user_favourite
+                       user_favourite as uf
+                       INNER JOIN event as e 
+                       ON uf.EVENT_ID=e.ID
                     WHERE 
                        USER_ID = ?";
             $stmt = $this->conn->prepare($sqlQuery);
