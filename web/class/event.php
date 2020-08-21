@@ -193,7 +193,7 @@
         
         //fetchs all events a user favourited
          public function getUserEventFavourite($query_user_id){
-         $sqlQuery = "SELECT *
+         $sqlQuery = "SELECT EVENT_ID
                       FROM
                        user_favourite
                     WHERE 
