@@ -52,7 +52,7 @@
                     $already_favourited = true;
                 }else{
                     // Insert the favourite
-                    if($event_obj->insertFavouriteEvent($data->user_id)){
+                    if($event_obj->createFavouriteEvent($data->user_id)){
                         $display["success"] = "1";
                         $display["message"] = "Event favourite created";
                         array_push($output,$display);
@@ -82,7 +82,7 @@
                         $already_favourited = true;
                     }else{
                         // Insert the favourite
-                        if($event_obj->insertFavouriteEvent($data->user_id)){
+                        if($event_obj->createFavouriteEvent($data->user_id)){
                             $display["success"] = "1";
                             $display["message"] = "Event favourite created";
                             array_push($output,$display);

@@ -40,10 +40,11 @@
             // TODO: Check if the user has liked/disliked and if one is true allow updating to the other one
             // e.g. if i have liked event A but now want to dislike allow to dislike
 
+            // Used for error checking
+            $already_voted = false;
+
             // ########### Check if the event already exists in the db ###########
             if($event_obj->checkEventExist()){
-                // Debugging purposes
-                // echo 'Event exists';
 
                 // Get and set the auto generated event id
                 $stmnt_event_ID = $event_obj->getEventID();
@@ -55,15 +56,17 @@
                     $display["success"] = "0";
                     $display["message"] = "You have already liked this event.";
                     array_push($output,$display);
+                    //
+                    $already_voted = true;
                 }else{
                     // Insert the like
-                    if($event_obj->createUserEvent($data->user_id,$vote)){
+                    if($event_obj->createEventVote($data->user_id,$vote)){
                         $display["success"] = "1";
                         $display["message"] = "Event vote created";
                         array_push($output,$display);
                     }else{
                         // Debugging purposes
-                        echo 'Like could not be created.';
+                        echo 'Event Exists:Like could not be created.';
                     }
                 }
                 
@@ -84,16 +87,18 @@
                         $display["success"] = "0";
                         $display["message"] = "You have already liked this event.";
                         array_push($output,$display);
+                        // 
+                        $already_voted = true;
                     }else{
 
                         // Insert the like
-                        if($event_obj->createUserEvent($data->user_id,$vote)){
+                        if($event_obj->createEventVote($data->user_id,$vote)){
                             $display["success"] = "1";
                             $display["message"] = "Event vote created";
                             array_push($output,$display);
                         }else{
                             // Debugging purposes
-                            echo 'Like could not be created.';
+                            echo 'Event Not Exist:Like could not be created.';
                         }
                     }
 
@@ -106,13 +111,22 @@
 
         // Output the result 
         // echo json_encode($output);
-        $message["success"] = "1";
-        $message["message"] = "Votes have been inserted.";
-        echo json_encode($message);
+        if(!$already_voted){
+            $message["success"] = "1";
+            $message["message"] = "Votes have been inserted.";
+            echo json_encode($message);
+        }else{
+            $message["success"] = "0";
+            $message["message"] = "One or more of the events already have votes.";
+            echo json_encode($message);
+        }
+        
 
     }else{
         // Debugging purposes
-        echo 'Data is missing';
+        $output["success"] = "-1";
+        $output["message"] = "One or more values are missing.";
+        echo json_encode($output);
     }
 
 ?>
