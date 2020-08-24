@@ -1,11 +1,11 @@
 <?php
 
-    class CHATS{
+    class Chatroom{
         // Connection
         private $conn;
 
         // Table
-        private $db_table = "chats";
+        private $db_table = "chatroom";
 
         // Columns
         //public $id;
@@ -47,7 +47,7 @@
         //saves messages to database
         public fuction saveChat(){
             $sqlQuery= "INSERT INTO 
-                        chats
+                        chatroom
                     SET
                         USER_ID = :user_id,
                         MESSAGES = :messages";
