@@ -47,7 +47,7 @@
         //saves messages to database
         public fuction saveChat(){
             $sqlQuery= "INSERT INTO 
-                        chatroom
+                        ". $this->db_table ."
                     SET
                         USER_ID = :user_id,
                         MESSAGES = :messages";
