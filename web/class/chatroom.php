@@ -9,9 +9,7 @@
 
         // Columns
         //public $id;
-        public $chat_id;
-        public $messages;
-        public $dates;
+        public $chatroom_id;
 
         // Db connection
         public function __construct($db){
@@ -21,20 +19,20 @@
         // #################### CREATE ####################
 
         // CREATE
-        public function createChat(){
+        public function createChatroom(){
 
             $sqlQuery = "INSERT INTO
                         ". $this->db_table ."
                     SET
-                        CHAT_ID = : chat_id";
+                        CHATROOM_ID = : chatroom_id";
         
             $stmt = $this->conn->prepare($sqlQuery);
         
             // sanitize
-            $this->chat_id=htmlspecialchars(strip_tags($this->chat_id));
+            $this->chatroom_id=htmlspecialchars(strip_tags($this->chatroom_id));
 
             // bind data
-            $stmt->bindParam(":chat_id", $this->chat_id);
+            $stmt->bindParam(":chatroom_id", $this->chatroom_id);
 
             if($stmt->execute()){
                return true;
@@ -45,12 +43,12 @@
         
 
         //saves messages to database
-        public function saveChat(){
+        /*public function saveChat(){
             $sqlQuery= "INSERT INTO 
-                    ". $this->db_table ."
+                    messages
                     SET
                         USER_ID = :user_id,
-                        MESSAGES = :messages";
+                        MESSAGE_TEXT= :messages";
 
             $stmt = $this->conn->prepare($sqlQuery);
 
@@ -68,14 +66,17 @@
               }
               return false;
   
-        }
+        }*/
 
        //
        public function getChatroom(){
-        $sqlQuery= "SELECT C.* 
-        FROM ". $this->db_table ." AS c
-         INNER JOIN 
-             user AS u ON c.USER_ID=u.USER_ID";
+        $sqlQuery= "SELECT m.MESSAGE_ID,
+                           m.MESSAGE_TEXT,
+                           u.USER_ID
+  
+                    FROM messages AS m
+                    INNER JOIN user AS u ON m.USER_ID = U.USER_ID
+                    WHERE m.CHATROOM_ID=2;
 
         $stmt = $this->conn->prepare($sqlQuery);
 
