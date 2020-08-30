@@ -34,16 +34,17 @@
         $hashed_password = $dataRow['USER_PASSWORD'];
         if(password_verify($user_password,$hashed_password)){
             // Put user details into a JSON object
-            $message["USER_EMAIL"] = $dataRow['USER_EMAIL'];
-			$message["USER_ID"] = $dataRow['USER_ID'];
-			$message["USER_FNAME"] = $dataRow['USER_FNAME'];
-			$message["USER_LNAME"] = $dataRow['USER_LNAME'];
-			$message["USER_PHONE_NO"] = $dataRow['USER_PHONE_NO'];
-			$message["USER_ACAD_STATUS"] = $dataRow['USER_ACAD_STATUS'];
+            $res_user["USER_EMAIL"] = $dataRow['USER_EMAIL'];
+			$res_user["USER_ID"] = $dataRow['USER_ID'];
+			$res_user["USER_FNAME"] = $dataRow['USER_FNAME'];
+			$res_user["USER_LNAME"] = $dataRow['USER_LNAME'];
+			$res_user["USER_PHONE_NO"] = $dataRow['USER_PHONE_NO'];
+			$res_user["USER_ACAD_STATUS"] = $dataRow['USER_ACAD_STATUS'];
 
             // Output
 			$output["success"] = "1";
-            $output["message"] = $message;
+            $output["message"] = "Successfully logged in";
+            $output["user"] = $res_user;
             echo json_encode($output);
         }else{
             // Unsuccessful
