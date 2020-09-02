@@ -39,36 +39,36 @@
                return true;
             }
             return false;
-
         }
-        // CREATE an new event vote
-        public function createEventVote($query_user_id,$query_vote){
-
-            $sqlQuery = "INSERT INTO
-                        event_vote
-                    SET
-                        USER_ID = :user_id,
-                        EVENT_ID = :event_id,
-                        EVENT_VOTE = :user_vote";
         
-            $stmt = $this->conn->prepare($sqlQuery);
+        // CREATE an new event vote(REMOVED)
+        // public function createEventVote($query_user_id,$query_vote){
+
+        //     $sqlQuery = "INSERT INTO
+        //                 event_vote
+        //             SET
+        //                 USER_ID = :user_id,
+        //                 EVENT_ID = :event_id,
+        //                 EVENT_VOTE = :user_vote";
         
-            // sanitize
-            $query_user_id=htmlspecialchars(strip_tags($query_user_id));
-            $this->id=htmlspecialchars(strip_tags($this->id));
-            $query_vote=htmlspecialchars(strip_tags($query_vote));
+        //     $stmt = $this->conn->prepare($sqlQuery);
+        
+        //     // sanitize
+        //     $query_user_id=htmlspecialchars(strip_tags($query_user_id));
+        //     $this->id=htmlspecialchars(strip_tags($this->id));
+        //     $query_vote=htmlspecialchars(strip_tags($query_vote));
 
-            // bind data
-            $stmt->bindParam(":user_id", $query_user_id);
-            $stmt->bindParam(":event_id", $this->id);
-            $stmt->bindParam(":user_vote", $query_vote);
+        //     // bind data
+        //     $stmt->bindParam(":user_id", $query_user_id);
+        //     $stmt->bindParam(":event_id", $this->id);
+        //     $stmt->bindParam(":user_vote", $query_vote);
 
-            if($stmt->execute()){
-               return true;
-            }
-            return false;
+        //     if($stmt->execute()){
+        //        return true;
+        //     }
+        //     return false;
 
-        }
+        // }
 
         // This function creates a new favourited event
         public function createFavouriteEvent($query_user_id){
@@ -97,26 +97,27 @@
 
         // #################### READ ####################
 
-        // This function checks if the user has already voted for the event
-        public function checkEventLiked($query_user_id){
-            $sqlQuery = "SELECT EVENT_VOTE_ID
-                      FROM
-                      event_vote
-                    WHERE 
-                       USER_ID = ? AND EVENT_ID = ?";
-            $stmt = $this->conn->prepare($sqlQuery);
+        // This function checks if the user has already voted for the event(REMOVED)
+        // public function checkEventLiked($query_user_id){
+        //     $sqlQuery = "SELECT EVENT_VOTE_ID
+        //               FROM
+        //               event_vote
+        //             WHERE 
+        //                USER_ID = ? AND EVENT_ID = ?";
+        //     $stmt = $this->conn->prepare($sqlQuery);
 
-            $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
-            $stmt->bindParam(2, $this->id, PDO::PARAM_INT);
+        //     $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
+        //     $stmt->bindParam(2, $this->id, PDO::PARAM_INT);
 
-            $stmt->execute();
-            $stmt_count = $stmt->rowCount();
-            if($stmt_count>0){
-                return true;
-            }else{
-                return false;
-            }
-        }
+        //     $stmt->execute();
+        //     $stmt_count = $stmt->rowCount();
+        //     if($stmt_count>0){
+        //         return true;
+        //     }else{
+        //         return false;
+        //     }
+        // }
+
         // This function checks if the user has already favourited an event
         public function checkEventFavourite($query_user_id){
             $sqlQuery = "SELECT EVENT_FAVOURITE_ID
@@ -138,22 +139,22 @@
             }
         }
 
-        // Function retrieves the events a user has voted on
-        public function getUserEventVotes($query_user_id){
-            $sqlQuery = "SELECT e.EVENT_ID,ev.EVENT_VOTE
-                        FROM
-                            event_vote as ev
-                        INNER JOIN 
-                            ". $this->db_table ." as e
-                            ON ev.EVENT_ID = e.ID
-                        WHERE 
-                            USER_ID = ?";
-            $stmt = $this->conn->prepare($sqlQuery);
+        // Function retrieves the events a user has voted on (REMOVED)
+        // public function getUserEventVotes($query_user_id){
+        //     $sqlQuery = "SELECT e.EVENT_ID,ev.EVENT_VOTE
+        //                 FROM
+        //                     event_vote as ev
+        //                 INNER JOIN 
+        //                     ". $this->db_table ." as e
+        //                     ON ev.EVENT_ID = e.ID
+        //                 WHERE 
+        //                     USER_ID = ?";
+        //     $stmt = $this->conn->prepare($sqlQuery);
 
-            $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
-            $stmt->execute();
-            return $stmt;
-        }
+        //     $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
+        //     $stmt->execute();
+        //     return $stmt;
+        // }
 
         // Fucntion checks if an event already exists
         public function checkEventExist(){
