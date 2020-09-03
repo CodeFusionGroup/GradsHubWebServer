@@ -71,7 +71,7 @@
 
         // Find people to chat with (only people in common groups)
         public function retrieveCommonGroupUsers($query_user_id){
-            $sqlQuery = " SELECT DISTINCT u.USER_ID,u.USER_FNAME,u.USER_LNAME 
+            $sqlQuery = " SELECT DISTINCT u.USER_ID,u.USER_FNAME,u.USER_LNAME,u.USER_EMAIL, u.USER_PHONE_NO, u.USER_ACAD_STATUS
                         FROM group_user gu
                             INNER JOIN research_group rg ON gu.GROUP_ID = rg.GROUP_ID
                             INNER JOIN user u ON gu.USER_ID = u.USER_ID 
