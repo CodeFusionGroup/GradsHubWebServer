@@ -35,6 +35,9 @@
 
         foreach($event_id_arr as $event_id){
 
+            // Set event property values
+            $event_obj->event_id = $event_id;
+
             // Get and set the auto generated event ID
             $stmnt_event_ID = $event_obj->getEventID();
             $data_row = $stmnt_event_ID->fetch(PDO::FETCH_ASSOC); 

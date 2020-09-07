@@ -201,7 +201,7 @@
                     INNER JOIN event as e 
                        ON ef.EVENT_ID = e.ID
                     WHERE 
-                       USER_ID = ?";
+                       ef.USER_ID = ? AND ef.EVENT_FAVOURITE = 'true' ";
             $stmt = $this->conn->prepare($sqlQuery);
 
             $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
@@ -242,7 +242,7 @@
         // function that unstars/stars a users favourite event
         public function updateFavourite($query_user_id){
             $sqlQuery = "UPDATE event_favourite 
-                        SET EVENT_FAVOURITE = false
+                        SET EVENT_FAVOURITE = 'false'
                         WHERE USER_ID = :user_id AND EVENT_ID = :event_id";
             $stmt = $this->conn->prepare($sqlQuery);
 
