@@ -240,15 +240,24 @@
         // #################### UPDATE ####################
 
         // function that unstars/stars a users favourite event
-        public function updateeFavourite($query_user_id){
-            $sqlQuery = "SELECT e.EVENT_ID, COUNT(ef.EVENT_FAVOURITE) AS NO_STARS 
-                        FROM event_favourite ef
-                            INNER JOIN ". $this->db_table ." e 
-                            ON ef.EVENT_ID = e.ID
-                        GROUP BY e.EVENT_ID";
+        public function updateFavourite($query_user_id){
+            $sqlQuery = "UPDATE event_favourite 
+                        SET EVENT_FAVOURITE = false
+                        WHERE USER_ID = :user_id AND EVENT_ID = :event_id";
             $stmt = $this->conn->prepare($sqlQuery);
-            $stmt->execute();
-            return $stmt;
+
+            // sanitize
+            $query_user_id=htmlspecialchars(strip_tags($query_user_id));
+            $this->id=htmlspecialchars(strip_tags($this->id));
+
+            // bind data
+            $stmt->bindParam(":user_id", $query_user_id);
+            $stmt->bindParam(":event_id", $this->id);
+
+            if($stmt->execute()){
+                return true;
+             }
+             return false;
         }
     }
 ?>
