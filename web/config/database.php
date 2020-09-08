@@ -1,19 +1,22 @@
 <?php 
     class Database {
-        private $host = "us-cdbr-iron-east-04.cleardb.net";
-        private $database_name = "heroku_6b7ffb41be0156e";
-        private $username = "b6febc76a325a3";
-        private $password = "a4831502";
+        private $host;
+        private $database_name;
+        private $username;
+        private $password;
 
         public $conn;
 
-        // function __construct() {
-        //     $url = parse_url(getenv("CLEARDB_DATABASE_URL"));
-        //     $this->host = $url["host"];
-        //     $this->database_name = substr($url["path"], 1);
-        //     $this->username = $url["user"];
-        //     $this->password = $url["pass"];
-        // }
+        function __construct() {
+            // get the variables file
+            include_once dirname(__FILE__) . "/vars.php";
+
+            // Set the private properties
+            $this->host = DB_HOST;
+            $this->database_name = DB_NAME;
+            $this->username = DB_USERNAME;
+            $this->password = DB_PASSWORD;
+        }
 
         public function getConnection(){
             $this->conn = null;

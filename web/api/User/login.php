@@ -5,17 +5,14 @@
     header("Access-Control-Max-Age: 3600");
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-    // Configuration for file url
-    require_once __DIR__."/../../config.php";
+    // Configuration for variable
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/config/vars.php';
 
-    include_once SITE_ROOT.'/config/database.php';
-    include_once SITE_ROOT.'/class/user.php';
-
-    $database = new Database();
-    $db = $database->getConnection();
+    // Get the User class
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/class/user.php';
 
     // Create user object
-    $user_obj = new User($db);
+    $user_obj = new User();
 
     // Get the posted data
     $data = json_decode(file_get_contents("php://input"));
