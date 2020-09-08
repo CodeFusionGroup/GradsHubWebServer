@@ -235,6 +235,7 @@
                         FROM event_favourite ef
                             INNER JOIN ". $this->db_table ." e 
                             ON ef.EVENT_ID = e.ID
+                        WHERE ef.EVENT_FAVOURITE = 'true'
                         GROUP BY e.EVENT_ID";
             $stmt = $this->conn->prepare($sqlQuery);
             $stmt->execute();

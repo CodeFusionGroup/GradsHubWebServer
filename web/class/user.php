@@ -80,14 +80,27 @@
                         ". $this->db_table ."
                     WHERE 
                        USER_EMAIL = ?";
-
             $stmt = $this->conn->prepare($sqlQuery);
 
             $stmt->bindParam(1, $query_email, PDO::PARAM_STR);
-
             $stmt->execute();
-            return $stmt;
 
+            return $stmt;
+        }
+
+        //getting a specified token to send push to selected device
+        public function getTokenByEmail($query_email){
+            $sqlQuery = "SELECT USER_FCM_TOKEN
+                      FROM
+                        ". $this->db_table ."
+                    WHERE 
+                       USER_EMAIL = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $query_email, PDO::PARAM_STR);
+            $stmt->execute();
+
+            return $stmt;
         }
 
         // GET ALL
