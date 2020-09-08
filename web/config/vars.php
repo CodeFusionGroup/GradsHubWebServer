@@ -7,6 +7,8 @@
 
     //Database 
     $url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+    echo sizeof($url);
+    echo gettype($url);
     if(sizeof($url) == 4){
         define('DB_HOST',$url["host"]);
         define('DB_NAME',substr($url["path"], 1));
