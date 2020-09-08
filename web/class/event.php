@@ -201,7 +201,7 @@
                     INNER JOIN event as e 
                        ON ef.EVENT_ID = e.ID
                     WHERE 
-                       USER_ID = ?";
+                       ef.USER_ID = ? AND ef.EVENT_FAVOURITE = 'true' ";
             $stmt = $this->conn->prepare($sqlQuery);
 
             $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
@@ -212,16 +212,52 @@
         // Function fetches all the events with its votes
         public function fetchAll(){
             $sqlQuery = "SELECT e.EVENT_ID,
-                COUNT(IF(ev.EVENT_VOTE = 'true',ev.EVENT_VOTE_ID,NULL)) AS VOTES_TRUE,
-                COUNT(IF(ev.EVENT_VOTE = 'false',ev.EVENT_VOTE_ID,NULL)) AS VOTES_FALSE
-                FROM event_vote ev
-                INNER JOIN ". $this->db_table ." e
-                ON ev.EVENT_ID = e.ID
-                GROUP BY e.EVENT_ID;";
+                            COUNT(IF(ev.EVENT_VOTE = 'true',ev.EVENT_VOTE_ID,NULL)) AS VOTES_TRUE,
+                            COUNT(IF(ev.EVENT_VOTE = 'false',ev.EVENT_VOTE_ID,NULL)) AS VOTES_FALSE
+                        FROM event_vote ev
+                            INNER JOIN ". $this->db_table ." e
+                            ON ev.EVENT_ID = e.ID
+                        GROUP BY e.EVENT_ID";
             $stmt = $this->conn->prepare($sqlQuery);
 
             $stmt->execute();
             return $stmt;
+        }
+
+        // Funtion that fetches a count(no of stars) of each event
+        public function fetchStarCount(){
+            $sqlQuery = "SELECT e.EVENT_ID, COUNT(ef.EVENT_FAVOURITE) AS NO_STARS 
+                        FROM event_favourite ef
+                            INNER JOIN ". $this->db_table ." e 
+                            ON ef.EVENT_ID = e.ID
+                        GROUP BY e.EVENT_ID";
+            $stmt = $this->conn->prepare($sqlQuery);
+            $stmt->execute();
+            return $stmt;
+        }
+
+
+        // #################### UPDATE ####################
+
+        // function that unstars/stars a users favourite event
+        public function updateFavourite($query_user_id){
+            $sqlQuery = "UPDATE event_favourite 
+                        SET EVENT_FAVOURITE = 'false'
+                        WHERE USER_ID = :user_id AND EVENT_ID = :event_id";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            // sanitize
+            $query_user_id=htmlspecialchars(strip_tags($query_user_id));
+            $this->id=htmlspecialchars(strip_tags($this->id));
+
+            // bind data
+            $stmt->bindParam(":user_id", $query_user_id);
+            $stmt->bindParam(":event_id", $this->id);
+
+            if($stmt->execute()){
+                return true;
+             }
+             return false;
         }
     }
 ?>

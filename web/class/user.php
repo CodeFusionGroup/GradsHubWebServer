@@ -15,6 +15,7 @@
         public $email;
         public $phone_no;
         public $acad_status;
+        public $fcm_token;
 
         // Db connection
         public function __construct($db){
@@ -33,7 +34,8 @@
                         USER_PASSWORD = :password, 
                         USER_EMAIL = :email, 
                         USER_PHONE_NO = :phone_no, 
-                        USER_ACAD_STATUS = :acad_status";
+                        USER_ACAD_STATUS = :acad_status, 
+                        USER_FCM_TOKEN = :fcm_token";
             $stmt = $this->conn->prepare($sqlQuery);
         
             // sanitize
@@ -43,6 +45,7 @@
             $this->email=htmlspecialchars(strip_tags($this->email));
             $this->phone_no=htmlspecialchars(strip_tags($this->phone_no));
             $this->acad_status=htmlspecialchars(strip_tags($this->acad_status));
+            $this->fcm_token=htmlspecialchars(strip_tags($this->fcm_token));
 
             // bind data
             $stmt->bindParam(":f_name", $this->f_name);
@@ -51,6 +54,7 @@
             $stmt->bindParam(":email", $this->email);
             $stmt->bindParam(":phone_no", $this->phone_no);
             $stmt->bindParam(":acad_status", $this->acad_status);
+            $stmt->bindParam(":fcm_token", $this->fcm_token);
 
             if($stmt->execute()){
                return true;
@@ -63,7 +67,8 @@
 
         // Get a user using an email
         public function getUserByEmail($query_email){
-            $sqlQuery = "SELECT *
+            $sqlQuery = "SELECT USER_ID,USER_FNAME,USER_LNAME,USER_PASSWORD,USER_PASSWORD
+                            ,USER_EMAIL,USER_PHONE_NO, USER_ACAD_STATUS
                       FROM
                         ". $this->db_table ."
                     WHERE 
@@ -79,38 +84,38 @@
         }
 
         // GET ALL
-        public function getEmployees(){
-            $sqlQuery = "SELECT * FROM " . $this->db_table . "";
-            $stmt = $this->conn->prepare($sqlQuery);
-            $stmt->execute();
-            return $stmt;
-        }
+        // public function getEmployees(){
+        //     $sqlQuery = "SELECT * FROM " . $this->db_table . "";
+        //     $stmt = $this->conn->prepare($sqlQuery);
+        //     $stmt->execute();
+        //     return $stmt;
+        // }
         
 
         // READ single
-        public function getSingleEmployee(){
-            $sqlQuery = "SELECT *
-                      FROM
-                        ". $this->db_table ."
-                    WHERE 
-                       id = ?
-                    LIMIT 0,1";
+        // public function getSingleEmployee(){
+        //     $sqlQuery = "SELECT *
+        //               FROM
+        //                 ". $this->db_table ."
+        //             WHERE 
+        //                id = ?
+        //             LIMIT 0,1";
 
-            $stmt = $this->conn->prepare($sqlQuery);
+        //     $stmt = $this->conn->prepare($sqlQuery);
 
-            $stmt->bindParam(1, $this->id);
+        //     $stmt->bindParam(1, $this->id);
 
-            $stmt->execute();
+        //     $stmt->execute();
 
-            $dataRow = $stmt->fetch(PDO::FETCH_ASSOC);
+        //     $dataRow = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            $this->f_name = $dataRow['USER_FNAME'];
-            $this->l_name = $dataRow['USER_LNAME'];
-            $this->password = $dataRow['USER_PASSWORD'];
-            $this->email = $dataRow['USER_EMAIL'];
-            $this->phone_no = $dataRow['USER_PHONE_NO'];
-            $this->acad_status = $dataRow['USER_ACAD_STATUS'];
-        }
+        //     $this->f_name = $dataRow['USER_FNAME'];
+        //     $this->l_name = $dataRow['USER_LNAME'];
+        //     $this->password = $dataRow['USER_PASSWORD'];
+        //     $this->email = $dataRow['USER_EMAIL'];
+        //     $this->phone_no = $dataRow['USER_PHONE_NO'];
+        //     $this->acad_status = $dataRow['USER_ACAD_STATUS'];
+        // }
         
 
         // UPDATE
