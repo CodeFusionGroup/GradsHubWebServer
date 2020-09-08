@@ -14,8 +14,13 @@
         public $post_like;
 
         // Db connection
-        public function __construct($db){
-            $this->conn = $db;
+        public function __construct(){
+            // Get the database.php file
+            require_once $_SERVER['DOCUMENT_ROOT'] .'/config/database.php';
+
+            // Create a database object
+            $database = new Database();
+            $this->conn = $database->getConnection();
         }
 
         // #################### CREATE ####################

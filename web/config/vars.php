@@ -22,7 +22,6 @@
         define('DB_PASSWORD',TMP_PASSWORD);
     }
     
-    
     // Firebase api key
-    define('FIREBASE_API_KEY','SERVER_KEY');
+    define('FIREBASE_API_KEY',getenv("FIREBASE_SERVER_KEY"));
 ?>
