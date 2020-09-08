@@ -30,7 +30,7 @@
 
     // Make sure data is not empty
     elseif(isset($data->f_name,$data->l_name,$data->password,
-        $data->email,$data->phone_no,$data->acad_status)){
+        $data->email,$data->phone_no,$data->acad_status,$data->fcm_token)){
 
 
             // Ensure User does not already exist
@@ -47,6 +47,7 @@
                 $user_obj->email = $data->email;
                 $user_obj->phone_no = $data->phone_no;
                 $user_obj->acad_status = $data->acad_status;
+                $user_obj->fcm_token = $data->fcm_token;
 
                 // Create the user
                 if($user_obj->createUser()){
