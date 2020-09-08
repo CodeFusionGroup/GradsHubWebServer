@@ -5,13 +5,12 @@
     header("Access-Control-Max-Age: 3600");
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-    // Configuration for variable
+    // Configuration for Global variables
     require_once $_SERVER['DOCUMENT_ROOT'] . '/config/vars.php';
-
     // Get the User class
     include_once $_SERVER['DOCUMENT_ROOT'] . '/class/user.php';
 
-    // Create user object
+    // Create User object
     $user_obj = new User();
 
     // Get the posted data
@@ -23,7 +22,6 @@
     // Check if user email exists
     if($user_count > 0){
         
-
         $dataRow = $stmnt->fetch(PDO::FETCH_ASSOC);
 
         // Check password

@@ -5,20 +5,16 @@
     header("Access-Control-Max-Age: 3600");
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-    // Configuration for file url
-    require_once __DIR__."/../../config.php";
+    // Configuration for Global variables
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/config/vars.php';
+    // Get the User and Group class
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/class/user.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/class/group.php';
 
-    include_once SITE_ROOT.'/config/database.php';
-    include_once SITE_ROOT.'/class/user.php';
-    include_once SITE_ROOT.'/class/group.php';
-
-    $database = new Database();
-    $db = $database->getConnection();
-
-    // Create user object
-    $user_obj = new User($db);
-    // Create group object
-    $group_obj = new Group($db);
+    // Create User object
+    $user_obj = new User();
+    // Create Group object
+    $group_obj = new Group();
 
     // Get the posted data
     $data = json_decode(file_get_contents("php://input"));
