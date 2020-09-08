@@ -7,9 +7,9 @@
 
     // Configuration for Global variables
     require_once $_SERVER['DOCUMENT_ROOT'] . '/config/vars.php';
-    // Get the Group and Group Post Comment class
+    // Get the Group and Group Post class
     include_once $_SERVER['DOCUMENT_ROOT'] . '/class/group.php';
-    include_once $_SERVER['DOCUMENT_ROOT'] . '/class/group_post_comment.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/class/group_post.php';
 
     // Create Group Post object
     $group_post_obj = new GroupPost();
