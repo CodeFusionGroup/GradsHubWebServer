@@ -89,15 +89,36 @@
         }
 
         //getting a specified token to send push to selected device
-        public function getTokenByEmail($query_email){
+        public function getTokenByID($query_user_id){
             $sqlQuery = "SELECT USER_FCM_TOKEN
                       FROM
                         ". $this->db_table ."
                     WHERE 
-                       USER_EMAIL = ?";
+                        USER_ID = ?";
             $stmt = $this->conn->prepare($sqlQuery);
 
-            $stmt->bindParam(1, $query_email, PDO::PARAM_STR);
+            $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Get the token
+            $dataRow = $stmt->fetch(PDO::FETCH_ASSOC);
+            $token = $dataRow['USER_FCM_TOKEN'];
+            $token_arr = array(); //TODO: Probably change to one token
+            array_push($token_arr,$token);
+
+            return $token_arr;
+        }
+
+        // Get the full name of a user
+        public function getFullName($query_user_id){
+            $sqlQuery = "SELECT USER_FNAME,USER_LNAME
+                      FROM
+                        ". $this->db_table ."
+                    WHERE 
+                        USER_ID = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
             $stmt->execute();
 
             return $stmt;
