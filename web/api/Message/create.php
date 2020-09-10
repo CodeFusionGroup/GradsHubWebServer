@@ -45,13 +45,12 @@
             // Create Push Object
             $push_obj = new Push($fullname,$data->message_text);
             // Get the Push Notification from the push object
-            $push_notification = $push_obj->getPush();
-            // $test_not = $push_obj->testNot();
+            $data_payload = $push_obj->getMessage();
+            $notification_payload = $push_obj->getNotification();
             // Get the token for the recipients device
             $recipient_token = $user_obj->getTokenByID($data->recipient_id);
             // Send Push Notification
-            echo $firebase_obj->send($recipient_token, $push_notification);
-            // echo $firebase_obj->notification($recipient_token,$test_not);
+            $firebase_obj->send($recipient_token, $data_payload,$notification_payload);
             
             $output["success"]="1";
             $output["message"]="Message Sent";

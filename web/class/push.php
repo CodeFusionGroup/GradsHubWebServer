@@ -13,19 +13,24 @@
             $this->message = $message;
         }
 
+        // TODO: Change to specific message keys for android
         // Get Push notification
-        public function getPush(){
+        public function getMessage(){
             $result = array();
-            $result['data']['title'] = $this->title;
-            $result['data']['message'] = $this->message;
+            // The message data payload
+            $result['title'] = $this->title;
+            $result['message'] = $this->message;
             return $result;
         }
 
         //Test Notification
-        public function testNot(){
+        public function getNotification(){
             $result = array();
-            $result['notification']['title'] = $this->title;
-            $result['notification']['body'] = $this->message;
+            // The notification data payload
+            $result['title'] = $this->title;
+            $result['body'] = $this->message;
+            $result['sound'] = "default";
+            $result['type'] = 1;
             return $result;
         }
 
