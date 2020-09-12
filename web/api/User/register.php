@@ -34,26 +34,36 @@
             $count_user_query = $user_query->rowCount();
             if($count_user_query == 0 ){
 
-                // Set the user property values
-                $user_obj->f_name = $data->f_name;
-                $user_obj->l_name = $data->l_name;
-                //Hash the password
-                $hashed_password = password_hash($data->password,PASSWORD_DEFAULT);
-                $user_obj->password = $hashed_password;
-                $user_obj->email = $data->email;
-                $user_obj->phone_no = $data->phone_no;
-                $user_obj->acad_status = $data->acad_status;
-                $user_obj->fcm_token = $data->fcm_token;
+                // Check that phone number is 10 digits
+                if(strlen($data->phone_no) == 10){
 
-                // Create the user
-                if($user_obj->createUser()){
-                    // echo 'User created successfully.';
-                    $output["success"]="1";
-                    $output["message"]="Registration successful!";
+                    // Set the user property values
+                    $user_obj->f_name = $data->f_name;
+                    $user_obj->l_name = $data->l_name;
+                    //Hash the password
+                    $hashed_password = password_hash($data->password,PASSWORD_DEFAULT);
+                    $user_obj->password = $hashed_password;
+                    $user_obj->email = $data->email;
+                    $user_obj->phone_no = $data->phone_no;
+                    $user_obj->acad_status = $data->acad_status;
+                    $user_obj->fcm_token = $data->fcm_token;
+
+                    // Create the user
+                    if($user_obj->createUser()){
+                        // echo 'User created successfully.';
+                        $output["success"]="1";
+                        $output["message"]="Registration successful!";
+                        echo json_encode($output);
+                    } else{
+                        echo 'User could not be created.';
+                    }
+                }else{
+                    $output["success"]="-1";
+                    $output["message"]="Incorrect Phone Number length";
                     echo json_encode($output);
-                } else{
-                    echo 'User could not be created.';
                 }
+
+                
                 
             }else{
                 //User exists
