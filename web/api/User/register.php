@@ -26,8 +26,8 @@
 
     // Make sure data is not empty
     elseif(isset($data->f_name,$data->l_name,$data->password,
-        $data->email,$data->phone_no,$data->acad_status,$data->fcm_token)){
-
+        $data->email,$data->phone_no,$data->acad_status)){
+            //,$data->fcm_token
 
             // Ensure User does not already exist
             $user_query = $user_obj->getUserByEmail($data->email);

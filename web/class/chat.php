@@ -72,7 +72,7 @@
         
         // #################### READ ####################
 
-        // Get the Open chats for a user
+        // Get All Open chats for a user
         public function getOpenChats($query_user_id){
             $sqlQuery = "SELECT c.CHAT_ID 
                     FROM ". $this->db_table ." c 
@@ -123,6 +123,21 @@
                 return true;
             }
             return false;
+        }
+
+        // Get all messages in a chat
+        public function getMessages(){
+            $sqlQuery = "SELECT m.MESSAGE_TIMESTAMP, m.MESSAGE_TEXT, concat( u.USER_FNAME,' ',u.USER_LNAME) AS SENT_BY 
+                    FROM message m
+                        INNER JOIN user u ON m.SENDER_ID = u.USER_ID
+                    WHERE CHAT_ID = ?
+                    ORDER BY MESSAGE_TIMESTAMP";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $this->id, PDO::PARAM_INT);
+
+            $stmt->execute();
+            return $stmt;
         }
 
     //    public function getChatroom(){
