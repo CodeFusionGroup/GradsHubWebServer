@@ -127,7 +127,7 @@
 
         // Get all messages in a chat
         public function getMessages(){
-            $sqlQuery = "SELECT m.MESSAGE_TIMESTAMP, m.MESSAGE_TEXT, concat( u.USER_FNAME,' ',u.USER_LNAME) AS SENT_BY 
+            $sqlQuery = "SELECT m.MESSAGE_TIMESTAMP, m.MESSAGE_TEXT, u.USER_ID, concat( u.USER_FNAME,' ',u.USER_LNAME) AS SENT_BY 
                     FROM message m
                         INNER JOIN user u ON m.SENDER_ID = u.USER_ID
                     WHERE CHAT_ID = ?
