@@ -50,8 +50,8 @@
             if($chat_obj->createChat()){
 
                 // Create the chat participants
-                if( $chat_obj->createChatParticipant($data->user_id) 
-                    && $chat_obj->createChatParticipant($data->participant_id)){
+                if( $chat_obj->createChatParticipant($data->sender_id) 
+                    && $chat_obj->createChatParticipant($data->recipient_id)){
 
                     $chatCreated = true;
                     $chat_id = $chat_obj->id;
