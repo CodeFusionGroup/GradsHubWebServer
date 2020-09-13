@@ -29,8 +29,7 @@
 
 
     // Make sure data is not empty
-    // TODO: change date_sent to message_timestamp
-    if(isset($data->sender_id,$data->recipient_id,$data->date_sent,$data->message_text)){
+    if(isset($data->sender_id,$data->recipient_id,$data->message_timestamp,$data->message_text)){
 
         // ########## CHAT ##########
 
@@ -81,7 +80,7 @@
             // Set the message property values
             $message_obj->sender_id = $data->sender_id;
             $message_obj->chat_id = $chat_id;
-            $message_obj->timestamp = $data->date_sent;
+            $message_obj->timestamp = $data->message_timestamp;
             $message_obj->text = $data->message_text;
 
             //Get the ender's fullname

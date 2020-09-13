@@ -36,7 +36,7 @@
             $messages = array();
             foreach($open_chats as $chat_id){
 
-                $stmnt_msg = $chat_obj->getRecentMessage($chat_id['CHAT_ID']);
+                $stmnt_msg = $chat_obj->getRecentMessage($chat_id['CHAT_ID'],$data->user_id);
                 $stmt_msg_count = $stmnt_msg->rowCount();
 
                 // If the chat has messages

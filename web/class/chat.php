@@ -88,16 +88,18 @@
         }
 
         // Get the most recent message in a chat
-        public function getRecentMessage($query_chat_id){
-            $sqlQuery = "SELECT u.USER_ID ,CONCAT(u.USER_FNAME,' ',u.USER_LNAME) AS FULL_NAME, m.MESSAGE_TEXT, m.MESSAGE_TIMESTAMP 
+        public function getRecentMessage($query_chat_id,$query_user_id){
+            $sqlQuery = "SELECT cp.PARTICIPANT_ID ,CONCAT(u.USER_FNAME,' ',u.USER_LNAME) AS FULL_NAME, m.MESSAGE_TEXT, m.MESSAGE_TIMESTAMP 
                     FROM message m
                         INNER JOIN user u ON m.SENDER_ID = u.USER_ID
-                        WHERE m.CHAT_ID = ?
+                        INNER JOIN chat_participant cp ON m.CHAT_ID = cp.CHAT_ID
+                        WHERE m.CHAT_ID = ? AND cp.PARTICIPANT_ID != ?
                     ORDER BY m.MESSAGE_TIMESTAMP DESC
                     LIMIT 1";
             $stmt = $this->conn->prepare($sqlQuery);
 
             $stmt->bindParam(1, $query_chat_id, PDO::PARAM_INT);
+            $stmt->bindParam(2, $query_user_id, PDO::PARAM_INT);
 
             $stmt->execute();
             return $stmt;
