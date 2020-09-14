@@ -124,6 +124,35 @@
             return $stmt;
         }
 
+
+        // #################### READ ####################
+
+        // UPDATE the fcm token
+        public function updateFCMToken(){
+            $sqlQuery = "UPDATE
+                        ". $this->db_table ."
+                    SET
+                        USER_FCM_TOKEN = :fcm_token
+                    WHERE 
+                        USER_ID = :user_id";
+        
+            $stmt = $this->conn->prepare($sqlQuery);
+        
+            // Sanitise the data
+            $this->id=htmlspecialchars(strip_tags($this->id));
+            $this->fcm_token=htmlspecialchars(strip_tags($this->fcm_token));
+            
+            // bind data
+            $stmt->bindParam(":user_id", $this->id);
+            $stmt->bindParam(":fcm_token", $this->fcm_token);
+            
+            if($stmt->execute()){
+               return true;
+            }
+            return false;
+        }
+
+
         // GET ALL
         // public function getEmployees(){
         //     $sqlQuery = "SELECT * FROM " . $this->db_table . "";
