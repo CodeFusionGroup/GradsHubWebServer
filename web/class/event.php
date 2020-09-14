@@ -129,7 +129,7 @@
                       FROM
                       event_favourite
                     WHERE 
-                       USER_ID = ? AND EVENT_ID = ? AND USER_EVENT_FAVOURITE = 'true'";
+                       USER_ID = ? AND EVENT_ID = ? AND EVENT_FAVOURITE = 'true'";
             $stmt = $this->conn->prepare($sqlQuery);
 
             $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
