@@ -213,6 +213,27 @@
             $stmt->execute();
             return $stmt;
         }
+         
+        // unstars events
+         public function Removefavourite($query_user_id){
+         $sqlQuery = "DELETE 
+                    FROM
+                        event_favourite as ef
+                    INNER JOIN event as e 
+                       ON ef.EVENT_ID = e.ID
+                    WHERE 
+                       ef.USER_ID = ? AND ef.EVENT_ID = ?  ";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
+            $stmt->bindParam(2, $this->id, PDO::PARAM_INT)
+           
+
+             if($stmt->execute()){
+                return true;
+            }
+            return false;
+        }
 
         // Function fetches all the events with its votes
         public function fetchAll(){
