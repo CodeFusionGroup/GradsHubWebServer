@@ -219,8 +219,6 @@
         //  $sqlQuery = "DELETE 
         //             FROM
         //                 event_favourite as ef
-        //             INNER JOIN event as e 
-        //                ON ef.EVENT_ID = e.ID
         //             WHERE 
         //                ef.USER_ID = ? AND ef.EVENT_ID = ?  ";
         //     $stmt = $this->conn->prepare($sqlQuery);
