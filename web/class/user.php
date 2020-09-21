@@ -69,8 +69,77 @@
             return false;
         }
 
-        // #################### READ ####################
+        // Send an email
+        public function sendEmail($query_email,$key){
+            $to = $query_email;
+            $subject = "GradsHub: Password Recovery";
 
+            // HTML EMAIL
+            $message = '
+            <html>
+            <head>
+            <title>GradsHub: Password Recovery</title>
+            </head>
+            <body>
+            <p>Dear user,</p>
+            <p>To change your password please follow click the link below:</p>
+            <p>-------------------------------------------------------------</p>
+            <p> <a href = "http://localhost:8080/api/User/password-recovery.php?key='. $key . '&email='.$query_email.'&action=reset"> </a> 
+            </p>
+            <p>-------------------------------------------------------------</p>
+            <p>Please note that for security reasons the link will expire in one day(24 hours).</p>
+            <p>If you did not request this password recovery link, no action 
+            is needed, your password will not be reset. However, you may want to log into 
+            your account and change your password as a precaution.</p>
+            <p>Kind regards</p>
+            <p>Gradshub Team</p>
+            </body>
+            </html>';
+
+            // https://gradshub.herokuapp.com
+
+            // HTML HEADERS and other headers
+            $headers = "MIME-Version: 1.0" . "\r\n";
+            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+            $headers .= 'From: <no-reply@gradshub.herokuapp.com>' . "\r\n";
+
+            //Finally send the email
+            $return_value = mail($to,$subject,$message,$headers);
+
+            if( $return_value == true ) {
+                return true;
+            }
+            return false;
+        }
+
+        // Create a recovery record
+        public function insertRecovery($query_email,$query_key,$query_date){
+            $sqlQuery = "INSERT INTO
+                        password_recovery
+                    SET
+                        RECOVERY_EMAIL = :user_email,
+                        RECOVERY_KEY = :recovery_key,
+                        RECOVERY_EXP_DATE = :exp_date";
+            $stmt = $this->conn->prepare($sqlQuery);
+        
+            // sanitize
+            $query_email=htmlspecialchars(strip_tags($query_email));
+            $query_key=htmlspecialchars(strip_tags($query_key));
+            $query_date=htmlspecialchars(strip_tags($query_date));
+
+
+            // bind data
+            $stmt->bindParam(":user_email", $query_email);
+            $stmt->bindParam(":recovery_key", $query_key);
+            $stmt->bindParam(":exp_date", $query_date);
+
+            if($stmt->execute()){
+               return true;
+            }
+            return false;
+        }
+
+        // #################### READ ####################
 
         // Get a user using an email
         public function getUserByEmail($query_email){
@@ -86,6 +155,25 @@
             $stmt->execute();
 
             return $stmt;
+        }
+
+        // Check if user exists using email
+        public function checkExists($query_email){
+            $sqlQuery = "SELECT USER_ID
+                      FROM
+                        ". $this->db_table ."
+                    WHERE 
+                       USER_EMAIL = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $query_email, PDO::PARAM_STR);
+            $stmt->execute();
+
+            $stmt_count = $stmt->rowCount();
+            if($stmt_count>0){
+                return true;
+            }
+            return false;
         }
 
         //getting a specified token to send push to selected device
@@ -123,9 +211,42 @@
 
             return $stmt;
         }
+        
+         // Get a user profile infomation 
+        public function getUserProfile($query_user_id){
+            $sqlQuery = "SELECT USER_FNAME,USER_LNAME
+                            ,USER_EMAIL,USER_PHONE_NO, USER_ACAD_STATUS
+                      FROM
+                        ". $this->db_table ."
+                    WHERE 
+                       USER_ID = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt;
+        }
+
+        // Check if password recovery exists
+         public function recoveryExist($query_user_email,$query_key){
+            $sqlQuery = "SELECT RECOVERY_EMAIL,RECOVERY_KEY
+                            ,RECOVERY_EXP_DATE,
+                      FROM
+                        password_recovery
+                    WHERE 
+                    RECOVERY_EMAIL = ? AND RECOVERY_KEY = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $query_user_email, PDO::PARAM_STR);
+            $stmt->bindParam(2, $query_key, PDO::PARAM_STR);
+            $stmt->execute();
+
+            return $stmt;
+        }
 
 
-        // #################### READ ####################
+        // #################### UPDATE ####################
 
         // UPDATE the fcm token
         public function updateFCMToken(){
@@ -151,21 +272,29 @@
             }
             return false;
         }
-        
-         // Get a user profile infomation 
-        public function getUserProfile($query_user_id){
-            $sqlQuery = "SELECT USER_FNAME,USER_LNAME
-                            ,USER_EMAIL,USER_PHONE_NO, USER_ACAD_STATUS
-                      FROM
+
+        // Change/update the user's password
+        public function updatePassword($query_user_id,$query_new_pass){
+            $sqlQuery = "UPDATE
                         ". $this->db_table ."
+                    SET
+                        USER_PASSWORD = :user_pass
                     WHERE 
-                       USER_ID = ?";
+                        USER_ID = :user_id";
+        
             $stmt = $this->conn->prepare($sqlQuery);
-
-            $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
-            $stmt->execute();
-
-            return $stmt;
+        
+            $query_user_id=htmlspecialchars(strip_tags($query_user_id));
+            $query_new_pass=htmlspecialchars(strip_tags($query_new_pass));
+        
+            // bind data
+            $stmt->bindParam(":user_id", $query_user_id);
+            $stmt->bindParam(":blocked_user_id", $query_new_pass);
+        
+            if($stmt->execute()){
+               return true;
+            }
+            return false;
         }
 
 
