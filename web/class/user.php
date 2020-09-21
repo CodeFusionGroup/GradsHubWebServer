@@ -151,6 +151,22 @@
             }
             return false;
         }
+        
+         // Get a user profile infomation 
+        public function getUserProfile($query_user_id){
+            $sqlQuery = "SELECT USER_FNAME,USER_LNAME
+                            ,USER_EMAIL,USER_PHONE_NO, USER_ACAD_STATUS
+                      FROM
+                        ". $this->db_table ."
+                    WHERE 
+                       USER_ID = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt;
+        }
 
 
         // GET ALL
