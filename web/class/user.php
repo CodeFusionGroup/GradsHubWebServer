@@ -1,4 +1,10 @@
 <?php
+
+    //Import PHPMailer classes into the global namespace
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;
+
     class User{
 
         // Connection
@@ -110,6 +116,70 @@
                 return true;
             }
             return false;
+        }
+
+        public function phpMailer($query_email,$key){
+
+            // Include the composer generated autoload.php file
+            require('../../../vendor/autoload.php');
+            //importing the variables files
+            require_once $_SERVER['DOCUMENT_ROOT'] . '/config/vars.php';
+            
+
+            //create the PHPMailer class
+            $mail = new PHPMailer();
+
+            //SMTP configuration and Server settings
+            $mail->isSMTP();
+            // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+            $mail->Host = 'smtp.gmail.com';
+            $mail->Port = 587;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->SMTPAuth = true;
+            $mail->Username = EMAIL_ADDRESS;
+            $mail->Password = EMAIL_PASSWORD;
+
+            //Recipients
+            $mail->setFrom('no-reply@gradshub.com', 'Gradshub Support');
+            $mail->addAddress($query_email, 'John Doe');
+            $mail->Subject = 'GradsHub: Password Recovery';
+            
+
+            // https://gradshub.herokuapp.com
+            // http://localhost:8080
+            // Content
+            $mail->isHTML(true);
+            $content = '
+            <html>
+            <head>
+            <title>GradsHub: Password Recovery</title>
+            </head>
+            <body>
+            <p>Dear user,</p>
+            <p>To change your password please click the link below:</p>
+            <p>-------------------------------------------------------------</p>
+            <p> 
+                <a href = "https://gradshub.herokuapp.com/api/User/password-recovery.php?key='. $key . '&email='.$query_email.'&action=reset" target="_blank"> 
+                https://gradshub.herokuapp.com/api/User/password-recovery.php?key='. $key . '&email='.$query_email.'&action=reset
+                </a> 
+            </p>
+            <p>-------------------------------------------------------------</p>
+            <p>Please note that for security reasons the link will expire in one day(24 hours).</p>
+            <p>If you did not request this password recovery link, no action 
+            is needed, your password will not be reset. However, you may want to log into 
+            your account and change your password as a precaution.</p>
+            <p>Kind regards</p>
+            <p>Gradshub Team</p>
+            </body>
+            </html>';
+            $mail->Body = $content;
+
+            if ($mail->send()) {
+                return true;
+            }
+            echo 'Mailer Error: '. $mail->ErrorInfo;
+            return false;
+
         }
 
         // Create a recovery record
@@ -231,7 +301,7 @@
         // Check if password recovery exists
          public function recoveryExist($query_user_email,$query_key){
             $sqlQuery = "SELECT RECOVERY_EMAIL,RECOVERY_KEY
-                            ,RECOVERY_EXP_DATE,
+                            ,RECOVERY_EXP_DATE
                       FROM
                         password_recovery
                     WHERE 
@@ -289,7 +359,7 @@
         
             // bind data
             $stmt->bindParam(":user_id", $query_user_id);
-            $stmt->bindParam(":blocked_user_id", $query_new_pass);
+            $stmt->bindParam(":user_pass", $query_new_pass);
         
             if($stmt->execute()){
                return true;

@@ -82,7 +82,7 @@
 
             //Update password
             if($user_obj->updatePassword($user_id,$hashed_password)){
-                echo '<div class="error"><p>Congratulations! Your password has been updated successfully.</p>';
+                echo '<p>Congratulations! Your password has been updated successfully.</p>';
             }else{
                 echo 'Could not update password';
             }

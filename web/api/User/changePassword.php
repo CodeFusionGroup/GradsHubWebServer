@@ -35,7 +35,7 @@
 
                 // ***** Email Logic ***** 
 
-                if( $user_obj->sendEmail($data->user_email,$key) ){
+                if( $user_obj->phpMailer($data->user_email,$key) ){
 
                     
                     $output["success"]="1";

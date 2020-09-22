@@ -17,6 +17,9 @@
         define('DB_PASSWORD',$url["pass"]);
         // Firebase api key
         define('FIREBASE_API_KEY',getenv("FIREBASE_SERVER_KEY"));
+        // Email details
+        define('EMAIL_ADDRESS',getenv("EMAIL_ADDRESS"));
+        define('EMAIL_PASSWORD',getenv("EMAIL_PASSWORD"));
 
     }else{
 
@@ -28,6 +31,9 @@
         define('DB_PASSWORD',TMP_PASSWORD);
         // Firebase api key
         define('FIREBASE_API_KEY',FIREBASE_KEY);
+        // Email settings
+        define('EMAIL_ADDRESS',TMP_EMAIL);
+        define('EMAIL_PASSWORD',TMP_E_PASSWORD);
 
     }
     

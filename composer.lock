@@ -4,21 +4,84 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "729c9a87916a1bdfa795180b4b5138c4",
-    "packages": [],
-    "packages-dev": [
+    "content-hash": "ccecc09db955bf5ebd73cc59fad921fa",
+    "packages": [
         {
-            "name": "heroku/heroku-buildpack-php",
-            "version": "v172",
+            "name": "phpmailer/phpmailer",
+            "version": "v6.1.7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/heroku/heroku-buildpack-php.git",
-                "reference": "3a6fb296c8d490e8c7d02f47d66764148bdaa642"
+                "url": "https://github.com/PHPMailer/PHPMailer.git",
+                "reference": "2c2370ba3df7034f9eb7b8f387c97b52b2ba5ad0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/heroku/heroku-buildpack-php/zipball/3a6fb296c8d490e8c7d02f47d66764148bdaa642",
-                "reference": "3a6fb296c8d490e8c7d02f47d66764148bdaa642",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/2c2370ba3df7034f9eb7b8f387c97b52b2ba5ad0",
+                "reference": "2c2370ba3df7034f9eb7b8f387c97b52b2ba5ad0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-filter": "*",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "doctrine/annotations": "^1.2",
+                "friendsofphp/php-cs-fixer": "^2.2",
+                "phpunit/phpunit": "^4.8 || ^5.7"
+            },
+            "suggest": {
+                "ext-mbstring": "Needed to send email in multibyte encoding charset",
+                "hayageek/oauth2-yahoo": "Needed for Yahoo XOAUTH2 authentication",
+                "league/oauth2-google": "Needed for Google XOAUTH2 authentication",
+                "psr/log": "For optional PSR-3 debug logging",
+                "stevenmaguire/oauth2-microsoft": "Needed for Microsoft XOAUTH2 authentication",
+                "symfony/polyfill-mbstring": "To support UTF-8 if the Mbstring PHP extension is not enabled (^1.2)"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PHPMailer\\PHPMailer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1-only"
+            ],
+            "authors": [
+                {
+                    "name": "Marcus Bointon",
+                    "email": "phpmailer@synchromedia.co.uk"
+                },
+                {
+                    "name": "Jim Jagielski",
+                    "email": "jimjag@gmail.com"
+                },
+                {
+                    "name": "Andy Prevost",
+                    "email": "codeworxtech@users.sourceforge.net"
+                },
+                {
+                    "name": "Brent R. Matzelle"
+                }
+            ],
+            "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
+            "time": "2020-07-14T18:50:27+00:00"
+        }
+    ],
+    "packages-dev": [
+        {
+            "name": "heroku/heroku-buildpack-php",
+            "version": "v180",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/heroku/heroku-buildpack-php.git",
+                "reference": "bdc35a681196447f32985f8a703ed3b50ab4627d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/heroku/heroku-buildpack-php/zipball/bdc35a681196447f32985f8a703ed3b50ab4627d",
+                "reference": "bdc35a681196447f32985f8a703ed3b50ab4627d",
                 "shasum": ""
             },
             "bin": [
@@ -49,7 +112,7 @@
                 "nginx",
                 "php"
             ],
-            "time": "2020-02-28T17:42:58+00:00"
+            "time": "2020-09-15T22:54:51+00:00"
         }
     ],
     "aliases": [],
