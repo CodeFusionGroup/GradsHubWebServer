@@ -1,11 +1,11 @@
 {
 
   "require": {
-    "ext-mysqli": "*"
+    "ext-mysqli": "*",
+    "phpmailer/phpmailer": "^6.1"
   },
   "require-dev": {
     "heroku/heroku-buildpack-php": "*"
   }
  
 }
-
