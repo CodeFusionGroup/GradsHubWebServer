@@ -366,6 +366,43 @@
             }
             return false;
         }
+        
+        public function updateUserProfile($query_user_id){
+            $sqlQuery = "UPDATE
+                        ". $this->db_table ."
+                    SET
+                        USER_FNAME = :f_name,
+                        USER_LNAME = :l_name,
+                        USER_PASSWORD = :password,  
+                        USER_EMAIL = :email,
+                        USER_PHONE_NO = :phone_no, 
+                        USER_ACAD_STATUS = :acad_status, 
+                    WHERE
+                        USER_ID= :user_id";
+            $stmt = $this->conn->prepare($sqlQuery);
+        
+            // sanitize
+            $this->f_name=htmlspecialchars(strip_tags($this->f_name));
+            $this->l_name=htmlspecialchars(strip_tags($this->l_name));
+            $this->password=htmlspecialchars(strip_tags($this->password));
+            $this->email=htmlspecialchars(strip_tags($this->email));
+            $this->phone_no=htmlspecialchars(strip_tags($this->phone_no));
+            $this->acad_status=htmlspecialchars(strip_tags($this->acad_status));
+            $this->fcm_token=htmlspecialchars(strip_tags($this->fcm_token));
+
+            // bind data
+            $stmt->bindParam(":f_name", $this->f_name);
+            $stmt->bindParam(":l_name", $this->l_name);
+            $stmt->bindParam(":password", $this->password); 
+            $stmt->bindParam(":email", $this->email);
+            $stmt->bindParam(":phone_no", $this->phone_no);
+            $stmt->bindParam(":acad_status", $this->acad_status);
+
+            if($stmt->execute()){
+               return true;
+            }
+            return false;
+        }
 
 
         // GET ALL
