@@ -114,18 +114,18 @@
             $sqlQuery = "UPDATE
                         ". $this->db_table ."
                     SET
-                        FRIEND_STATUS = :friend_status, 
+                        FRIEND_STATUS = :friend_status
                     WHERE 
-                        USER_ID = :user_ID AND FRIEND_ID = :friend_id";
+                        USER_ID = :user_id AND FRIEND_ID = :friend_id";
         
             $stmt = $this->conn->prepare($sqlQuery);
         
-            $this->user_ID=htmlspecialchars(strip_tags($this->user_ID));
+            $this->user_id=htmlspecialchars(strip_tags($this->user_id));
             $this->friend_id=htmlspecialchars(strip_tags($this->friend_id));
             $this->friend_status=htmlspecialchars(strip_tags($this->friend_status));
         
             // bind data
-            $stmt->bindParam(":user_ID", $this->user_ID);
+            $stmt->bindParam(":user_id", $this->user_id);
             $stmt->bindParam(":friend_id", $this->friend_id);
             $stmt->bindParam(":friend_status", $this->friend_status);
 
