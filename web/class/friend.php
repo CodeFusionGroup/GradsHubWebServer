@@ -28,14 +28,14 @@
 
         // #################### CREATE ####################
 
-        // Makes a request to add a friend
+        // Adds a user as a friend
         public function addFriend(){
             $sqlQuery = "INSERT INTO
                         ". $this->db_table ."
                     SET
                         USER_ID = :user_id,
                         FRIEND_ID = :friend_id,
-                        FRIEND_STATUS = 'requested' ";
+                        FRIEND_STATUS = 'accepted' ";
             $stmt = $this->conn->prepare($sqlQuery);
         
             // sanitize

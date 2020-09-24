@@ -63,7 +63,7 @@
             if($friend_obj->addFriend()){
 
                 $output["success"]="1";
-                $output["message"]="Request sent";
+                $output["message"]="Friend Added";
                 echo json_encode($output);
 
             }else{
