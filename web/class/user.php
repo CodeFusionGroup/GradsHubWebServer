@@ -22,6 +22,7 @@
         public $phone_no;
         public $acad_status;
         public $fcm_token;
+        public $profile_picture;
 
         // Db connection
         public function __construct(){
