@@ -20,8 +20,37 @@
     if( isset($data->user_id, $data->user_name, $data->email,
         $data->phone_no, $data->acad_status)){
 
-            // Ensure User exists
-            if( $user_obj->checkExists($data->email) ){
+            $user_email = null;
+            $email_valid = false;
+
+            //Check if email isn't being changed
+            if($user_obj->emailsEqual($data->user_id,$data->email)){
+                $user_email = $data->email;
+                $email_valid = true;
+            }
+            // Email is being changed ,check if its unique.
+            else{
+                
+                // Ensure Email doesn't (is unique)
+                if( $user_obj->checkExists($data->email) ){
+
+                    // Email exists notify user
+                    $output["success"]="0";
+                    $output["message"]="Email already exists";
+                    echo json_encode($output);
+                    
+
+                }else{
+                    
+                    //Email is unique
+                    $user_email = $data->email;
+                    $email_valid = true;
+
+                }
+            }
+
+            // check if email is valid first
+            if($email_valid){
 
                 // Check that phone number is 10 digits
                 if(strlen($data->phone_no) == 10){
@@ -81,14 +110,8 @@
                     echo json_encode($output);
                 }
 
-            }else{
-                
-                //User doesn't exists
-                $output["success"]="-1";
-                $output["message"]="User does not exist";
-                echo json_encode($output);
-
-            }
+            } // END EMAIL VALIDATION
+            
 
     }else{
         //Data is incomplete

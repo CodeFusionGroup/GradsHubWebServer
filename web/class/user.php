@@ -247,6 +247,28 @@
             return false;
         }
 
+        // Check if emails are the same
+        public function emailsEqual($query_user_id,$query_email){
+            $sqlQuery = "SELECT USER_EMAIL
+                      FROM
+                        ". $this->db_table ."
+                    WHERE 
+                       USER_ID = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            // Check if emails match
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $email = $row['USER_EMAIL'];
+
+            if($email == $query_email){
+                return true;
+            }
+            return false;
+        }
+
         //getting a specified token to send push to selected device
         public function getTokenByID($query_user_id){
             $sqlQuery = "SELECT USER_FCM_TOKEN
