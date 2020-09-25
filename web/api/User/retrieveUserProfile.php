@@ -20,15 +20,32 @@
     $stmnt_count = $stmnt->rowCount();
 
     if($stmnt_count>0){
-        $profile = array();
+        
+        $dataRow = $stmnt->fetch(PDO::FETCH_ASSOC);
+
+        $res_user["USER_EMAIL"] = $dataRow['USER_EMAIL'];
+        $res_user["USER_ID"] = $dataRow['USER_ID'];
+        $res_user["USER_FNAME"] = $dataRow['USER_FNAME'];
+        $res_user["USER_LNAME"] = $dataRow['USER_LNAME'];
+        $res_user["USER_PHONE_NO"] = $dataRow['USER_PHONE_NO'];
+        $res_user["USER_ACAD_STATUS"] = $dataRow['USER_ACAD_STATUS'];
+        $res_user["USER_PROFILE_PICTURE"] = $dataRow['USER_PROFILE_PICTURE']
+
         $output["success"] = "1";
 
-        while($row = $stmnt->fetch(PDO::FETCH_ASSOC) ){
-            extract($row);
-            array_push($profile,$row);
-        }
-        $output["message"] = $profile ;
+        //$output["message"] = $profile ;
+        $output["user"] = $res_user;
         echo json_encode($output);
+        
+        //$profile = array();
+        //$output["success"] = "1";
+
+       // while($row = $stmnt->fetch(PDO::FETCH_ASSOC) ){
+       //     extract($row);
+       //    array_push($profile,$row);
+       // }
+       //$output["message"] = $profile ;
+       // echo json_encode($output);
 
     }else{
         $output["success"] = "0";
