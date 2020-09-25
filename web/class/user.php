@@ -284,9 +284,10 @@
         }
         
          // Get a user profile infomation 
-        public function getUserProfile($query_user_id){
-            $sqlQuery = "SELECT USER_FNAME,USER_LNAME
-                            ,USER_EMAIL,USER_PHONE_NO, USER_ACAD_STATUS
+      
+     public function getUserProfile($query_user_id){
+            $sqlQuery = "SELECT USER_NAME,USER_LNAME,USER_FNAME
+                            ,USER_EMAIL,USER_PHONE_NO, USER_ACAD_STATUS, USER_PROFILE_PICTURE
                       FROM
                         ". $this->db_table ."
                     WHERE 
