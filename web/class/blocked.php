@@ -71,8 +71,9 @@
                     WHERE USER_ID = ? AND BLOCKED_USER_ID = ? AND BLOCKED_STATUS = 'true' ";
             $stmt = $this->conn->prepare($sqlQuery);
 
-            $stmt->bindParam(1, $blocker_user_id, PDO::PARAM_INT);
             $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
+            $stmt->bindParam(2, $blocker_user_id, PDO::PARAM_INT);
+            
 
             $stmt->execute();
             $stmt_count = $stmt->rowCount();
