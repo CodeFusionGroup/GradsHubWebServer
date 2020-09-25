@@ -283,9 +283,8 @@
             return $stmt;
         }
         
-         // Get a user profile infomation 
-      
-     public function getUserProfile($query_user_id){
+         // Get user profile infomation 
+        public function getProfile($query_user_id){
             $sqlQuery = "SELECT USER_NAME,USER_LNAME,USER_FNAME
                             ,USER_EMAIL,USER_PHONE_NO, USER_ACAD_STATUS, USER_PROFILE_PICTURE
                       FROM
@@ -301,7 +300,7 @@
         }
 
         // Check if password recovery exists
-         public function recoveryExist($query_user_email,$query_key){
+        public function recoveryExist($query_user_email,$query_key){
             $sqlQuery = "SELECT RECOVERY_EMAIL,RECOVERY_KEY
                             ,RECOVERY_EXP_DATE
                       FROM
@@ -369,13 +368,11 @@
             return false;
         }
         
-    public function updateUserProfile($query_user_id){
+        public function updateProfile(){
             $sqlQuery = "UPDATE
                         ". $this->db_table ."
                     SET
-            
                         USER_NAME = :user_name,
-                        USER_PASSWORD = :password,  
                         USER_EMAIL = :email,
                         USER_PHONE_NO = :phone_no, 
                         USER_ACAD_STATUS = :academic_status,
@@ -385,22 +382,21 @@
             $stmt = $this->conn->prepare($sqlQuery);
         
             // sanitize
+            $this->id=htmlspecialchars(strip_tags($this->id));
             $this->user_name=htmlspecialchars(strip_tags($this->user_name));
-            $this->password=htmlspecialchars(strip_tags($this->password));
             $this->email=htmlspecialchars(strip_tags($this->email));
             $this->phone_no=htmlspecialchars(strip_tags($this->phone_no));
-            $this->academic_status=htmlspecialchars(strip_tags($this->academic_status));
+            $this->academic_status=htmlspecialchars(strip_tags($this->acad_status));
             $this->profile_picture=htmlspecialchars(strip_tags($this->profile_picture));
-            $query_user_id=htmlspecialchars(strip_tags($query_user_id));
+            
 
             // bind data
+            $stmt->bindParam(":user_id", $this->id);
             $stmt->bindParam(":user_name", $this->user_name);
-            $stmt->bindParam(":password", $this->password); 
             $stmt->bindParam(":email", $this->email);
             $stmt->bindParam(":phone_no", $this->phone_no);
-            $stmt->bindParam(":academic_status", $this->academic_status);
+            $stmt->bindParam(":academic_status", $this->acad_status);
             $stmt->bindParam(":profile_picture", $this->profile_picture);
-            $stmt->bindParam(":user_id", $query_user_id);
 
             if($stmt->execute()){
                return true;

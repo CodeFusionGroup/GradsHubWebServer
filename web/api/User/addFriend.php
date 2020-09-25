@@ -40,12 +40,12 @@
                     $output["message"]="Friendship request pending";
                     echo json_encode($output);
                     break;
-                case 'requested':
+                case 'rejected':
                     $output["success"]="0";
                     $output["message"]="Friendship request rejected";
                     echo json_encode($output);
                     break;
-                case 'requested':
+                case 'removed':
                     $output["success"]="0";
                     $output["message"]="Friendship terminated";
                     echo json_encode($output);

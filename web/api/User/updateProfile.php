@@ -15,66 +15,70 @@
 
     // Get the posted data
     $data = json_decode(file_get_contents("php://input"));
-   
-    //Mocking database for testing purpose
-    if($data->email == "tester141414fhfvbd@gmail.com"){
-    	//Test registration success
-		$output["success"]="-1";
-		$output["message"]="Registration test successful!";
-		echo json_encode($output);
-    }
 
     // Make sure data is not empty
-    else if( isset($data->f_name,$data->l_name,$data->password,
-        $data->email,$data->phone_no,$data->acad_status) ){
-            //,$data->fcm_token
+    if( isset($data->user_id, $data->user_name, $data->email,
+        $data->phone_no, $data->acad_status, $data->profile_picture)){
 
-            // Ensure User does not already exist
-            $user_query = $user_obj->getUserByEmail($data->email);
-            $count_user_query = $user_query->rowCount();
-            if($count_user_query == 0 ){
+            // Ensure User exists
+            if( $user_obj->checkExists($data->email) ){
 
                 // Check that phone number is 10 digits
                 if(strlen($data->phone_no) == 10){
 
+                    // Check if password is being updated
+                    if( isset($data->password) ){
+
+                        //Hash the password
+                        $hashed_password = password_hash($data->password,PASSWORD_DEFAULT);
+
+                        //Update the password
+                        $password_update = false;
+
+                        if($user_obj->updatePassword($data->user_id,$hashed_password)){
+                            $password_update = true;
+                        }else{
+                            $password_update = false;
+                        }
+                    }
+
                     // Set the user property values
-                    $user_obj->f_name = $data->f_name;
-                    $user_obj->l_name = $data->l_name;
-                    //Hash the password
-                    $hashed_password = password_hash($data->password,PASSWORD_DEFAULT);
-                    $user_obj->password = $hashed_password;
+                    $user_obj->id = $data->user_id;
+                    $user_obj->user_name = $data->user_name;
                     $user_obj->email = $data->email;
                     $user_obj->phone_no = $data->phone_no;
                     $user_obj->acad_status = $data->acad_status;
-                    $user_obj->fcm_token = $data->fcm_token;
-
-                    // Create the user
-                    if($user_obj->createUser()){
-                        // echo 'User created successfully.';
+                    $user_obj->profile_picture = $data->profile_picture;
+                    
+                    // update user details
+                    if( $user_obj->updateProfile() ){
                         $output["success"]="1";
-                        $output["message"]="Registration successful!";
+                        $output["message"]="Update successful!";
                         echo json_encode($output);
                     } else{
-                        echo 'User could not be created.';
+                        $output["success"]="0";
+                        $output["message"]="Update unsuccessful!";
+                        echo json_encode($output);
                     }
+
                 }else{
-                    $output["success"]="-1";
+                    $output["success"]="0";
                     $output["message"]="Incorrect Phone Number length";
                     echo json_encode($output);
                 }
 
-                
-                
             }else{
-                //User exists
+                
+                //User doesn't exists
                 $output["success"]="-1";
-                $output["message"]="Email already exists, please use another email.";
+                $output["message"]="User does not exist";
                 echo json_encode($output);
+
             }
 
     }else{
         //Data is incomplete
-        $output["success"]="0";
+        $output["success"]="-1";
         $output["message"]="You didn't send the required values!";
         echo json_encode($output);
     }
