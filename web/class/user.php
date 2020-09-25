@@ -368,39 +368,36 @@
             return false;
         }
         
-       public function updateUserProfile($query_user_id){
+    public function updateUserProfile($query_user_id){
             $sqlQuery = "UPDATE
                         ". $this->db_table ."
                     SET
             
-                        USER_FNAME = :f_name,
-                        USER_LNAME = :l_name,
+                        USER_NAME = :user_name,
                         USER_PASSWORD = :password,  
                         USER_EMAIL = :email,
                         USER_PHONE_NO = :phone_no, 
-                        USER_ACAD_STATUS = :acad_status,
+                        USER_ACAD_STATUS = :academic_status,
                         USER_PROFILE_PICTURE = :profile_picture 
                     WHERE
                         USER_ID= :user_id";
             $stmt = $this->conn->prepare($sqlQuery);
         
             // sanitize
-            $this->f_name=htmlspecialchars(strip_tags($this->f_name));
-            $this->l_name=htmlspecialchars(strip_tags($this->l_name));
+            $this->user_name=htmlspecialchars(strip_tags($this->user_name));
             $this->password=htmlspecialchars(strip_tags($this->password));
             $this->email=htmlspecialchars(strip_tags($this->email));
             $this->phone_no=htmlspecialchars(strip_tags($this->phone_no));
-            $this->acad_status=htmlspecialchars(strip_tags($this->acad_status));
+            $this->academic_status=htmlspecialchars(strip_tags($this->academic_status));
             $this->profile_picture=htmlspecialchars(strip_tags($this->profile_picture));
             $query_user_id=htmlspecialchars(strip_tags($query_user_id));
 
             // bind data
-            $stmt->bindParam(":f_name", $this->f_name);
-            $stmt->bindParam(":l_name", $this->l_name);
+            $stmt->bindParam(":user_name", $this->user_name);
             $stmt->bindParam(":password", $this->password); 
             $stmt->bindParam(":email", $this->email);
             $stmt->bindParam(":phone_no", $this->phone_no);
-            $stmt->bindParam(":acad_status", $this->acad_status);
+            $stmt->bindParam(":academic_status", $this->academic_status);
             $stmt->bindParam(":profile_picture", $this->profile_picture);
             $stmt->bindParam(":user_id", $query_user_id);
 
