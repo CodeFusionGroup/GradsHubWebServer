@@ -18,7 +18,7 @@
 
     // Make sure data is not empty
     if( isset($data->user_id, $data->user_name, $data->email,
-        $data->phone_no, $data->acad_status, $data->profile_picture)){
+        $data->phone_no, $data->acad_status)){
 
             // Ensure User exists
             if( $user_obj->checkExists($data->email) ){
@@ -32,14 +32,28 @@
                         //Hash the password
                         $hashed_password = password_hash($data->password,PASSWORD_DEFAULT);
 
-                        //Update the password
                         $password_update = false;
 
+                        //Update the password
                         if($user_obj->updatePassword($data->user_id,$hashed_password)){
                             $password_update = true;
                         }else{
                             $password_update = false;
                         }
+                    }
+
+                    // Check if profile is being updated
+                    if( isset($data->profile_picture) ){
+
+                        $pic_update = false;
+
+                        // Update the profile
+                        if($user_obj->updateProfilePic($data->user_id,$data->profile_picture)){
+                            $pic_update = true;
+                        }else{
+                            $pic_update = false;
+                        }
+
                     }
 
                     // Set the user property values
@@ -48,7 +62,7 @@
                     $user_obj->email = $data->email;
                     $user_obj->phone_no = $data->phone_no;
                     $user_obj->acad_status = $data->acad_status;
-                    $user_obj->profile_picture = $data->profile_picture;
+                    // $user_obj->profile_picture = $data->profile_picture;
                     
                     // update user details
                     if( $user_obj->updateProfile() ){

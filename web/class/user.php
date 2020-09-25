@@ -368,6 +368,7 @@
             return false;
         }
         
+        // Update the user's profile
         public function updateProfile(){
             $sqlQuery = "UPDATE
                         ". $this->db_table ."
@@ -375,8 +376,7 @@
                         USER_NAME = :user_name,
                         USER_EMAIL = :email,
                         USER_PHONE_NO = :phone_no, 
-                        USER_ACAD_STATUS = :academic_status,
-                        USER_PROFILE_PICTURE = :profile_picture 
+                        USER_ACAD_STATUS = :academic_status
                     WHERE
                         USER_ID= :user_id";
             $stmt = $this->conn->prepare($sqlQuery);
@@ -387,7 +387,6 @@
             $this->email=htmlspecialchars(strip_tags($this->email));
             $this->phone_no=htmlspecialchars(strip_tags($this->phone_no));
             $this->academic_status=htmlspecialchars(strip_tags($this->acad_status));
-            $this->profile_picture=htmlspecialchars(strip_tags($this->profile_picture));
             
 
             // bind data
@@ -396,10 +395,32 @@
             $stmt->bindParam(":email", $this->email);
             $stmt->bindParam(":phone_no", $this->phone_no);
             $stmt->bindParam(":academic_status", $this->acad_status);
-            $stmt->bindParam(":profile_picture", $this->profile_picture);
 
             if($stmt->execute()){
                return true;
+            }
+            return false;
+        }
+
+        public function updateProfilePic($user_id,$profile_pic){
+            $sqlQuery = "UPDATE
+                        ". $this->db_table ."
+                    SET
+                        USER_PROFILE_PICTURE = :profile_pic 
+                    WHERE
+                        USER_ID= :user_id";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            // sanitize
+            $user_id=htmlspecialchars(strip_tags($user_id));
+            $profile_pic=htmlspecialchars(strip_tags($profile_pic));
+
+            // bind data
+            $stmt->bindParam(":user_id", $user_id);
+            $stmt->bindParam(":profile_pic", $profile_pic);
+
+            if($stmt->execute()){
+                return true;
             }
             return false;
         }
