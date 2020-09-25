@@ -35,6 +35,9 @@
 			$res_user["USER_LNAME"] = $dataRow['USER_LNAME'];
 			$res_user["USER_PHONE_NO"] = $dataRow['USER_PHONE_NO'];
 			$res_user["USER_ACAD_STATUS"] = $dataRow['USER_ACAD_STATUS'];
+			$res_user["USER_PROFILE_PICTURE"] = $dataRow['USER_PROFILE_PICTURE'];
+			$res_user["USER_NAME"] = $dataRow['USER_NAME'];
+			
 
             // Output
 			$output["success"] = "1";
