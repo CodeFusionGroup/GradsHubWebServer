@@ -215,7 +215,7 @@
         // Get a user using an email
         public function getUserByEmail($query_email){
             $sqlQuery = "SELECT USER_ID,USER_FNAME,USER_LNAME,USER_PASSWORD,USER_PASSWORD
-                            ,USER_EMAIL,USER_PHONE_NO, USER_ACAD_STATUS, USER_NAME, USER_PROFILE_PICRURE
+                            ,USER_EMAIL,USER_PHONE_NO, USER_ACAD_STATUS, USER_NAME, USER_PROFILE_PICTURE
                       FROM
                         ". $this->db_table ."
                     WHERE 
