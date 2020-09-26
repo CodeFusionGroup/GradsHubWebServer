@@ -22,14 +22,11 @@
     if( isset($data->user_id) ){
 
         if($stmnt_count>0){
-            $profile = array();
+
+            // Fetch the User profile
+            $profile = $stmnt->fetch(PDO::FETCH_ASSOC);
+
             $output["success"] = "1";
-    
-            while($row = $stmnt->fetch(PDO::FETCH_ASSOC) ){
-                extract($row);
-                array_push($profile,$row);
-            }
-            // $output["message"] = "" ;
             $output["user"] = $profile;
             echo json_encode($output);
     
