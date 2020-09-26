@@ -29,7 +29,8 @@
                 extract($row);
                 array_push($profile,$row);
             }
-            $output["message"] = $profile ;
+            // $output["message"] = "" ;
+            $output["user"] = $profile;
             echo json_encode($output);
     
         }else{
