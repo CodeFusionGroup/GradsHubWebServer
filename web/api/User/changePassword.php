@@ -29,13 +29,17 @@
             $exp_date = date("Y-m-d H:i:s",$exp_format);
             // Recovery key
             $key = password_hash($data->user_email, PASSWORD_DEFAULT);
+            //Get user Fullname
+            $stmnt = $user_obj->getUserByEmail($data->user_email);
+            $stmnt_res = $stmnt->fetch(PDO::FETCH_ASSOC);
+            $fullname = $stmnt_res['USER_FNAME'] ." ".$stmnt_res['USER_LNAME'];
             
             // Insert into Recovery table
             if($user_obj->insertRecovery($data->user_email,$key,$exp_date)){
 
                 // ***** Email Logic ***** 
 
-                if( $user_obj->phpMailer($data->user_email,$key) ){
+                if( $user_obj->phpMailer($data->user_email,$key,$fullname) ){
 
                     
                     $output["success"]="1";

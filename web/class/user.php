@@ -76,7 +76,7 @@
             return false;
         }
 
-        public function phpMailer($query_email,$key){
+        public function phpMailer($query_email,$key,$query_name){
 
             // Include the composer generated autoload.php file
             require('../../../vendor/autoload.php');
@@ -99,7 +99,7 @@
 
             //Recipients
             $mail->setFrom('no-reply@gradshub.com', 'Gradshub Support');
-            $mail->addAddress($query_email, 'John Doe');
+            $mail->addAddress($query_email, $query_name);
             $mail->Subject = 'GradsHub: Password Recovery';
             
 
@@ -117,8 +117,8 @@
             <p>To change your password please click the link below:</p>
             <p>-------------------------------------------------------------</p>
             <p> 
-                <a href = "http://localhost:8080/api/User/password-recovery.php?key='. $key . '&email='.$query_email.'&action=reset" target="_blank"> 
-                http://localhost:8080/api/User/password-recovery.php?key='. $key . '&email='.$query_email.'&action=reset
+                <a href = "https://gradshub.herokuapp.com/api/User/password-recovery.php?key='. $key . '&email='.$query_email.'&action=reset" target="_blank"> 
+                https://gradshub.herokuapp.com/api/User/password-recovery.php?key='. $key . '&email='.$query_email.'&action=reset
                 </a> 
             </p>
             <p>-------------------------------------------------------------</p>
