@@ -28,40 +28,79 @@
 
             if($exp_date >= $cur_date){
                 ?>
-                <br />
-                <form method="post" action="" name="update">
-                <input type="hidden" name="action" value="update" />
-                <br /><br />
-                <label><strong>Enter New Password:</strong></label><br />
-                <input type="password" name="pass1" maxlength="15" required />
-                <br /><br />
-                <label><strong>Re-Enter New Password:</strong></label><br />
-                <input type="password" name="pass2" maxlength="15" required/>
-                <br /><br />
-                <input type="hidden" name="email" value="<?php echo $email;?>"/>
-                <input type="submit" value="Reset Password" />
-                </form>
+
+
+                <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <meta name="description" content="Gradshub Password Recovery">
+                        <title>Password Recovery</title>
+
+                        <!-- Bootstrap CSS -->
+                        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+                        <!-- Custom Sytling -->
+                        <style>
+                            .bd-placeholder-img {
+                            font-size: 1.125rem;
+                            text-anchor: middle;
+                            -webkit-user-select: none;
+                            -moz-user-select: none;
+                            -ms-user-select: none;
+                            user-select: none;
+                            }
+                    
+                            @media (min-width: 768px) {
+                            .bd-placeholder-img-lg {
+                                font-size: 3.5rem;
+                            }
+                            }
+                        </style>
+
+                        <!-- Custom styles for this template -->
+                        <link href="../../assets/passwordForm.css" rel="stylesheet">
+
+                    </head>
+                    <body class="text-center">
+
+                        <form class="form-signin" method="post" action="" name="update">
+                            <img class="mb-4" src="../../assets/applogo.png" alt="Gradshub Logo" width="72" height="72">
+                            <h1 class="h3 mb-4 font-weight-normal">Password Recovery</h1>
+                            <input type="hidden" name="action" value="update" />
+                            
+                            <label for="inputPassword1" class ="sr-only">Enter New Password:</label>
+                            <input id="inputPassword1" class="form-control" placeholder="New Password" type="password" name="pass1" maxlength="15" required autofocus />
+                            
+                            <label for="inputPassword2" class ="sr-only">Re-Enter New Password:</label>
+                            <input id="inputPassword2" class="form-control" placeholder="Re-Enter New Password" type="password" name="pass2" maxlength="15" required/>
+                            
+                            <input type="hidden" name="email" value="<?php echo $email;?>"/>
+                            
+                            <button class="btn btn-lg btn-primary btn-block" type="submit" value="Reset Password">Submit</button>
+                            <p class="mt-5 mb-3 text-muted">&copy; Gradshub-2020</p>
+                        </form>
+
+                    </body>
+                </html>
+
+
                 <?php
             }else{
-                $error = "<h2>Link Expired</h2>
-                <p>The link is expired. You are trying to use an expired link which 
-                is valid for 24 hours only(1 day after request).<br /><br /></p>";
-                echo $error;
+                readfile("../../templates/linkExpired.html");
             }
             
         }else{
-            $error = '<h2>Invalid Link</h2>
-            <p>The link is invalid/expired. Either you did not copy the correct link
-            from the email, or you have already used the key in which case it is 
-            deactivated.</p>';
-            echo $error;
+            readfile("../../templates/linkInvalid.html");
         }
 
-    }else{
-        $error = '<h2>Error</h2>
-            <p>Invalid Link</p>';
-            echo $error;
     }
+    // else{
+    //     $error = '<h2>Error</h2>
+    //         <p>Invalid Link</p>';
+    //         echo $error;
+    // }
 
     // Update/change password
     if( isset($_POST["email"],$_POST["action"])  && ($_POST["action"]=="update") ) {
@@ -82,7 +121,15 @@
 
             //Update password
             if($user_obj->updatePassword($user_id,$hashed_password)){
-                echo '<p>Congratulations! Your password has been updated successfully.</p>';
+
+                // Delete recovery record 
+                //TODO: Change to an update of the record
+                if($user_obj->deleteRecovery($email)){
+                    readfile("../../templates/passwordSuccess.html");
+                }else{
+                    echo 'Could not recover password';
+                }
+                
             }else{
                 echo 'Could not update password';
             }

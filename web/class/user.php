@@ -76,49 +76,6 @@
             return false;
         }
 
-        // Send an email
-        public function sendEmail($query_email,$key){
-            $to = $query_email;
-            $subject = "GradsHub: Password Recovery";
-
-            // HTML EMAIL
-            $message = '
-            <html>
-            <head>
-            <title>GradsHub: Password Recovery</title>
-            </head>
-            <body>
-            <p>Dear user,</p>
-            <p>To change your password please follow click the link below:</p>
-            <p>-------------------------------------------------------------</p>
-            <p> <a href = "http://localhost:8080/api/User/password-recovery.php?key='. $key . '&email='.$query_email.'&action=reset"> </a> 
-            </p>
-            <p>-------------------------------------------------------------</p>
-            <p>Please note that for security reasons the link will expire in one day(24 hours).</p>
-            <p>If you did not request this password recovery link, no action 
-            is needed, your password will not be reset. However, you may want to log into 
-            your account and change your password as a precaution.</p>
-            <p>Kind regards</p>
-            <p>Gradshub Team</p>
-            </body>
-            </html>';
-
-            // https://gradshub.herokuapp.com
-
-            // HTML HEADERS and other headers
-            $headers = "MIME-Version: 1.0" . "\r\n";
-            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-            $headers .= 'From: <no-reply@gradshub.herokuapp.com>' . "\r\n";
-
-            //Finally send the email
-            $return_value = mail($to,$subject,$message,$headers);
-
-            if( $return_value == true ) {
-                return true;
-            }
-            return false;
-        }
-
         public function phpMailer($query_email,$key){
 
             // Include the composer generated autoload.php file
@@ -160,8 +117,8 @@
             <p>To change your password please click the link below:</p>
             <p>-------------------------------------------------------------</p>
             <p> 
-                <a href = "https://gradshub.herokuapp.com/api/User/password-recovery.php?key='. $key . '&email='.$query_email.'&action=reset" target="_blank"> 
-                https://gradshub.herokuapp.com/api/User/password-recovery.php?key='. $key . '&email='.$query_email.'&action=reset
+                <a href = "http://localhost:8080/api/User/password-recovery.php?key='. $key . '&email='.$query_email.'&action=reset" target="_blank"> 
+                http://localhost:8080/api/User/password-recovery.php?key='. $key . '&email='.$query_email.'&action=reset
                 </a> 
             </p>
             <p>-------------------------------------------------------------</p>
@@ -215,7 +172,11 @@
         // Get a user using an email
         public function getUserByEmail($query_email){
             $sqlQuery = "SELECT USER_ID,USER_FNAME,USER_LNAME,USER_PASSWORD,USER_PASSWORD
+<<<<<<< HEAD
                             ,USER_EMAIL,USER_PHONE_NO, USER_ACAD_STATUS, USER_NAME, USER_PROFILE_PICTURE
+=======
+                            ,USER_EMAIL,USER_PHONE_NO, USER_ACAD_STATUS, USER_PROFILE_PICTURE,USER_NAME
+>>>>>>> Development
                       FROM
                         ". $this->db_table ."
                     WHERE 
@@ -441,6 +402,25 @@
             $stmt->bindParam(":user_id", $user_id);
             $stmt->bindParam(":profile_pic", $profile_pic);
 
+            if($stmt->execute()){
+                return true;
+            }
+            return false;
+        }
+
+        // #################### DELETE ####################
+
+        // DELETE password recovery record
+        // TODO: Instead of deleting record add a column to indicate whether
+        // the password has been changed or not
+        function deleteRecovery($recovery_email){
+            $sqlQuery = "DELETE FROM password_recovery WHERE RECOVERY_EMAIL = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+        
+            $recovery_email=htmlspecialchars(strip_tags($recovery_email));
+        
+            $stmt->bindParam(1, $recovery_email);
+        
             if($stmt->execute()){
                 return true;
             }
