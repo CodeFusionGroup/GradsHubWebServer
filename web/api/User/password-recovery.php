@@ -62,6 +62,8 @@
                         <!-- Custom styles for this template -->
                         <link href="../../assets/passwordForm.css" rel="stylesheet">
 
+                        
+
                     </head>
                     <body class="text-center">
 
@@ -74,13 +76,16 @@
                             <input id="inputPassword1" class="form-control" placeholder="New Password" type="password" name="pass1" maxlength="15" required autofocus />
                             
                             <label for="inputPassword2" class ="sr-only">Re-Enter New Password:</label>
-                            <input id="inputPassword2" class="form-control" placeholder="Re-Enter New Password" type="password" name="pass2" maxlength="15" required/>
-                            
+							<input id="inputPassword2" class="form-control" placeholder="Re-Enter New Password" type="password" name="pass2" maxlength="15" onkeyup="checkPass();" required/>                            
+
                             <input type="hidden" name="email" value="<?php echo $email;?>"/>
                             
-                            <button class="btn btn-lg btn-primary btn-block" type="submit" value="Reset Password">Submit</button>
+                            <button id="submitBtn" class="btn btn-lg btn-primary btn-block" type="submit" value="Reset Password">Submit</button>
                             <p class="mt-5 mb-3 text-muted">&copy; Gradshub-2020</p>
                         </form>
+
+                        <!-- JS script -->
+                        <script  type="text/javascript" src="../../assets/script.js"></script>
 
                     </body>
                 </html>
