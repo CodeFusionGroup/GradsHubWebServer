@@ -89,7 +89,8 @@
 
         // Get the most recent message in a chat
         public function getRecentMessage($query_chat_id,$query_user_id){
-            $sqlQuery = "SELECT cp.PARTICIPANT_ID AS RECIPIENT_ID,CONCAT(u.USER_FNAME,' ',u.USER_LNAME) AS FULL_NAME, m.MESSAGE_TEXT, m.MESSAGE_TIMESTAMP 
+            // $sqlQuery = "SELECT cp.PARTICIPANT_ID AS RECIPIENT_ID,CONCAT(u.USER_FNAME,' ',u.USER_LNAME) AS FULL_NAME, m.MESSAGE_TEXT, m.MESSAGE_TIMESTAMP
+            $sqlQuery = "SELECT cp.PARTICIPANT_ID AS RECIPIENT_ID, m.MESSAGE_TEXT, m.MESSAGE_TIMESTAMP  
                     FROM message m
                         INNER JOIN user u ON m.SENDER_ID = u.USER_ID
                         INNER JOIN chat_participant cp ON m.CHAT_ID = cp.CHAT_ID
@@ -142,23 +143,20 @@
             return $stmt;
         }
 
-    //    public function getChatroom(){
-    //     $sqlQuery= "SELECT m.MESSAGE_ID,
-    //                        m.MESSAGE_TEXT,
-    //                        u.USER_ID
-  
-    //                 FROM messages AS m
-    //                 INNER JOIN user AS u ON m.USER_ID = U.USER_ID
-    //                 WHERE m.CHATROOM_ID=2;
+        // Get the fullname of the other participant in the chat
+        public function getOtherParticipent($query_chat_id,$query_user_id){
+            $sqlQuery = "SELECT u.USER_ID, CONCAT(u.USER_FNAME,' ',u.USER_LNAME) AS FULL_NAME
+                    FROM chat_participant cp
+                        INNER JOIN user u ON cp.PARTICIPANT_ID = u.USER_ID
+                    WHERE cp.CHAT_ID = ? AND cp.PARTICIPANT_ID != ?";
+            $stmt = $this->conn->prepare($sqlQuery);
 
-    //     $stmt = $this->conn->prepare($sqlQuery);
+            $stmt->bindParam(1, $query_chat_id, PDO::PARAM_INT);
+            $stmt->bindParam(2, $query_user_id, PDO::PARAM_INT);
 
-    //     $stmt->execute();
-    //         return $stmt;
+            $stmt->execute();
+            return $stmt;
+        }
 
-    //    }
-       
-
-    }
-  
+    }// END CLASS
 ?>

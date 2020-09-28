@@ -41,8 +41,13 @@
 
                 // If the chat has messages
                 if( $stmt_msg_count > 0 ){
+                    // Get the other chat participent
+                    $stmnt_query = $chat_obj->getOtherParticipent($chat_id['CHAT_ID'],$data->user_id);
+                    $stmnt_res = $stmnt_query->fetch(PDO::FETCH_ASSOC);
+                    
                     // Message exists
                     $dataRow = $stmnt_msg->fetch(PDO::FETCH_ASSOC);
+                    $dataRow['FULL_NAME'] = $stmnt_res['FULL_NAME'];
                     array_push($result_arr,$dataRow);
                 }
             }
