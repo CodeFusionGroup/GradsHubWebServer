@@ -29,7 +29,6 @@
             if($exp_date >= $cur_date){
                 ?>
 
-
                 <!DOCTYPE html>
                     <html lang="en">
                     <head>
@@ -40,6 +39,10 @@
 
                         <!-- Bootstrap CSS -->
                         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+                        <!-- JQuery -->
+                        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                        <!-- ValidateJS -->
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
 
                         <!-- Custom Sytling -->
                         <style>
@@ -53,50 +56,78 @@
                             }
                     
                             @media (min-width: 768px) {
-                            .bd-placeholder-img-lg {
-                                font-size: 3.5rem;
+                                .bd-placeholder-img-lg {
+                                    font-size: 3.5rem;
+                                }
                             }
+
+                            /* Error colours */
+                            .has-error label,
+                            .has-error input{
+                                color: red;
+                                border-color: red;
+                            }
+                            .list-unstyled li {
+                                font-size: 13px;
+                                padding: 4px 0 0;
+                                color: red;
                             }
                         </style>
 
                         <!-- Custom styles for this template -->
                         <link href="../../assets/passwordForm.css" rel="stylesheet">
 
-                        
-
                     </head>
                     <body class="text-center">
 
-                        <form class="form-signin" method="post" action="" name="update">
+                        <form class="form-signin"  role="form" data-toggle="validator" method="post" action="" name="update">
+                            
                             <img class="mb-4" src="../../assets/applogo.png" alt="Gradshub Logo" width="72" height="72">
                             <h1 class="h3 mb-4 font-weight-normal">Password Recovery</h1>
                             <input type="hidden" name="action" value="update" />
+
+                            <div class="form-group">
+                                <label for="inputPassword1" class ="sr-only">Enter New Password:</label>
+                                <div class="form-group">
+                                    <input id="inputPassword1" class="form-control" placeholder="New Password" type="password"
+                                        name="pass1" data-minlength="4" data-error="Have atleast 4 characters" required autofocus />
+
+                                    <!-- Error -->
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
                             
-                            <label for="inputPassword1" class ="sr-only">Enter New Password:</label>
-                            <input id="inputPassword1" class="form-control" placeholder="New Password" type="password" name="pass1" maxlength="15" required autofocus />
-                            
-                            <label for="inputPassword2" class ="sr-only">Re-Enter New Password:</label>
-							<input id="inputPassword2" class="form-control" placeholder="Re-Enter New Password" type="password" name="pass2" maxlength="15" onkeyup="checkPass();" required/>                            
+                            <div class="form-group">
+                                <label for="inputPassword2" class ="sr-only">Re-Enter New Password:</label>
+                                <div class="form-group">
+                                <input id="inputPassword2" class="form-control" placeholder="Re-Enter New Password" type="password" 
+                                    name="pass2" data-match="#inputPassword1" data-match-error="Passwords don't match" required/>
+
+                                <!-- Error -->
+                                <div class="help-block with-errors"></div>  
+                                </div>
+                            </div>
 
                             <input type="hidden" name="email" value="<?php echo $email;?>"/>
                             
-                            <button id="submitBtn" class="btn btn-lg btn-primary btn-block" type="submit" value="Reset Password">Submit</button>
+                            <div class="form-group">
+                                <button id="submitBtn" class="btn btn-lg btn-primary btn-block" type="submit" value="Reset Password">Submit</button>
+                            </div>
                             <p class="mt-5 mb-3 text-muted">&copy; Gradshub-2020</p>
+                        
                         </form>
-
-                        <!-- JS script -->
-                        <script  type="text/javascript" src="../../assets/script.js"></script>
 
                     </body>
                 </html>
 
-
                 <?php
             }else{
+                // If link has expired
                 readfile("../../templates/linkExpired.html");
             }
             
         }else{
+            // If link is now invalid
             readfile("../../templates/linkInvalid.html");
         }
 

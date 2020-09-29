@@ -113,7 +113,7 @@
             <title>GradsHub: Password Recovery</title>
             </head>
             <body>
-            <p>Dear user,</p>
+            <p>Dear ' .$query_name. ',</p>
             <p>To change your password please click the link below:</p>
             <p>-------------------------------------------------------------</p>
             <p> 
@@ -134,10 +134,26 @@
 
             if ($mail->send()) {
                 return true;
+                // Save message to 'Sent Mail' folder
+                save_mail($mail);
             }
             echo 'Mailer Error: '. $mail->ErrorInfo;
             return false;
 
+        }
+
+        function save_mail($mail){
+
+            // Path to save email to a specific tag/folder
+            $path = '{imap.gmail.com:993/imap/ssl}[Gmail]/Sent Mail';
+
+            // )pen an IMAP connection using the same username and password used for SMTP
+            $imapStream = imap_open($path, $mail->Username, $mail->Password);
+
+            $result = imap_append($imapStream, $path, $mail->getSentMIMEMessage());
+            imap_close($imapStream);
+
+            return $result;
         }
 
         // Create a recovery record
