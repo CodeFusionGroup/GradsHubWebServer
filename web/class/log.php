@@ -7,23 +7,22 @@
     use Monolog\Logger;
     use Monolog\Formatter\LineFormatter;
     use Monolog\Handler\StreamHandler;
+    // use Monolog\Handler\FirePHPHandler;
 
-    class Logging{
+    class Log{
 
         // Properties
-        private $formatter;
         private $logger;
-        // private $syslogHandler;
 
         // Defalt contructor
         public function __construct(){
 
             // Set the format
-            $output = "%message%";
-            $this->formatter = new LineFormatter($output);
+            $output = "[%channel%]:%level_name% > %message% \n";
+            $formatter = new LineFormatter($output);
 
-            // create a log channel to STDOUT
-            $this->logger = new Logger('Gradshub_logs');
+            // create the main log channel to STDOUT
+            $this->logger = new Logger('GradshubServer_logs');
             $streamHandler = new StreamHandler('php://stdout', Logger::DEBUG);
             $streamHandler->setFormatter($formatter);
             $this->logger->pushHandler($streamHandler);
