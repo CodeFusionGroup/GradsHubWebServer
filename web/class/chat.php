@@ -78,7 +78,7 @@
                     FROM ". $this->db_table ." c 
                         INNER JOIN chat_participant cp 
                         ON c.CHAT_ID = cp.CHAT_ID
-                    WHERE cp.PARTICIPANT_ID = ?";
+                    WHERE cp.PARTICIPANT_ID = ? AND cp.CHAT_OPEN = 'true' ";
             $stmt = $this->conn->prepare($sqlQuery);
 
             $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
@@ -90,7 +90,8 @@
         // Get the most recent message in a chat
         public function getRecentMessage($query_chat_id,$query_user_id){
             // $sqlQuery = "SELECT cp.PARTICIPANT_ID AS RECIPIENT_ID,CONCAT(u.USER_FNAME,' ',u.USER_LNAME) AS FULL_NAME, m.MESSAGE_TEXT, m.MESSAGE_TIMESTAMP
-            $sqlQuery = "SELECT cp.PARTICIPANT_ID AS RECIPIENT_ID, m.MESSAGE_TEXT, m.MESSAGE_TIMESTAMP  
+            $sqlQuery = "SELECT m.CHAT_ID, cp.PARTICIPANT_ID AS RECIPIENT_ID, m.MESSAGE_TEXT,
+                             m.MESSAGE_TIMESTAMP  
                     FROM message m
                         INNER JOIN user u ON m.SENDER_ID = u.USER_ID
                         INNER JOIN chat_participant cp ON m.CHAT_ID = cp.CHAT_ID
@@ -156,6 +157,33 @@
 
             $stmt->execute();
             return $stmt;
+        }
+
+        // #################### UPDATE ####################
+
+        // Function closes and open chat
+        public function closeChat($query_chat_id, $query_user_id){
+            $sqlQuery = "UPDATE
+                        chat_participant
+                    SET
+                        CHAT_OPEN ='false' 
+                    WHERE
+                        CHAT_ID = :chat_id AND PARTICIPANT_ID = :user_id";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            // sanitize
+            $query_chat_id=htmlspecialchars(strip_tags($query_chat_id));
+            $query_user_id=htmlspecialchars(strip_tags($query_user_id));
+
+            // bind data
+            $stmt->bindParam(":chat_id", $query_chat_id);
+            $stmt->bindParam(":user_id", $query_user_id);
+
+            if($stmt->execute()){
+                return true;
+            }
+            return false;
+
         }
 
     }// END CLASS

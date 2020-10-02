@@ -12,6 +12,8 @@
 
     // Create User object
     $user_obj = new User();
+    // Create Log object
+    $log_obj = new Log();
 
     // Get the posted data
     $data = json_decode(file_get_contents("php://input"));
@@ -54,8 +56,16 @@
                         $output["success"]="1";
                         $output["message"]="Registration successful!";
                         echo json_encode($output);
+
+                        // Log the Registration
+                        $log_msg = "New registration: ". $data->email;
+                        $log_obj->infoLog($log_msg);
+
                     } else{
                         echo 'User could not be created.';
+                        // Log the failed Registration
+                        $log_msg = "Failed registration: ". $data->email .", User could not be created.";
+                        $log_obj->infoLog($log_msg);
                     }
                 }else{
                     $output["success"]="-1";
