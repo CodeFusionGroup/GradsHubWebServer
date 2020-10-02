@@ -7,11 +7,15 @@
 
     // Configuration for Global variables
     require_once $_SERVER['DOCUMENT_ROOT'] . '/config/vars.php';
-    // Get the User and Group class
+    // Get the classes
     include_once $_SERVER['DOCUMENT_ROOT'] . '/class/user.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/class/log.php';
 
     // Create User object
     $user_obj = new User();
+
+    // Create Log object
+    $log_obj = new Log();
 
     // Get the posted data
     $data = json_decode(file_get_contents("php://input"));
@@ -27,6 +31,13 @@
             $output["success"]="1";
             $output["message"]="Token updated";
             echo json_encode($output);
+
+            // Log token changed
+            $res = $user_obj->getFullName($data->user_id);
+            $res_store = $res->fetch(PDO::FETCH_ASSOC);
+            $fullname = $res_store['USER_FNAME'] . " " . $res_store['USER_LNAME'];
+            $log_msg = " User: ". $fullname . ", has updated device token.";
+            $log_obj->infoLog($log_msg);
         }else{
             $output["success"]="0";
             $output["message"]="Could not update token";

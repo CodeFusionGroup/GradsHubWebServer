@@ -4,9 +4,13 @@
     require_once $_SERVER['DOCUMENT_ROOT'] . '/config/vars.php';
     // Get the User class
     include_once $_SERVER['DOCUMENT_ROOT'] . '/class/user.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/class/log.php';
 
     // Create User object
     $user_obj = new User();
+
+    // Create Log object
+    $log_obj = new Log();
 
     // Check if data is sent
     if( isset($_GET["key"],$_GET["email"],$_GET["action"]) && ($_GET["action"]=="reset") && !isset($_POST["action"]) ){
@@ -124,11 +128,17 @@
             }else{
                 // If link has expired
                 readfile("../../templates/linkExpired.html");
+                // Log expired link
+                $log_msg = " User: ". $email . "has used an expired link/key, ". $key;
+                $log_obj->infoLog($log_msg);
             }
             
         }else{
             // If link is now invalid
             readfile("../../templates/linkInvalid.html");
+            // Log Invalid link
+            $log_msg = " User: ". $email . "has used an invalid link/key, " . $key;
+            $log_obj->infoLog($log_msg);
         }
 
     }
@@ -162,20 +172,39 @@
                 //TODO: Change to an update of the record
                 if($user_obj->deleteRecovery($email)){
                     readfile("../../templates/passwordSuccess.html");
+
+                    // Log Password recovery success
+                    $log_msg = " User: ". $email . "has successfully recovered their password.";
+                    $log_obj->infoLog($log_msg);
+
                 }else{
-                    echo 'Could not recover password';
+                    // echo 'Could not recover password';
+                    
+                    // Log error deleting recovery from db
+                    $log_msg = "Error deleting ". $email . "'s recovery from database.";
+                    $log_obj->errorLog($log_msg);
                 }
                 
             }else{
-                echo 'Could not update password';
+                // echo 'Could not update password';
+
+                // Log error updating password in db
+                $log_msg = "Error updating ". $email . "'s recovery password in the database.";
+                $log_obj->errorLog($log_msg);
             }
 
         }else{
-            $error = '<p>Passwords do not match, both passwords should be same.<br /><br /></p>';
-            echo $error;
+            // $error = '<p>Passwords do not match, both passwords should be same.<br /><br /></p>';
+            // echo $error;
+
+            // Log somehow passwords dont match
+            $log_msg = $email . "'s passwords do not match when recovering password";
+            $log_obj->infoLog($log_msg);
         }
 
     }else{
-
+        // Log missing parameters
+        $log_msg = " Missing parameters to update password on password-recovery form";
+        $log_obj->errorLog($log_msg);
     }
 ?>
