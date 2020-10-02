@@ -46,24 +46,40 @@
                     $output["message"]="Please check your email to reset password";
                     echo json_encode($output);
 
-                    
+                    // Log user has forgot password/ requesting password recovery
+                    $log_msg = " User: ". $data->email . " has requested password recovery.";
+                    $log_obj->infoLog($log_msg);
 
                 }else{
                     $output["success"]="0";
                     $output["message"]="Email could not be sent";
                     echo json_encode($output);
+
+                    // Log error sending forgot password email
+                    $log_msg = "Error sending email to ". $data->user_email;
+                    $log_obj->errorLog($log_msg);
                 }
 
             }else{
                 $output["success"]="0";
                 $output["message"]="Error creating recovery";
                 echo json_encode($output);
+
+                // Log error creating recovery
+                $log_msg = "Error creating recovery for ". $data->user_email;
+                $log_obj->errorLog($log_msg);
+
             }
 
         }else{
             $output["success"]="0";
             $output["message"]="No user registered with this email";
             echo json_encode($output);
+
+            // Log error invalid email
+            $log_msg = "Invalid email ". $data->user_email;
+            $log_obj->errorLog($log_msg);
+
         }
 
     }else{

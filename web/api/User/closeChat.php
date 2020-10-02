@@ -17,16 +17,34 @@
     $data = json_decode(file_get_contents("php://input"));
 
     // Make sure data is not empty
-    if(isset($data->user_id,$data->chat_id)){
+    if(isset($data->user_id,$data->chat_ids)){
 
-        // Close the chat
-        if($chat_obj->closeChat($data->chat_id,$data->user_id)){
+        // Store string chat_ids in an array
+        $chat_id_arr = explode(',',$data->chat_ids);
+
+        // Chat counter
+        $chat_count = 0;
+
+        // Get the chat_ids
+        foreach($chat_id_arr as $chat_id){
+
+            // Close each chat chat
+            if($chat_obj->closeChat($chat_id,$data->user_id)){
+                // $output["success"] = "1";
+                // $output["message"] = "Chat closed";
+                // echo json_encode($output);
+                $chat_count ++;
+            }
+        }
+
+        // Check if all chats where close
+        if($chat_count == sizeof($chat_id_arr)){
             $output["success"] = "1";
-            $output["message"] = "Chat closed";
+            $output["message"] = "Chats closed";
             echo json_encode($output);
         }else{
             $output["success"] = "0";
-            $output["message"] = "Couldn't close chat";
+            $output["message"] = "One or more chats didn't close.";
             echo json_encode($output);
         }
 
