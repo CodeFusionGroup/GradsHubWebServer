@@ -188,7 +188,7 @@
         // Get a user using an email
         public function getUserByEmail($query_email){
             $sqlQuery = "SELECT USER_ID,USER_FNAME,USER_LNAME,USER_PASSWORD,USER_PASSWORD
-                            ,USER_EMAIL,USER_PHONE_NO, USER_ACAD_STATUS, USER_PROFILE_PICTURE,USER_NAME
+                            ,USER_EMAIL,USER_PHONE_NO, USER_ACAD_STATUS, USER_PROFILE_PICTURE
                       FROM
                         ". $this->db_table ."
                     WHERE 
@@ -280,7 +280,7 @@
         
          // Get user profile infomation 
         public function getProfile($query_user_id){
-            $sqlQuery = "SELECT USER_ID,USER_NAME,USER_LNAME,USER_FNAME
+            $sqlQuery = "SELECT USER_ID,USER_LNAME,USER_FNAME
                             ,USER_EMAIL,USER_PHONE_NO, USER_ACAD_STATUS, USER_PROFILE_PICTURE
                       FROM
                         ". $this->db_table ."
