@@ -18,24 +18,30 @@
 
     if( isset($data->user_id,$data->blocked_user_id) ){
 
-        // Set the Blocked property values
-        $blocked_obj->user_id = $data->user_id;
-        $blocked_obj->blocked_user_id = $data->blocked_user_id;
-        $curr_timestamp = date("Y-m-d H:i:s");
-        $blocked_obj->timestamp = $curr_timestamp;
-
-        if($blocked_obj->blockUser()){
-
-            $output["success"]="1";
-            $output["message"]="User blocked";
-            echo json_encode($output);
-
-        }else{
+        // First check if user is already blocked
+        if($blocked_obj->checkBlocked($data->user_id,$data->blocked_user_id)){
             $output["success"]="0";
-            $output["message"]="User couldn't be blocked";
+            $output["message"]="Already blocked user";
             echo json_encode($output);
+        }else{
+            // Set the Blocked property values
+            $blocked_obj->user_id = $data->user_id;
+            $blocked_obj->blocked_user_id = $data->blocked_user_id;
+            $curr_timestamp = date("Y-m-d H:i:s");
+            $blocked_obj->timestamp = $curr_timestamp;
+
+            if($blocked_obj->blockUser()){
+
+                $output["success"]="1";
+                $output["message"]="User blocked";
+                echo json_encode($output);
+
+            }else{
+                $output["success"]="0";
+                $output["message"]="User couldn't be blocked";
+                echo json_encode($output);
+            }
         }
-        
 
     }else{
         //Data is incomplete
