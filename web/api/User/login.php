@@ -28,49 +28,64 @@
         
         $dataRow = $stmnt->fetch(PDO::FETCH_ASSOC);
 
-        // Check password
-        $user_password = $data->password;
-        $hashed_password = $dataRow['USER_PASSWORD'];
-        if(password_verify($user_password,$hashed_password)){
-            // Put user details into a JSON object
-            $res_user["USER_EMAIL"] = $dataRow['USER_EMAIL'];
-			$res_user["USER_ID"] = $dataRow['USER_ID'];
-			$res_user["USER_FNAME"] = $dataRow['USER_FNAME'];
-			$res_user["USER_LNAME"] = $dataRow['USER_LNAME'];
-			$res_user["USER_PHONE_NO"] = $dataRow['USER_PHONE_NO'];
-			$res_user["USER_ACAD_STATUS"] = $dataRow['USER_ACAD_STATUS'];
-			$res_user["USER_PROFILE_PICTURE"] = $dataRow['USER_PROFILE_PICTURE'];
-			$res_user["USER_NAME"] = $dataRow['USER_NAME'];
-			
+        // Check if user is verified
+        if( $user_obj->checkVerified($data->email) ){
+            // User is verified proceed
 
-            // Output
-			$output["success"] = "1";
-            $output["message"] = "Successfully logged in";
-            $output["user"] = $res_user;
-            echo json_encode($output);
+            // Check password
+            $user_password = $data->password;
+            $hashed_password = $dataRow['USER_PASSWORD'];
+            if(password_verify($user_password,$hashed_password)){
 
-            // Log the sign in
-            $log_msg = " User: ". $data->email . ", has successfully logged in";
-            $log_obj->infoLog($log_msg);
+                // Put user details into a JSON object
+                $res_user["USER_EMAIL"] = $dataRow['USER_EMAIL'];
+                $res_user["USER_ID"] = $dataRow['USER_ID'];
+                $res_user["USER_FNAME"] = $dataRow['USER_FNAME'];
+                $res_user["USER_LNAME"] = $dataRow['USER_LNAME'];
+                $res_user["USER_PHONE_NO"] = $dataRow['USER_PHONE_NO'];
+                $res_user["USER_ACAD_STATUS"] = $dataRow['USER_ACAD_STATUS'];
+                $res_user["USER_PROFILE_PICTURE"] = $dataRow['USER_PROFILE_PICTURE'];
+                
+                // Output
+                $output["success"] = "1";
+                $output["message"] = "Successfully logged in";
+                $output["user"] = $res_user;
+                echo json_encode($output);
+
+                // Log the sign in
+                $log_msg = "{Login} User: ". $data->email . ", has successfully logged in";
+                $log_obj->infoLog($log_msg);
+            }else{
+
+                // Unsuccessful
+                $output["success"] = "0";
+                $output["message"] = "Incorrect password. Please try again!";
+                echo json_encode($output);
+
+                // Log the failed sign in
+                $log_msg = "{Login} User: ". $data->email . ", has tried an incorrect password";
+                $log_obj->infoLog($log_msg);
+            }
+
         }else{
-
-            // Unsuccessful
-			$output["success"] = "0";
-			$output["message"] = "Incorrect password. Please try again!";
+            // User is not verified
+            $output["success"] = "0";
+            $output["message"] = "Your account is not verified";
             echo json_encode($output);
 
-            // Log the failed sign in
-            $log_msg = " User: ". $data->email . ", has tried an incorrect password";
+            // Log Unverified user attempted to login
+            $log_msg = "{Login} User: ". $data->email . " attempted to login with an un-verified account.";
             $log_obj->infoLog($log_msg);
         }
 
+        
     }else{
         $output["success"] = "-1";
 		$output["message"] = "Email doesn't exist, please try again";
         echo json_encode($output);
         
         // Log the incorrect login
-        $log_msg = " Email: " . $data->email . " does not exist.";
+        $log_msg = "{Login} Email: " . $data->email . " does not exist.";
         $log_obj->infoLog($log_msg);
     }
 

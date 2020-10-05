@@ -18,6 +18,8 @@
         public $acad_status;
         public $fcm_token;
         public $profile_picture;
+        public $verify_code;
+        public $verify_date;
 
         // Db connection
         public function __construct(){
@@ -44,7 +46,9 @@
                         USER_EMAIL = :email, 
                         USER_PHONE_NO = :phone_no, 
                         USER_ACAD_STATUS = :acad_status, 
-                        USER_FCM_TOKEN = :fcm_token";
+                        USER_FCM_TOKEN = :fcm_token,
+                        USER_VERIFY_CODE = :verify_code,
+                        USER_VERIFY_DATE = :verify_date";
             $stmt = $this->conn->prepare($sqlQuery);
         
             // sanitize
@@ -55,6 +59,8 @@
             $this->phone_no=htmlspecialchars(strip_tags($this->phone_no));
             $this->acad_status=htmlspecialchars(strip_tags($this->acad_status));
             $this->fcm_token=htmlspecialchars(strip_tags($this->fcm_token));
+            $this->verify_code=htmlspecialchars(strip_tags($this->verify_code));
+            $this->verify_date=htmlspecialchars(strip_tags($this->verify_date));
 
             // bind data
             $stmt->bindParam(":f_name", $this->f_name);
@@ -64,6 +70,8 @@
             $stmt->bindParam(":phone_no", $this->phone_no);
             $stmt->bindParam(":acad_status", $this->acad_status);
             $stmt->bindParam(":fcm_token", $this->fcm_token);
+            $stmt->bindParam(":verify_code", $this->verify_code);
+            $stmt->bindParam(":verify_date", $this->verify_date);
 
             if($stmt->execute()){
                return true;
@@ -226,6 +234,45 @@
             return $stmt;
         }
 
+        // Check if verification code exists for user
+        public function verifyExist($query_user_email,$query_code){
+            $sqlQuery = "SELECT USER_VERIFY_CODE, USER_VERIFY_DATE
+                      FROM
+                        user
+                    WHERE 
+                    USER_EMAIL = ? AND USER_VERIFY_CODE = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $query_user_email, PDO::PARAM_STR);
+            $stmt->bindParam(2, $query_code, PDO::PARAM_STR);
+            $stmt->execute();
+
+            return $stmt;
+        }
+
+        // Check if user is verified
+        public function checkVerified($query_user_email){
+            $sqlQuery = "SELECT USER_ID, USER_VERIFIED
+                      FROM
+                        user
+                    WHERE 
+                    USER_EMAIL = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $query_user_email, PDO::PARAM_STR);
+            $stmt->execute();
+
+            // Get the verified state
+            $data_row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $verify_status = $data_row['USER_VERIFIED'];
+
+            if($verify_status == 'true'){
+                return true;
+            }
+
+            return false;
+        }
+
 
         // #################### UPDATE ####################
 
@@ -336,6 +383,28 @@
                 return true;
             }
             return false;
+        }
+
+        public function verifyUser($user_email){
+            $sqlQuery = "UPDATE
+                        ". $this->db_table ."
+                    SET
+                        USER_VERIFIED = 'true'
+                    WHERE
+                        USER_EMAIL= :user_email";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            // sanitize
+            $user_email=htmlspecialchars(strip_tags($user_email));
+
+            // bind data
+            $stmt->bindParam(":user_email", $user_email);
+
+            if($stmt->execute()){
+                return true;
+            }
+            return false;
+
         }
 
         // #################### DELETE ####################

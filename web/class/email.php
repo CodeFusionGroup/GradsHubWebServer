@@ -74,14 +74,57 @@
             if ($this->mailer->send()) {
                 return true;
                 // Save message to 'Password Recovery' folder
-                save_mail($this->mailer,'Password Recovery');
+                save_mail($this->mailer,'Password');
             }
             // echo 'Mailer Error: '. $mail->ErrorInfo;
             return false;
 
         }
 
-        public function userVerification(){
+        public function userVerification($query_email,$code,$query_name){
+
+            //Recipients
+            $this->mailer->setFrom('no-reply@gradshub.com', 'Gradshub Support');
+            $this->mailer->addAddress($query_email, $query_name);
+            $this->mailer->Subject = 'GradsHub: Account Verification';
+
+            // https://gradshub.herokuapp.com
+            // http://localhost:8080
+            // https://gradshub.herokuapp.com/api/User/password-recovery.php?key='. $key . '&email='.$query_email.'&action=reset
+            // Content
+            $this->mailer->isHTML(true);
+            $content = '
+            <html>
+            <head>
+            <title>GradsHub: Account Verification</title>
+            </head>
+            <body>
+            <p>Dear ' .$query_name. ',</p>
+            <p>Please click The following link to verify your email and activate your account</p>
+            <p>-------------------------------------------------------------</p>
+            <p> 
+                <a href = "http://localhost:8080/api/User/email-verification.php?code='. $code . '&email='.$query_email.'&action=verify" target="_blank"> 
+                Click Here!
+                </a> 
+            </p>
+            <p>-------------------------------------------------------------</p>
+            <p>Please note that for security reasons the link will expire in one day(24 hours).</p>
+            <p>If you did not request to create an account with us, no action 
+            is needed, this link will expire and you will recieve no further communication from us.</p>
+            <p>Should this persist please contact us. <a href = "mailto:gradshub.team@gmail.com?subject=Persistent Account Verification Emails">Send Email</a></p>
+            <p>Kind regards</p>
+            <p>Gradshub Team</p>
+            </body>
+            </html>';
+            $this->mailer->Body = $content;
+
+            if ($this->mailer->send()) {
+                return true;
+                // Save message to 'Password Recovery' folder
+                save_mail($this->mailer,'Verification');
+            }
+            // echo 'Mailer Error: '. $mail->ErrorInfo;
+            return false;
 
         }
 
