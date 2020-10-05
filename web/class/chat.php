@@ -131,7 +131,7 @@
 
         // Get all messages in a chat
         public function getMessages(){
-            $sqlQuery = "SELECT m.MESSAGE_TIMESTAMP, m.MESSAGE_TEXT, u.USER_ID, concat( u.USER_FNAME,' ',u.USER_LNAME) AS SENT_BY 
+            $sqlQuery = "SELECT m.MESSAGE_TIMESTAMP, m.MESSAGE_TEXT, u.USER_ID, CONCAT( u.USER_FNAME,' ',u.USER_LNAME) AS SENT_BY 
                     FROM message m
                         INNER JOIN user u ON m.SENDER_ID = u.USER_ID
                     WHERE CHAT_ID = ?
@@ -146,7 +146,7 @@
 
         // Get all messages in a chat where a user is blocked
         public function getMessagesBlocked($query_user_id, $query_blocked_user_id){
-            $sqlQuery = "SELECT m.MESSAGE_TIMESTAMP, m.MESSAGE_TEXT,CONCAT(u.USER_FNAME, ' ', u.USER_LNAME) AS SENT_BY
+            $sqlQuery = "SELECT m.MESSAGE_TIMESTAMP, m.MESSAGE_TEXT,u.USER_ID, CONCAT(u.USER_FNAME, ' ', u.USER_LNAME) AS SENT_BY
                     FROM message m
                         INNER JOIN user u ON m.SENDER_ID = u.USER_ID
                     WHERE CHAT_ID = ? AND 
