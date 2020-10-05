@@ -7,7 +7,7 @@
 
     // Configuration for Global variables
     require_once $_SERVER['DOCUMENT_ROOT'] . '/config/vars.php';
-    // Get the User class
+    // Get the classes
     include_once $_SERVER['DOCUMENT_ROOT'] . '/class/blocked.php';
 
     // Create User object
@@ -21,6 +21,8 @@
         // Set the Blocked property values
         $blocked_obj->user_id = $data->user_id;
         $blocked_obj->blocked_user_id = $data->blocked_user_id;
+        $curr_timestamp = date("Y-m-d H:i:s");
+        $blocked_obj->timestamp = $curr_timestamp;
 
         if($blocked_obj->blockUser()){
 

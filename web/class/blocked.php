@@ -11,6 +11,7 @@
         public $id;
         public $user_id;
         public $blocked_user_id;
+        public $timestamp;
 
         // Db connection
         public function __construct(){
@@ -31,16 +32,19 @@
                         ". $this->db_table ."
                     SET
                         USER_ID = :user_id,
-                        BLOCKED_USER_ID = :blocked_user_id";
+                        BLOCKED_USER_ID = :blocked_user_id,
+                        BLOCKED_TIMESTAMP = :timestamp";
             $stmt = $this->conn->prepare($sqlQuery);
         
             // sanitize
             $this->user_id=htmlspecialchars(strip_tags($this->user_id));
             $this->blocked_user_id=htmlspecialchars(strip_tags($this->blocked_user_id));
+            $this->timestamp=htmlspecialchars(strip_tags($this->timestamp));
 
             // bind data
             $stmt->bindParam(":user_id", $this->user_id);
             $stmt->bindParam(":blocked_user_id", $this->blocked_user_id);
+            $stmt->bindParam(":timestamp", $this->timestamp);
 
             if($stmt->execute()){
                return true;
@@ -65,14 +69,14 @@
         }
 
         // Check if a user has been blocked
-        public function checkBlocked($query_user_id,$blocker_user_id){
+        public function checkBlocked($query_user_id,$blocked_user_id){
             $sqlQuery = "SELECT BLOCKED_ID 
                     FROM ". $this->db_table ."
                     WHERE USER_ID = ? AND BLOCKED_USER_ID = ? AND BLOCKED_STATUS = 'true' ";
             $stmt = $this->conn->prepare($sqlQuery);
 
             $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
-            $stmt->bindParam(2, $blocker_user_id, PDO::PARAM_INT);
+            $stmt->bindParam(2, $blocked_user_id, PDO::PARAM_INT);
             
 
             $stmt->execute();

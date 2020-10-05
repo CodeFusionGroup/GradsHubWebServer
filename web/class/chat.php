@@ -144,6 +144,26 @@
             return $stmt;
         }
 
+        // Get all messages in a chat where a user is blocked
+        public function getMessagesBlocked($query_user_id, $query_blocked_user_id){
+            $sqlQuery = "SELECT m.MESSAGE_TIMESTAMP, m.MESSAGE_TEXT,CONCAT(u.USER_FNAME, ' ', u.USER_LNAME) AS SENT_BY
+                    FROM message m
+                        INNER JOIN user u ON m.SENDER_ID = u.USER_ID
+                    WHERE CHAT_ID = ? AND 
+                        MESSAGE_TIMESTAMP <= (SELECT BLOCKED_TIMESTAMP
+                            FROM blocked
+                            WHERE USER_ID = ? AND BLOCKED_USER_ID = ?)
+                    ORDER BY MESSAGE_TIMESTAMP";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $this->id, PDO::PARAM_INT);
+            $stmt->bindParam(2, $query_user_id, PDO::PARAM_INT);
+            $stmt->bindParam(3, $query_blocked_user_id, PDO::PARAM_INT);
+
+            $stmt->execute();
+            return $stmt;
+        }
+
         // Get the fullname of the other participant in the chat
         public function getOtherParticipent($query_chat_id,$query_user_id){
             $sqlQuery = "SELECT u.USER_ID, CONCAT(u.USER_FNAME,' ',u.USER_LNAME) AS FULL_NAME

@@ -1,7 +1,7 @@
 <?php
     
     // Include the composer generated autoload.php file
-    require('../../../vendor/autoload.php');
+    require(__DIR__ . '../../../vendor/autoload.php');
             
     //Import Monolog classes into the global namespace
     use Monolog\Logger;
