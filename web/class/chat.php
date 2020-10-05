@@ -107,6 +107,31 @@
             return $stmt;
         }
 
+        // Get the most recent message in a chat where user is Blocked
+        public function getRecentMessageBlocked($query_chat_id,$query_user_id,$query_blocked_user_id){
+            // $sqlQuery = "SELECT cp.PARTICIPANT_ID AS RECIPIENT_ID,CONCAT(u.USER_FNAME,' ',u.USER_LNAME) AS FULL_NAME, m.MESSAGE_TEXT, m.MESSAGE_TIMESTAMP
+            $sqlQuery = "SELECT m.CHAT_ID, cp.PARTICIPANT_ID AS RECIPIENT_ID, m.MESSAGE_TEXT,
+                             m.MESSAGE_TIMESTAMP  
+                    FROM message m
+                        INNER JOIN user u ON m.SENDER_ID = u.USER_ID
+                        INNER JOIN chat_participant cp ON m.CHAT_ID = cp.CHAT_ID
+                        WHERE m.CHAT_ID = ? AND cp.PARTICIPANT_ID != ? AND 
+                            m.MESSAGE_TIMESTAMP <= ( SELECT BLOCKED_TIMESTAMP
+                            FROM blocked
+                            WHERE USER_ID = ? AND BLOCKED_USER_ID = ?)
+                    ORDER BY m.MESSAGE_TIMESTAMP DESC
+                    LIMIT 1";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $query_chat_id, PDO::PARAM_INT);
+            $stmt->bindParam(2, $query_user_id, PDO::PARAM_INT);
+            $stmt->bindParam(3, $query_user_id, PDO::PARAM_INT);
+            $stmt->bindParam(4, $query_blocked_user_id, PDO::PARAM_INT);
+
+            $stmt->execute();
+            return $stmt;
+        }
+
         //Check if a chat already exists
         public function chatExist($query_chat_name1,$query_chat_name2){
             $sqlQuery = "SELECT CHAT_ID,CHAT_NAME
