@@ -9,10 +9,13 @@
     require_once $_SERVER['DOCUMENT_ROOT'] . '/config/vars.php';
     // Get the classes
     include_once $_SERVER['DOCUMENT_ROOT'] . '/class/chat.php';
-    include_once $_SERVER['DOCUMENT_ROOT'] . '/class/user.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/class/blocked.php';
 
-    // Create Message object
+    // Create Chats object
     $chat_obj = new Chat();
+
+    // Create Blocked object
+    $blocked_obj = new Blocked();
 
     // Get the posted data
     $data = json_decode(file_get_contents("php://input"));
@@ -36,20 +39,43 @@
             $messages = array();
             foreach($open_chats as $chat_id){
 
-                $stmnt_msg = $chat_obj->getRecentMessage($chat_id['CHAT_ID'],$data->user_id);
-                $stmt_msg_count = $stmnt_msg->rowCount();
+                // Get the other chat participent
+                $stmnt_participant = $chat_obj->getOtherParticipent($chat_id['CHAT_ID'],$data->user_id);
+                $participant_row = $stmnt_participant->fetch(PDO::FETCH_ASSOC);
 
-                // If the chat has messages
-                if( $stmt_msg_count > 0 ){
-                    // Get the other chat participent
-                    $stmnt_query = $chat_obj->getOtherParticipent($chat_id['CHAT_ID'],$data->user_id);
-                    $stmnt_res = $stmnt_query->fetch(PDO::FETCH_ASSOC);
-                    
-                    // Message exists
-                    $dataRow = $stmnt_msg->fetch(PDO::FETCH_ASSOC);
-                    $dataRow['FULL_NAME'] = $stmnt_res['FULL_NAME'];
-                    array_push($result_arr,$dataRow);
+                // Check if current user has blocked the recipient user
+                if( $blocked_obj->checkBlocked($data->user_id,$participant_row['USER_ID']) ){
+                    // Only retrieve most recent message before being blocked 
+
+                    // Get the recent message from the chat
+                    $stmnt_msg = $chat_obj->getRecentMessageBlocked($chat_id['CHAT_ID'],$data->user_id,$participant_row['USER_ID']);
+                    $stmt_msg_count = $stmnt_msg->rowCount();
+
+                    // If the chat has messages (it should)
+                    if( $stmt_msg_count > 0 ){
+                        // Get the message
+                        $message_row = $stmnt_msg->fetch(PDO::FETCH_ASSOC);
+                        $message_row['FULL_NAME'] = $participant_row['FULL_NAME'];
+                        array_push($result_arr,$message_row);
+                    }
+
+                }else{
+                    // Current user has not blocked the recipient user
+
+                    // Get the recent message from the chat
+                    $stmnt_msg = $chat_obj->getRecentMessage($chat_id['CHAT_ID'],$data->user_id);
+                    $stmt_msg_count = $stmnt_msg->rowCount();
+
+                    // If the chat has messages (it should)
+                    if( $stmt_msg_count > 0 ){
+                        // Get the message
+                        $message_row = $stmnt_msg->fetch(PDO::FETCH_ASSOC);
+                        $message_row['FULL_NAME'] = $participant_row['FULL_NAME'];
+                        array_push($result_arr,$message_row);
+                    }
+
                 }
+
             }
 
             // Sort the array  
