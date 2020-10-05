@@ -11,6 +11,8 @@
     include_once $_SERVER['DOCUMENT_ROOT'] . '/class/message.php';
     include_once $_SERVER['DOCUMENT_ROOT'] . '/class/user.php';
     include_once $_SERVER['DOCUMENT_ROOT'] . '/class/chat.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/class/blocked.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/class/log.php';
     // Get Required files for Push Notification 
     include_once $_SERVER['DOCUMENT_ROOT'] . '/class/push.php';
     include_once $_SERVER['DOCUMENT_ROOT'] . '/class/firebase.php';
@@ -23,6 +25,10 @@
     $firebase_obj = new Firebase(); 
     // Create a Chat object
     $chat_obj = new Chat();
+    // Create a Blocked object
+    $blocked_obj = new Blocked();
+    // Create Log object
+    $log_obj = new Log();
     
     // Get the posted data
     $data = json_decode(file_get_contents("php://input"));
@@ -83,7 +89,7 @@
             $message_obj->timestamp = $data->message_timestamp;
             $message_obj->text = $data->message_text;
 
-            //Get the ender's fullname
+            //Get the sender's fullname
             $stmnt_names = $user_obj->getFullName($data->sender_id);
             $dataRow = $stmnt_names->fetch(PDO::FETCH_ASSOC);
             $fullname = $dataRow['USER_FNAME'] . " " . $dataRow['USER_LNAME'];
@@ -91,20 +97,44 @@
             // Create the message in the database
             if($message_obj->createMessage()){
 
-                // Create Push Object
-                $push_obj = new Push($fullname,$data->message_text);
-                // Get the Push Notification from the push object
-                $data_payload = $push_obj->getMessage();
-                $notification_payload = $push_obj->getNotification();
-                // Get the token for the recipients device
-                $recipient_token = $user_obj->getTokenByID($data->recipient_id);
-                // Send Push Notification
-                $firebase_obj->send($recipient_token, $data_payload,$notification_payload);
-                
-                $output["success"]="1";
-                $output["message"]="Message Sent";
-                echo json_encode($output);
+                // If sender is blocked don't create push notification
+                if($blocked_obj->checkBlocked($data->recipient_id,$data->sender_id)){
+                    
+                    // Sender is blocked by recipient
+                    $output["success"]="1";
+                    $output["message"]="Message Sent";
+                    echo json_encode($output);
 
+                    // Log the sent message
+                    $log_msg = "Blocked User: ". $data->sender_id . ", sent a message to user: ". $data->recipient_id;
+                    $log_obj->infoLog($log_msg);
+
+                }else{
+
+                    // Sender is not blocked
+
+                    // Create Push Object
+                    $push_obj = new Push($fullname,$data->message_text);
+                    // Get the Push Notification from the push object
+                    $data_payload = $push_obj->getMessage();
+                    $notification_payload = $push_obj->getNotification();
+                    // Get the token for the recipients device
+                    $recipient_token = $user_obj->getTokenByID($data->recipient_id);
+                    // Send Push Notification
+                    $firebase_obj->send($recipient_token, $data_payload,$notification_payload);
+                    // Log the push notification
+                    $log_msg = "Push notification sent to user: ". $data->recipient_id .", to device: ". $recipient_token[0];
+                    $log_obj->infoLog($log_msg);
+                    
+                    $output["success"]="1";
+                    $output["message"]="Message Sent";
+                    echo json_encode($output);
+
+                    // Log the sent message
+                    $log_msg = "User: ". $data->sender_id . ", sent a message to user: ". $data->recipient_id;
+                    $log_obj->infoLog($log_msg);
+                }
+               
             }else{
                 $output["success"]="0";
                 $output["message"]="Error Sending Message";

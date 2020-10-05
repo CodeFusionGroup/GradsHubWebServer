@@ -52,6 +52,9 @@
                 }
             }
 
+            // Sort the array  
+            usort($result_arr, 'date_compare'); 
+
             $output["success"] = "1";
             $output["message"] = $result_arr ;
             echo json_encode($output);
@@ -68,5 +71,11 @@
         echo json_encode($output);
     }
 
+    // Comparison function DESC
+    function date_compare($element1, $element2) { 
+        $datetime1 = strtotime($element1['MESSAGE_TIMESTAMP']); 
+        $datetime2 = strtotime($element2['MESSAGE_TIMESTAMP']); 
+        return $datetime2 - $datetime1; 
+    }  
 
 ?>
