@@ -2,7 +2,7 @@
     
     // Configuration for Global variables
     require_once $_SERVER['DOCUMENT_ROOT'] . '/config/vars.php';
-    // Get the User class
+    // Get the classes
     include_once $_SERVER['DOCUMENT_ROOT'] . '/class/user.php';
     include_once $_SERVER['DOCUMENT_ROOT'] . '/class/log.php';
 
@@ -129,7 +129,7 @@
                 // If link has expired
                 readfile("../../templates/linkExpired.html");
                 // Log expired link
-                $log_msg = " User: ". $email . "has used an expired link/key, ". $key;
+                $log_msg = "{Password Recovery}  User: ". $email . "has used an expired link/key, ". $key;
                 $log_obj->infoLog($log_msg);
             }
             
@@ -137,7 +137,7 @@
             // If link is now invalid
             readfile("../../templates/linkInvalid.html");
             // Log Invalid link
-            $log_msg = " User: ". $email . "has used an invalid link/key, " . $key;
+            $log_msg = "{Password Recovery} User: ". $email . "has used an invalid link/key, " . $key;
             $log_obj->infoLog($log_msg);
         }
 

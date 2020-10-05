@@ -7,13 +7,17 @@
 
     // Configuration for Global variables
     require_once $_SERVER['DOCUMENT_ROOT'] . '/config/vars.php';
-    // Get the User class
+    // Get the classes
     include_once $_SERVER['DOCUMENT_ROOT'] . '/class/user.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/class/log.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/class/email.php';
 
     // Create User object
     $user_obj = new User();
     // Create Log object
     $log_obj = new Log();
+    // Create Email object
+    $email_obj = new Email();
 
     // Get the posted data
     $data = json_decode(file_get_contents("php://input"));
@@ -50,15 +54,47 @@
                     $user_obj->acad_status = $data->acad_status;
                     $user_obj->fcm_token = $data->fcm_token;
 
+                    // The verification date
+                    $date_format = mktime( date("H"), date("i"), date("s"),
+                    date("m") ,date("d")+1, date("Y") );
+                    $user_obj->verify_date = date("Y-m-d H:i:s",$date_format);
+                    // The verification code
+                    $user_obj->verify_code = md5(rand(0,1000)); // md5($data->email.time()
+
+                    //Fullname
+                    $fullname = $data->f_name." ". $data->l_name;
+
                     // Create the user
-                    if($user_obj->createUser()){
-                        // echo 'User created successfully.';
-                        $output["success"]="1";
-                        $output["message"]="Registration successful!";
-                        echo json_encode($output);
+                    if( $user_obj->createUser() ){
+
+                        // Send an email to user
+                        if($email_obj->userVerification($data->email,$user_obj->verify_code, $fullname)){
+                            
+                            //Email sent
+                            $output["success"]="1";
+                            $output["message"]="Please check email to verify account";
+                            echo json_encode($output);
+
+                            // Log Verification email sent
+                            $log_msg = "Verification email sent to ". $data->email;
+                            $log_obj->infoLog($log_msg);
+
+                        }else{
+                            // Email could not be sent
+                            $output["success"]="0";
+                            $output["message"]="Email could not be sent";
+                            echo json_encode($output);
+
+                            // Log error sending email
+                            $log_msg = "Verification email to ". $data->email .", could not be sent.";
+                            $log_obj->errorLog($log_msg);
+                        }
+
+                        // Output
+                        
 
                         // Log the Registration
-                        $log_msg = "New registration: ". $data->email;
+                        $log_msg = "New registration request: ". $data->email;
                         $log_obj->infoLog($log_msg);
 
                     } else{
