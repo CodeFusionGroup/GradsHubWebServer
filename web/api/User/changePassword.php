@@ -7,11 +7,17 @@
 
     // Configuration for Global variables
     require_once $_SERVER['DOCUMENT_ROOT'] . '/config/vars.php';
-    // Get the User class
+    // Get the classes
     include_once $_SERVER['DOCUMENT_ROOT'] . '/class/user.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/class/email.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/class/log.php';
 
     // Create User object
     $user_obj = new User();
+    // Create Email object
+    $email_obj = new Email();
+    // Create Log object
+    $log_obj = new Log();
 
     // Get the posted data
     $data = json_decode(file_get_contents("php://input"));
@@ -39,15 +45,15 @@
 
                 // ***** Email Logic ***** 
 
-                if( $user_obj->phpMailer($data->user_email,$key,$fullname) ){
+                // if( $user_obj->phpMailer($data->user_email,$key,$fullname) ){
+                if( $email_obj->passwordRecovery($data->user_email,$key,$fullname) ){
 
-                    
                     $output["success"]="1";
                     $output["message"]="Please check your email to reset password";
                     echo json_encode($output);
 
                     // Log user has forgot password/ requesting password recovery
-                    $log_msg = " User: ". $data->email . " has requested password recovery.";
+                    $log_msg = " User: ". $data->user_email . " has requested password recovery.";
                     $log_obj->infoLog($log_msg);
 
                 }else{
