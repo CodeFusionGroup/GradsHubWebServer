@@ -368,7 +368,8 @@
             $sqlQuery = "UPDATE
                         ". $this->db_table ."
                     SET
-                        USER_NAME = :user_name,
+                        USER_FNAME = :fname,
+                        USER_LNAME = :lname,
                         USER_EMAIL = :email,
                         USER_PHONE_NO = :phone_no, 
                         USER_ACAD_STATUS = :academic_status
@@ -378,7 +379,8 @@
         
             // sanitize
             $this->id=htmlspecialchars(strip_tags($this->id));
-            $this->user_name=htmlspecialchars(strip_tags($this->user_name));
+            $this->fname=htmlspecialchars(strip_tags($this->fname));
+            $this->lname=htmlspecialchars(strip_tags($this->lname));
             $this->email=htmlspecialchars(strip_tags($this->email));
             $this->phone_no=htmlspecialchars(strip_tags($this->phone_no));
             $this->academic_status=htmlspecialchars(strip_tags($this->acad_status));
@@ -386,7 +388,8 @@
 
             // bind data
             $stmt->bindParam(":user_id", $this->id);
-            $stmt->bindParam(":user_name", $this->user_name);
+            $stmt->bindParam(":fname", $this->fname);
+            $stmt->bindParam(":lname", $this->lname);
             $stmt->bindParam(":email", $this->email);
             $stmt->bindParam(":phone_no", $this->phone_no);
             $stmt->bindParam(":academic_status", $this->acad_status);

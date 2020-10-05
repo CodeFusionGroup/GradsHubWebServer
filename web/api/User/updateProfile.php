@@ -21,7 +21,7 @@
     $data = json_decode(file_get_contents("php://input"));
 
     // Make sure data is not empty
-    if( isset($data->user_id, $data->user_name, $data->email,
+    if( isset($data->user_id,$data->first_name,$data->last_name, $data->email,
         $data->phone_no, $data->acad_status)){
 
             $user_email = null;
@@ -101,11 +101,11 @@
 
                     // Set the user property values
                     $user_obj->id = $data->user_id;
-                    $user_obj->user_name = $data->user_name;
+                    $user_obj->fname = $data->first_name;
+                    $user_obj->lname = $data->last_name;
                     $user_obj->email = $data->email;
                     $user_obj->phone_no = $data->phone_no;
                     $user_obj->acad_status = $data->acad_status;
-                    // $user_obj->profile_picture = $data->profile_picture;
                     
                     // update user details
                     if( $user_obj->updateProfile() ){
