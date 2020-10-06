@@ -27,36 +27,49 @@
 
         if($stmnt_count >0){
 
-            // Check the expiry
-            $stmnt_row = $stmnt->fetch(PDO::FETCH_ASSOC);
-            $exp_date = $stmnt_row['USER_VERIFY_DATE'];
+            //Check if user is already verified
+            if( $user_obj->checkVerified($email) ){
+                //User is verifed
+                readfile("../../templates/verifiedValid.html");
 
-            if($exp_date >= $cur_date){
-
-                // Activation Successful
-                if($user_obj->verifyUser($email)){
-
-                    // Read verified email template
-                    readfile("../../templates/verificationSuccess.html");
-
-                    // Log verification Success 
-                    $log_msg = "{Account Verification}  User: ". $email . " successfully verified account";
-                    $log_obj->infoLog($log_msg);
-
-                }else{
-
-                    // Could not verify user
-
-                    // Log Error 
-                    $log_msg = "{Account Verification}  User: ". $email . " could not be verified in db.";
-                    $log_obj->errorLog($log_msg);
-                }
-            }else{
-                // If link has expired
-                readfile("../../templates/linkExpired.html");
-                // Log expired link
-                $log_msg = "{Account Verification}  User: ". $email . " has used an expired link/key, ". $code;
+                // Log Verification attempt
+                $log_msg = "{Email Verification link} Already verified user: ". $email .", tried to verify again.";
                 $log_obj->infoLog($log_msg);
+
+            }else{
+                //User not verified continue
+
+                // Check the expiry
+                $stmnt_row = $stmnt->fetch(PDO::FETCH_ASSOC);
+                $exp_date = $stmnt_row['USER_VERIFY_DATE'];
+
+                if($exp_date >= $cur_date){
+
+                    // Activation Successful
+                    if($user_obj->verifyUser($email)){
+
+                        // Read verified email template
+                        readfile("../../templates/verificationSuccess.html");
+
+                        // Log verification Success 
+                        $log_msg = "{Account Verification}  User: ". $email . " successfully verified account";
+                        $log_obj->infoLog($log_msg);
+
+                    }else{
+
+                        // Could not verify user
+
+                        // Log Error 
+                        $log_msg = "{Account Verification}  User: ". $email . " could not be verified in db.";
+                        $log_obj->errorLog($log_msg);
+                    }
+                }else{
+                    // If link has expired
+                    readfile("../../templates/linkExpired.html");
+                    // Log expired link
+                    $log_msg = "{Account Verification}  User: ". $email . " has used an expired link/key, ". $code;
+                    $log_obj->infoLog($log_msg);
+                }
             }
 
         }else{

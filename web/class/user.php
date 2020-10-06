@@ -407,6 +407,33 @@
 
         }
 
+        // Update User verify details (Used when requesting for a new verification link)
+        public function updateVerifyDetails($user_email,$verify_code,$verify_date){
+            $sqlQuery = "UPDATE
+                        ". $this->db_table ."
+                    SET
+                        USER_VERIFY_CODE = :verify_code, USER_VERIFY_DATE = :verify_date
+                    WHERE
+                        USER_EMAIL= :user_email";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            // sanitize
+            $user_email=htmlspecialchars(strip_tags($user_email));
+            $verify_code=htmlspecialchars(strip_tags($verify_code));
+            $verify_date=htmlspecialchars(strip_tags($verify_date));
+
+            // bind data
+            $stmt->bindParam(":user_email", $user_email);
+            $stmt->bindParam(":verify_code", $verify_code);
+            $stmt->bindParam(":verify_date", $verify_date);
+
+            if($stmt->execute()){
+                return true;
+            }
+            return false;
+
+        }
+
         // #################### DELETE ####################
 
         // DELETE password recovery record
