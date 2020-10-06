@@ -103,7 +103,7 @@
             <p>Please click The following link to verify your email and activate your account</p>
             <p>-------------------------------------------------------------</p>
             <p> 
-                <a href = "http://localhost:8080/api/User/email-verification.php?code='. $code . '&email='.$query_email.'&action=verify" target="_blank"> 
+                <a href = "https://gradshub.herokuapp.com/api/User/email-verification.php?code='. $code . '&email='.$query_email.'&action=verify" target="_blank"> 
                 Click Here!
                 </a> 
             </p>
