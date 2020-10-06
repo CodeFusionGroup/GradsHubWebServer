@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gradshub Request a new verification link">
+    <title>New Verification Link</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- ValidateJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+
+    <!-- Custom Sytling -->
+    <style>
+        .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        /* Error colours */
+        .has-error label,
+        .has-error input{
+            color: red;
+            border-color: red;
+        }
+        .list-unstyled li {
+            font-size: 13px;
+            padding: 4px 0 0;
+            color: red;
+        }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="../../assets/passwordForm.css" rel="stylesheet">
+
+</head>
+<body class="text-center">
+
+    <form class="form-signin"  role="form" data-toggle="validator" method="post" action="" name="new link">
+        
+        <img class="mb-4" src="../../assets/applogo.png" alt="Gradshub Logo" width="72" height="72">
+        <h1 class="h3 mb-4 font-weight-normal">New Verification Link</h1>
+        <input type="hidden" name="action" value="new link" />
+
+        <!-- Email textfield -->
+        <div class="form-group">
+            <label for="email" class ="sr-only">Enter Email address</label>
+            <div class="form-group">
+                <input id="email" class="form-control" placeholder="Email Address" type="email"
+                    name="email" required autofocus />
+
+                <!-- Error -->
+                <div class="help-block with-errors"></div>
+            </div>
+
+        </div>
+
+        <!-- Submit button -->
+        <div class="form-group">
+            <button id="submitBtn" class="btn btn-lg btn-primary btn-block" type="submit" value="Request New Link">Submit</button>
+        </div>
+        <p class="mt-5 mb-3 text-muted">&copy; Gradshub-2020</p>
+    
+    </form>
+    
+</body>
+</html>
