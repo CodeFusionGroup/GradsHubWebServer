@@ -197,19 +197,30 @@
         // still under construction
 
         public function feed($query_user_id){
-            $sqlQuery = "  SELECT  u.USER_FNAME, u.USER_LNAME, gp.GROUP_POST_ID,gp.POST_TITLE
+            $sqlQuery = "SELECT  u.USER_FNAME, u.USER_LNAME, gp.GROUP_POST_ID,gp.POST_TITLE
                                 , gp.POST_DATE,gp.POST_URL,gp.POST_FILE,gp.POST_FILE_NAME
                                 FROM group_post AS gp 
                                 inner join group_user as gu 
                                 ON gp.GROUP_ID=gu.GROUP_ID
                                 INNER JOIN user as u 
                                 ON gu.USER_ID = u.USER_ID
-                                where u.USER_ID= ?
+                
+                                where gu.GROUP_USER_ID in(
+                                    select gp.GROUP_USER_ID
+                                    FROM group_user gu
+                                    inner join group_post as gp on gu.GROUP_ID=gp.GROUP_ID
+                                    where USER_ID= ? )
+                                and gu.USER_ID!= ?
+
                                 ORDER BY gp.POST_DATE DESC, gp.GROUP_POST_ID";
+            
+
 
             $stmt = $this->conn->prepare($sqlQuery);
 
             $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
+            $stmt->bindParam(2, $query_user_id, PDO::PARAM_INT);
+            
             $stmt->execute();
             return $stmt;
         }
