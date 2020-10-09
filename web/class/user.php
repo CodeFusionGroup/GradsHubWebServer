@@ -434,6 +434,33 @@
 
         }
 
+        // Unverify a user's account (used when updating email address in application)
+        public function unverifyUser($user_id,$new_code,$new_date){
+            $sqlQuery = "UPDATE
+                        ". $this->db_table ."
+                    SET
+                        USER_VERIFIED = 'false',
+                        USER_VERIFY_CODE = :new_code, USER_VERIFY_DATE = :new_date
+                    WHERE
+                        USER_ID= :user_id";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            // sanitize
+            $user_id=htmlspecialchars(strip_tags($user_id));
+            $new_code=htmlspecialchars(strip_tags($new_code));
+            $new_date=htmlspecialchars(strip_tags($new_date));
+            
+            // bind data
+            $stmt->bindParam(":user_id", $user_id);
+            $stmt->bindParam(":new_code", $new_code);
+            $stmt->bindParam(":new_date", $new_date);
+
+            if($stmt->execute()){
+                return true;
+            }
+            return false;
+        }
+
         // #################### DELETE ####################
 
         // DELETE password recovery record
