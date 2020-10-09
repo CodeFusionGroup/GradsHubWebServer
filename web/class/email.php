@@ -128,6 +128,53 @@
 
         }
 
+        public function changedEmailVerification($query_new_email,$code,$query_name){
+
+            //Recipients
+            $this->mailer->setFrom('no-reply@gradshub.com', 'Gradshub Support');
+            $this->mailer->addAddress($query_new_email, $query_name);
+            $this->mailer->Subject = 'GradsHub: New email verification';
+
+            // https://gradshub.herokuapp.com
+            // http://localhost:8080
+            // https://gradshub.herokuapp.com/api/User/password-recovery.php?key='. $key . '&email='.$query_email.'&action=reset
+            // Content
+            $this->mailer->isHTML(true);
+            $content = '
+            <html>
+            <head>
+            <title>GradsHub: New email verification</title>
+            </head>
+            <body>
+            <p>Dear ' .$query_name. ',</p>
+            <p></p>
+            <p>Our systems detected that you changed/updated your email address. To continue 
+            please click the following link to verify your new email address.</p>
+            <p>-------------------------------------------------------------</p>
+            <p> 
+                <a href = "https://gradshub.herokuapp.com/api/User/email-verification.php?code='. $code . '&email='.$query_new_email.'&action=verify" target="_blank"> 
+                Click Here!
+                </a> 
+            </p>
+            <p>-------------------------------------------------------------</p>
+            <p>Please note that for security reasons the link will expire in one day(24 hours).</p>
+            <p>You will not have access to your account until you have verified your email address.</p>
+            <p>Kind regards</p>
+            <p>Gradshub Team</p>
+            </body>
+            </html>';
+            $this->mailer->Body = $content;
+
+            if ($this->mailer->send()) {
+                return true;
+                // Save message to 'Password Recovery' folder
+                save_mail($this->mailer,'Verification');
+            }
+            // echo 'Mailer Error: '. $mail->ErrorInfo;
+            return false;
+
+        }
+
         // #################### USEFUL FUNCTIONS ####################
 
         // Saves an email to sepcific folder in gmail
