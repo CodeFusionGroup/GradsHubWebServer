@@ -197,7 +197,7 @@
         // still under construction
 
         public function feed($query_user_id){
-            $sqlQuery = "SELECT  u.USER_FNAME, u.USER_LNAME, gp.GROUP_POST_ID,gp.POST_TITLE
+            $sqlQuery = "SELECT  u.USER_FNAME, u.USER_LNAME, gp.GROUP_ID, gp.GROUP_POST_ID,gp.POST_TITLE
                                 , gp.POST_DATE,gp.POST_URL,gp.POST_FILE,gp.POST_FILE_NAME
                                 FROM group_post AS gp 
                                 inner join group_user as gu 
