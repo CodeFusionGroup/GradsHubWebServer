@@ -7,11 +7,15 @@
 
     // Configuration for Global variables
     require_once $_SERVER['DOCUMENT_ROOT'] . '/config/vars.php';
-    // Get the Chat class
+    // Get the classes
     include_once $_SERVER['DOCUMENT_ROOT'] . '/class/chat.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/class/log.php';
 
-    // Create Message object
+    // Create Chat object
     $chat_obj = new Chat();
+
+    // Create Log object
+    $log_obj = new Log();
 
     // Get the posted data
     $data = json_decode(file_get_contents("php://input"));
