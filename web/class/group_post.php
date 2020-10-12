@@ -220,7 +220,6 @@
             $stmt = $this->conn->prepare($sqlQuery);
 
             $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
-            $stmt->bindParam(2, $query_user_id, PDO::PARAM_INT);
             
             $stmt->execute();
             return $stmt;
