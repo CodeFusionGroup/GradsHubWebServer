@@ -16,25 +16,39 @@
     // Get the posted data
     $data = json_decode(file_get_contents("php://input"));
 
-    // Retrieve all user likes for a post
-    $stmnt = $group_post_like->readUserLikes($data->user_id,$data->group_id);
-    $stmnt_count = $stmnt->rowCount();
+    // Make sure data is not empty
+    if(isset($data->user_id,$data->group_id )){
 
-    if($stmnt_count>0){
-        $likes_arr = array();
-        $output["success"] = "1";
+        // Retrieve all user likes for a post
+        $stmnt = $group_post_like->readUserLikes($data->user_id,$data->group_id);
+        $stmnt_count = $stmnt->rowCount();
 
-        while($row = $stmnt->fetch(PDO::FETCH_ASSOC) ){
-            extract($row);
-            array_push($likes_arr,$row);
+        if($stmnt_count>0){
+            $likes_arr = array();
+            $output["success"] = "1";
+
+            while($row = $stmnt->fetch(PDO::FETCH_ASSOC) ){
+                extract($row);
+                array_push($likes_arr,$row);
+            }
+            $output["message"] = $likes_arr ;
+            echo json_encode($output);
+
+        }else{
+            $output["success"] = "0";
+            $output["message"] = "You have not liked any posts.";
+            echo json_encode($output);
         }
-        $output["message"] = $likes_arr ;
-        echo json_encode($output);
 
     }else{
-        $output["success"] = "0";
-        $output["message"] = "You have not liked any posts.";
+
+        //Data is incomplete
+        $output["success"]="0";
+        $output["message"]="You didn't send the required values!";
         echo json_encode($output);
+
     }
+
+    
 
 ?>
