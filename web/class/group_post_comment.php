@@ -71,6 +71,21 @@
             $stmt->execute();
             return $stmt;
         }
+
+        // Get the number of comments for a post
+        public function getNoOfComments($post_id){
+            $sqlQuery = "SELECT COUNT(*) AS NO_OF_COMMENTS 
+                    FROM group_post_comment
+                    WHERE GROUP_POST_ID = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $post_id, PDO::PARAM_INT);
+
+            // Return result(count)
+            $stmt->execute();
+            $count = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $count;
+        }
     }
 
 

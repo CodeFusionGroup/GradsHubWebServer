@@ -53,20 +53,6 @@
 
         // #################### READ ####################
 
-        // public function readAll(){
-        //     $sqlQuery = "SELECT gpl.GROUP_POST_ID
-        //                 FROM ". $this->db_table ." AS gpl
-        //                 INNER JOIN group_user AS gu ON gpl.GROUP_USER_ID = gu.GROUP_USER_ID
-        //             WHERE 
-        //             gu.USER_ID = ? AND gu.GROUP_ID = ?";
-        //     $stmt = $this->conn->prepare($sqlQuery);
-
-        //     $stmt->bindParam(1, $this->group_post_id, PDO::PARAM_INT);
-
-        //     $stmt->execute();
-        //     return $stmt;
-        // }
-
         public function readUserLikes($query_user_id,$query_group_id){
             $sqlQuery = "SELECT gpl.GROUP_POST_ID
                     FROM 
@@ -102,6 +88,21 @@
                 return false;
             }
 
+        }
+
+        // Get the number of likes for a post
+        public function getNoOfLikes($post_id){
+            $sqlQuery = "SELECT COUNT(*) AS NO_OF_LIKES 
+                    FROM ". $this->db_table ."
+                    WHERE GROUP_POST_ID =?";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $post_id, PDO::PARAM_INT);
+
+            // Return result(count)
+            $stmt->execute();
+            $count = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $count;
         }
     }
 

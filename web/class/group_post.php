@@ -174,13 +174,6 @@
         // TODO: Function is not used (possibly delete)
         // retrieves url for downloading a pdf file
         public function downloadFile($query_post_id){
-            // $sqlQuery = "SELECT gp.GROUP_POST_ID FROM
-            //             ". $this->db_table ." AS gp
-            //             INNER JOIN group_user AS gu ON gp.GROUP_USER_ID = gu.GROUP_USER_ID
-
-            //             WHERE 
-
-            //             gu.USER_ID = ? AND gu.GROUP_ID = ?";
             $sqlQuery = "SELECT POST_FILE FROM
                         ". $this->db_table ."
                         WHERE 
@@ -189,6 +182,23 @@
 
             $stmt->bindParam(1, $query_post_id, PDO::PARAM_INT);
 
+            $stmt->execute();
+            return $stmt;
+        }
+
+        // find the top 4 posts in group ordered by date (used in main feed)
+        public function findGroupPosts($group_id){
+            $sqlQuery = "SELECT u.USER_FNAME, u.USER_LNAME, gp.GROUP_ID, gp.GROUP_POST_ID, gp.POST_TITLE, gp.POST_DATE, gp.POST_URL, 
+                        gp.POST_FILE, gp.POST_FILE_NAME 
+                    FROM group_post gp
+                        INNER JOIN group_user gu ON gp.GROUP_USER_ID = gu.GROUP_USER_ID
+                        INNER JOIN user u ON gu.USER_ID = u.USER_ID
+                    WHERE gp.GROUP_ID = ?
+                    ORDER BY gp.POST_DATE DESC
+                    LIMIT 4";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $group_id, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt;
         }
@@ -214,8 +224,6 @@
 
                                 ORDER BY gp.POST_DATE DESC, gp.GROUP_POST_ID";
             
-
-
             $stmt = $this->conn->prepare($sqlQuery);
 
             $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
@@ -224,8 +232,6 @@
             $stmt->execute();
             return $stmt;
         }
-
-
 
     }
 
