@@ -20,7 +20,7 @@
 
 
     // Make the database queries
-    $stmnt_likes_comments = $group_post_obj->readCommentsAndLikesFeed(); 
+    $stmnt_likes_comments = $group_post_obj->readCommentsAndLikesFeed($data->user_id); 
     $stmnt_posts = $group_post_obj->feed($data->user_id); 
 
     // Counts
