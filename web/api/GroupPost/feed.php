@@ -51,6 +51,7 @@
 
             // $full_post_arr[$i]["NO_OF_COMMENTS"] = $post_counts_arr[$i]["NO_OF_COMMENTS"];
             // $full_post_arr[$i]["NO_OF_LIKES"] = $post_counts_arr[$i]["NO_OF_LIKES"];
+            
             $full_post_arr[$i]["NO_OF_COMMENTS"] = isset($post_counts_arr[$i]["NO_OF_COMMENTS"]) ? $post_counts_arr[$i]["NO_OF_COMMENTS"]: null;
             $full_post_arr[$i]["NO_OF_LIKES"] = isset($post_counts_arr[$i]["NO_OF_LIKES"]) ? $post_counts_arr[$i]["NO_OF_LIKES"]:null;
 
