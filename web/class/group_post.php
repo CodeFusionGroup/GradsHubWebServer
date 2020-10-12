@@ -232,6 +232,33 @@
             $stmt->execute();
             return $stmt;
         }
+        
+        
+        public function readCommentsAndLikesFeed($query_user_id){
+            $sqlQuery = " SELECT COALESCE( NO_OF_COMMENTS,0) AS NO_OF_COMMENTS,COALESCE( NO_OF_LIKES,0) AS NO_OF_LIKES
+                    FROM group_post AS gp
+                    inner join group_user as gu on gp.GROUP_ID=gu.GROUP_ID
+                    INNER JOIN USER AS u on gu.USER_ID=u.USER_ID
+                    LEFT JOIN (
+                    SELECT GROUP_POST_ID,COUNT(*) AS NO_OF_COMMENTS
+                    FROM group_post_comment
+                    GROUP BY GROUP_POST_ID 
+                    ) NO_OF_COMMENTS ON NO_OF_COMMENTS.GROUP_POST_ID = gp.GROUP_POST_ID
+                    LEFT JOIN (
+                    SELECT GROUP_POST_ID,COUNT(*) AS NO_OF_LIKES
+                    FROM group_post_like
+                    GROUP BY GROUP_POST_ID 
+                    ) 
+                    NO_OF_LIKES ON NO_OF_LIKES.GROUP_POST_ID = gp.GROUP_POST_ID
+                    WHERE gu.USER_ID = ?
+                    ORDER BY gp.POST_DATE DESC, gp.GROUP_POST_ID ";
+
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt;
+        }
 
     }
 
