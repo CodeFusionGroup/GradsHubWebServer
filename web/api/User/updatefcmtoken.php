@@ -36,12 +36,20 @@
             $res = $user_obj->getFullName($data->user_id);
             $res_store = $res->fetch(PDO::FETCH_ASSOC);
             $fullname = $res_store['USER_FNAME'] . " " . $res_store['USER_LNAME'];
-            $log_msg = " User: ". $fullname . ", has updated device token.";
+            $log_msg = "{Update FCM Token} User: ". $fullname . ", has updated device token.";
             $log_obj->infoLog($log_msg);
         }else{
+
             $output["success"]="0";
             $output["message"]="Could not update token";
             echo json_encode($output);
+
+            //Log failure to update token
+            $res = $user_obj->getFullName($data->user_id);
+            $res_store = $res->fetch(PDO::FETCH_ASSOC);
+            $fullname = $res_store['USER_FNAME'] . " " . $res_store['USER_LNAME'];
+            $log_msg = "{Update FCM Token} User: ". $fullname . ", couldnt updated device token in DB.";
+            $log_obj->errorLog($log_msg);
         }
 
     }else{

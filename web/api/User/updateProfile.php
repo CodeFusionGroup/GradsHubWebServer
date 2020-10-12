@@ -149,32 +149,50 @@
                     
                     // update user details
                     if( $user_obj->updateProfile() ){
+
                         $output["success"]="1";
                         $output["message"]="Update successful!";
                         echo json_encode($output);
+
                         // Log user changed profile
                         $log_msg = "{Update Profile} User: ". $data->email . " has successfuly updated their profile.";
                         $log_obj->infoLog($log_msg);
+
                     } else{
+
                         $output["success"]="0";
                         $output["message"]="Update unsuccessful!";
                         echo json_encode($output);
+
+                        // Log update unsuccessful
+                        $log_msg = "{Update Profile} User: ". $data->email . " could not update profile in db.";
+                        $log_obj->errorLog($log_msg);
                     }
 
                 }else{
+
                     $output["success"]="0";
                     $output["message"]="Incorrect Phone Number length";
                     echo json_encode($output);
+
+                    // Log incorrect phone number length
+                    $log_msg = "{Update Profile} User: ". $data->email . " supplied incorrect phone number length.";
+                    $log_obj->infoLog($log_msg);
                 }
 
             } // END EMAIL VALIDATION
             
 
     }else{
+
         //Data is incomplete
         $output["success"]="-1";
         $output["message"]="You didn't send the required values!";
         echo json_encode($output);
+
+        // Log incomple data sent
+        $log_msg = "{Update Profile} Required values are missing.";
+        $log_obj->infoLog($log_msg);
     }
 
 ?>

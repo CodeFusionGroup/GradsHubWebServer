@@ -37,11 +37,15 @@
             }
         }
 
-        // Check if all chats where close
+        // Check if all chats where closed
         if($chat_count == sizeof($chat_id_arr)){
             $output["success"] = "1";
             $output["message"] = "Chats closed";
             echo json_encode($output);
+
+            //Log user has closed chats
+            $log_msg = "{Close Chat(s)} User: ". $data->user_id . ", has closed chats :[". $data->chat_ids ."].";
+            $log_obj->errorLog($log_msg);
         }else{
             $output["success"] = "0";
             $output["message"] = "One or more chats didn't close.";
