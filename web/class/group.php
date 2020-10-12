@@ -102,10 +102,6 @@
 
         }
 
-        public function uploadPDF(){
-            
-        }
-
         // #################### READ ####################
 
         // Get a group using the group name
@@ -220,6 +216,19 @@
             $stmt->execute();
             return $stmt;
 
+        }
+
+        // Retrieve the groups a user is a member of
+        public function getGroups($query_user_id){
+            $sqlQuery = "SELECT rg.GROUP_ID FROM research_group rg
+                    INNER JOIN group_user gu ON rg.GROUP_ID = gu.GROUP_ID
+                    INNER JOIN user u ON gu.USER_ID = u.USER_ID
+                    WHERE u.USER_ID = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $query_user_id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt;
         }
     }
 
