@@ -59,7 +59,7 @@
 
         // Find all friends who have accepted
         public function findAcceptedFriends($query_user_id){
-            $sqlQuery = "SELECT u.USER_ID, u.USER_FNAME, u.USER_LNAME 
+            $sqlQuery = "SELECT u.USER_ID, u.USER_FNAME, u.USER_LNAME, u.USER_ACAD_STATUS 
                     FROM ". $this->db_table ." f
                         INNER JOIN user u ON f.FRIEND_ID = u.USER_ID
                     WHERE f.USER_ID = ? AND f.FRIEND_STATUS = 'accepted' ";
