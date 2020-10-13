@@ -204,14 +204,60 @@
             return $stmt;
         }
 
+        // Check if a chat is open
+        public function checkOpen($chat_id, $user_id){
+            $sqlQuery = "SELECT CHAT_PARTICIPANT_ID
+                    FROM chat_participant
+                        WHERE CHAT_ID = ? AND PARTICIPANT_ID = ? AND CHAT_OPEN = 'true' ";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            $stmt->bindParam(1, $chat_id, PDO::PARAM_INT);
+            $stmt->bindParam(2, $user_id, PDO::PARAM_INT);
+
+            $stmt->execute();
+            $stmt_count = $stmt->rowCount();
+
+            if( $stmt_count > 0 ){
+                // Chat is open
+                return true;
+            }
+            return false;
+
+        }
+
         // #################### UPDATE ####################
 
-        // Function closes and open chat
+        // Function closes an open chat
         public function closeChat($query_chat_id, $query_user_id){
             $sqlQuery = "UPDATE
                         chat_participant
                     SET
                         CHAT_OPEN ='false' 
+                    WHERE
+                        CHAT_ID = :chat_id AND PARTICIPANT_ID = :user_id";
+            $stmt = $this->conn->prepare($sqlQuery);
+
+            // sanitize
+            $query_chat_id=htmlspecialchars(strip_tags($query_chat_id));
+            $query_user_id=htmlspecialchars(strip_tags($query_user_id));
+
+            // bind data
+            $stmt->bindParam(":chat_id", $query_chat_id);
+            $stmt->bindParam(":user_id", $query_user_id);
+
+            if($stmt->execute()){
+                return true;
+            }
+            return false;
+
+        }
+
+        // Function opens a chat 
+        public function openChat($query_chat_id, $query_user_id){
+            $sqlQuery = "UPDATE
+                        chat_participant
+                    SET
+                        CHAT_OPEN ='true' 
                     WHERE
                         CHAT_ID = :chat_id AND PARTICIPANT_ID = :user_id";
             $stmt = $this->conn->prepare($sqlQuery);

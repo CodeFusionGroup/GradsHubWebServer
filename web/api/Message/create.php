@@ -61,22 +61,53 @@
                     $chatCreated = true;
                     $chat_id = $chat_obj->id;
 
+                    // Log added participants to chat
+                    $log_msg = "{Create Message} Added users ". $data->sender_id ." and ". $data->recipient_id ." as participants to chat ". $chat_obj->id;
+                    $log_obj->errorLog($log_msg);
+
                 }else{
                     $output["success"]="0";
                     $output["message"]="Could not create a new chat";
                     echo json_encode($output);
+
+                    // Log could not add chat participants
+                    $log_msg = "{Create Message} Could not add users ". $data->sender_id ." and ". $data->recipient_id ." as participants to chat ". $chat_obj->id;
+                    $log_obj->errorLog($log_msg);
                 }
 
             }else{
                 $output["success"]="0";
                 $output["message"]="Could not create a new chat";
                 echo json_encode($output);
+
+                // Log could not create chat
+                $log_msg = "{Create Message} User: ".$data->sender_id.", could not create chat ".$chat_obj->id;
+                $log_obj->errorLog($log_msg);
+
             }
 
         }else{
             // Chat already exists
             $chatCreated = true;
             $chat_id = $chat_obj->id;
+
+            // Check if the chat is open/closed
+            if( !$chat_obj->checkOpen($chat_obj->id,$data->sender_id) ){
+                // Chat is closed, open it.
+                if( !$chat_obj->openChat($chat_obj->id,$data->sender_id) ){
+                    // Chat could not be opened
+
+                    // Log could not open chat error
+                    $log_msg = "{Create Message} User: ".$data->sender_id.", could not open chat ".$chat_obj->id;
+                    $log_obj->errorLog($log_msg);
+                }else{
+                    // Chat was reopened
+
+                    // Log reopening chat
+                    $log_msg = "{Create Message} User: ".$data->sender_id.", re-opened chat ".$chat_obj->id;
+                    $log_obj->infoLog($log_msg);
+                }
+            }
         }
         
         // Check if chat is created already
@@ -106,7 +137,7 @@
                     echo json_encode($output);
 
                     // Log the sent message
-                    $log_msg = "Blocked User: ". $data->sender_id . ", sent a message to user: ". $data->recipient_id;
+                    $log_msg = "{Create Message} Blocked User: ". $data->sender_id . ", sent a message to user: ". $data->recipient_id;
                     $log_obj->infoLog($log_msg);
 
                 }else{
@@ -131,7 +162,7 @@
                     echo json_encode($output);
 
                     // Log the sent message
-                    $log_msg = "User: ". $data->sender_id . ", sent a message to user: ". $data->recipient_id;
+                    $log_msg = "{Create Message} User: ". $data->sender_id . ", sent a message to user: ". $data->recipient_id;
                     $log_obj->infoLog($log_msg);
                 }
                
